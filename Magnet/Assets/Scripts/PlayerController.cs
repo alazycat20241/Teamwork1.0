@@ -11,10 +11,11 @@ public class PlayerController : MonoBehaviour
     public MagneticPole currentPole = MagneticPole.North;  // 当前玩家磁极
 
     [Header("持续磁力设置")]
-    public float continuousMagneticForce = 10f;      // 持续的磁力大小（始终生效）
+    public float attractForce = 15f;      // 吸附时的持续拉力
+    public float repelForce = 8f;         // 排斥时的持续推力
 
     [Header("蓄力弹射设置")]
-    public float chargeRange = 5f;                   // 蓄力触发范围（比Collider大）
+    public float chargeRange = 5f;                   // 蓄力触发范围
     public float maxChargeTime = 2f;                 // 最大蓄力时间（秒）
     public float maxRepelForce = 30f;                // 最大弹射力度
     public float minRepelForce = 8f;                 // 最小弹射力度
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         if (isLaunching) return;
-
+        if (isCharging)return;
         // 应用移动
         ApplyMovement();
 
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// 进入磁铁范围（Collider触发）
+    /// 进入磁铁范围
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Magnet"))
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// 离开磁铁范围（Collider触发）
+    /// 离开磁铁范围
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Magnet"))
@@ -140,12 +141,12 @@ public class PlayerController : MonoBehaviour
         if (isAttract)
         {
             // 相吸：持续被拉向磁铁
-            rb.AddForce(direction * continuousMagneticForce*10, ForceMode2D.Force);
+            rb.AddForce(direction * attractForce, ForceMode2D.Force);
         }
         else
         {
             // 相斥：持续被推开
-            rb.AddForce(-direction * continuousMagneticForce, ForceMode2D.Force);
+            rb.AddForce(-direction * repelForce, ForceMode2D.Force);
         }
     }
 
@@ -192,6 +193,8 @@ public class PlayerController : MonoBehaviour
     {
         isCharging = true;
         currentChargeTime = 0;
+        // 停住！清除速度
+        rb.velocity = Vector2.zero;
     }
 
     /// 持续蓄力
@@ -203,19 +206,22 @@ public class PlayerController : MonoBehaviour
         {
             currentChargeTime = maxChargeTime;
         }
+
+        // 蓄力期间持续停住，不让移动
+        rb.velocity = Vector2.zero;
     }
 
     /// 释放弹射
     void ReleaseRepel()
     {
-        if (!isCharging || currentMagnet == null) return;  // 改成 currentMagnet
+        if (!isCharging || currentMagnet == null) return;  
 
         // 根据蓄力时间计算弹射力度
         float chargePercent = currentChargeTime / maxChargeTime;
         float repelForce = Mathf.Lerp(minRepelForce, maxRepelForce, chargePercent);
 
         // 弹射方向：远离磁铁
-        Vector2 direction = (transform.position - currentMagnet.transform.position).normalized;  // 改成 currentMagnet
+        Vector2 direction = (transform.position - currentMagnet.transform.position).normalized;
 
         // 添加向上的分量，让弹射更自然
         direction = (direction + Vector2.up * 0.5f).normalized;
@@ -245,12 +251,16 @@ public class PlayerController : MonoBehaviour
     void ReleaseAttract()
     {
         if (!isCharging || nearestMagnet == null) return;
-
-        float chargePercent = currentChargeTime / maxChargeTime;
-        float attractForce = Mathf.Lerp(minAttractForce, maxAttractForce, chargePercent);
-
-        isAttracting = true;
-        StartCoroutine(AttractCoroutine(attractForce));
+    
+    // 根据蓄力时间计算吸附力度
+    float chargePercent = currentChargeTime / maxChargeTime;
+    float attractForce = Mathf.Lerp(minAttractForce, maxAttractForce, chargePercent);
+    
+    // 计算方向：指向磁铁
+    Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
+    
+    // 瞬间吸附！像弹射一样
+    StartCoroutine(LaunchCoroutine(direction * attractForce));
     }
 
     /// 吸附协程
@@ -274,12 +284,15 @@ public class PlayerController : MonoBehaviour
 
         isAttracting = false;
     }
+
+
     /// 取消蓄力
     void CancelCharging()
     {
         isCharging = false;
         currentChargeTime = 0;
     }
+
 
     /// 处理移动输入
     void HandleMovementInput()

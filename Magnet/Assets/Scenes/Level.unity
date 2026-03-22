@@ -808,11 +808,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3606648634951495956, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3606648634951495956, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6214359764017274233, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
       propertyPath: m_LocalPosition.x
@@ -859,6 +859,10 @@ PrefabInstance:
       value: South
       objectReference: {fileID: 0}
     - target: {fileID: 8204846506616252336, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
+      propertyPath: m_Radius
+      value: 2.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204846506616252336, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -869,8 +873,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8022481367788899451, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1467565942}
   m_SourcePrefab: {fileID: 100100000, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
+--- !u!1 &1467565936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8022481367788899451, guid: ad17577884d34e640aed5f513e4ce977, type: 3}
+  m_PrefabInstance: {fileID: 1365230947}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &1467565942
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467565936}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0051631927, y: 0.99649596}
+  m_Size: {x: 1.4646873, y: 2.992992}
+  m_Direction: 0
 --- !u!1 &1855000205
 GameObject:
   m_ObjectHideFlags: 3
@@ -972,12 +1019,20 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: repelForce
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: cameraApply
       value: 
       objectReference: {fileID: 104983645}
     - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: currentPole
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: attractForce
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: magneticForce
@@ -1000,8 +1055,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: maxAttractForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: minAttractForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: continuousMagneticForce
-      value: 15
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335077101856112253, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6335077101856112253, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: m_Constraints
@@ -1066,7 +1133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7820949131376365421, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.91
+      value: 7.085
       objectReference: {fileID: 0}
     - target: {fileID: 7820949131376365421, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       propertyPath: m_LocalPosition.y
