@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public enum MagneticPole { North, South }       // 磁极枚举
     public MagneticPole currentPole = MagneticPole.North;  // 当前玩家磁极
 
+    public bool canMove = true;
+
     [Header("持续磁力设置")]
     public float attractForce = 15f;      // 吸附时的持续拉力
     public float repelForce = 8f;         // 排斥时的持续推力
@@ -71,7 +73,10 @@ public class PlayerController : MonoBehaviour
         if (isLaunching) return;
         if (isCharging)return;
         // 应用移动
-        ApplyMovement();
+        if (canMove)
+        {
+            ApplyMovement();
+        }
 
         // 应用持续的磁力（在Collider范围内时）
         ApplyContinuousMagneticForce();
@@ -129,6 +134,7 @@ public class PlayerController : MonoBehaviour
     /// 应用持续的磁力（只在Collider范围内生效）
     void ApplyContinuousMagneticForce()
     {
+        if (!canMove) return;
         if (currentMagnet == null) return;
 
         // 判断是相吸还是相斥
@@ -263,28 +269,6 @@ public class PlayerController : MonoBehaviour
     StartCoroutine(LaunchCoroutine(direction * attractForce));
     }
 
-    /// 吸附协程
-    IEnumerator AttractCoroutine(float force)
-    {
-        float elapsedTime = 0f;
-        float attractDuration = 1f;
-
-        while (isAttracting && nearestMagnet != null && elapsedTime < attractDuration)
-        {
-            Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
-            rb.AddForce(direction * force * Time.deltaTime, ForceMode2D.Force);
-
-            elapsedTime += Time.deltaTime;
-
-            if (Vector2.Distance(transform.position, nearestMagnet.transform.position) < 0.5f)
-                break;
-
-            yield return null;
-        }
-
-        isAttracting = false;
-    }
-
 
     /// 取消蓄力
     void CancelCharging()
@@ -328,6 +312,12 @@ public class PlayerController : MonoBehaviour
         rb.velocity = velocity;
     }
 
+
+    /// 可动
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
+    }
     /// 切换磁极
     void SwitchPole()
     {
