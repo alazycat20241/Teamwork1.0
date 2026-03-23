@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttracting;                       // 是否正在吸附中
 
+    [Header("相机效果")]
+    public Pullaway cameraZoom;
+
     // 组件引用
     private Rigidbody2D rb;
     private Magnet currentMagnet;                     // 当前在Collider范围内的磁铁
@@ -131,28 +134,41 @@ public class PlayerController : MonoBehaviour
         distanceToNearest = closestDist;
     }
 
-    /// 应用持续的磁力（只在Collider范围内生效）
+    /// 应用磁力（在Collider范围内生效）
     void ApplyContinuousMagneticForce()
     {
         if (!canMove) return;
         if (currentMagnet == null) return;
 
-        // 判断是相吸还是相斥
+        // 判断相吸相斥
         bool isAttract = (currentPole == MagneticPole.North && currentMagnet.pole == MagneticPole.South) ||
                          (currentPole == MagneticPole.South && currentMagnet.pole == MagneticPole.North);
 
         // 计算方向（从玩家指向磁铁）
         Vector2 direction = (currentMagnet.transform.position - transform.position).normalized;
 
+        // 计算距离（实时）
+        float distance = Vector2.Distance(transform.position, currentMagnet.transform.position);
+
+        // 根据距离计算力度系数（距离越近系数越大）
+        // 假设 Collider 范围是 3f，距离越近系数从 0.2 到 1
+        float distanceFactor = 1 - Mathf.Clamp01(distance / 3f);  // 距离0时=1，距离3时=0
+
+        // 最小力度保证即使在边缘也有微弱影响
+        distanceFactor = Mathf.Lerp(0.3f, 1f, distanceFactor);
+
+        float finalForce = isAttract ? attractForce : repelForce;
+        finalForce *= distanceFactor;
+
         if (isAttract)
         {
-            // 相吸：持续被拉向磁铁
-            rb.AddForce(direction * attractForce, ForceMode2D.Force);
+            // 相吸：距离越近拉力越大
+            rb.AddForce(direction * finalForce, ForceMode2D.Force);
         }
         else
         {
-            // 相斥：持续被推开
-            rb.AddForce(-direction * repelForce, ForceMode2D.Force);
+            // 相斥：距离越近推力越大
+            rb.AddForce(-direction * finalForce, ForceMode2D.Force);
         }
     }
 
@@ -212,7 +228,10 @@ public class PlayerController : MonoBehaviour
         {
             currentChargeTime = maxChargeTime;
         }
-
+        //镜头拉远
+        //先计算蓄力百分比
+        float chargePercent = currentChargeTime / maxChargeTime;
+        cameraZoom.UpdateCharge(chargePercent);
         // 蓄力期间持续停住，不让移动
         rb.velocity = Vector2.zero;
     }
@@ -233,7 +252,8 @@ public class PlayerController : MonoBehaviour
         direction = (direction + Vector2.up * 0.5f).normalized;
 
         StartCoroutine(LaunchCoroutine(direction * repelForce));
-
+        //镜头恢复
+        cameraZoom.ResetZoom();
         // 重置蓄力状态
         CancelCharging();
     }

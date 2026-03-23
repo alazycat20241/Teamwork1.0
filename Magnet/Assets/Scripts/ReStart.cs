@@ -1,68 +1,68 @@
+ï»¿using Cinemachine;
 using UnityEngine;
 
-// ¹ÒÔØÔÚ JIANCI ÎïÌåÉÏµÄ´¥·¢½Å±¾
+// æŒ‚è½½åœ¨ JIANCI ç‰©ä½“ä¸Šçš„è§¦å‘è„šæœ¬
 public class JianciTrigger : MonoBehaviour
 {
-    // ÔÚInspectorÃæ°åÖĞ¸³ÖµµÄÒıÓÃ
-    [Header("ºËĞÄÒıÓÃ")]
-    [Tooltip("Íæ¼Ò¶ÔÏó£¨PLAYER£©")]
+    // åœ¨Inspectoré¢æ¿ä¸­èµ‹å€¼çš„å¼•ç”¨
+    [Header("æ ¸å¿ƒå¼•ç”¨")]
+    [Tooltip("ç©å®¶å¯¹è±¡ï¼ˆPLAYERï¼‰")]
     public GameObject player;          
-    [Tooltip("´«ËÍÄ¿±êÎ»ÖÃ£¨STARTPLACE£©")]
+    [Tooltip("ä¼ é€ç›®æ ‡ä½ç½®ï¼ˆSTARTPLACEï¼‰")]
     public Transform startPlace;
-
+    [Header("æŠ–åŠ¨è®¾ç½®")]
+    public float force;
+    private CinemachineImpulseSource ImpulseSource;
     /*
-    [Header("¶¯»­ÉèÖÃ")]
+    [Header("åŠ¨ç”»è®¾ç½®")]
     public Animator PlayerAnimator;
-    [Tooltip("ÊÇ·ñ²¥·ÅÍê¶¯»­ÔÙ´«ËÍ")]
+    [Tooltip("æ˜¯å¦æ’­æ”¾å®ŒåŠ¨ç”»å†ä¼ é€")]
     public bool teleportAfterAnimation =false;
-    [Tooltip("¶¯»­²¥·ÅÑÓ³Ù£¨Ãë£©")]
+    [Tooltip("åŠ¨ç”»æ’­æ”¾å»¶è¿Ÿï¼ˆç§’ï¼‰")]
     public float animationDelay = 0f;
     */
- 
-    // 2D´¥·¢Åö×²½øÈëÊÂ¼ş
+    private void Start()
+    {
+        ImpulseSource = GetComponent<CinemachineImpulseSource>();
+        // é…ç½®æŠ–åŠ¨å‚æ•°
+        ImpulseSource.m_ImpulseDefinition.m_AmplitudeGain = force;//å¼ºåº¦
+    }
+    // 2Dè§¦å‘ç¢°æ’è¿›å…¥äº‹ä»¶
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("111");
-
-        // Ö´ĞĞºËĞÄÂß¼­
+        ImpulseSource.GenerateImpulse();
+        // æ‰§è¡Œæ ¸å¿ƒé€»è¾‘
         ExecuteTriggerLogic();
     }
 
-    // Ö´ĞĞ´¥·¢Âß¼­
+    // æ‰§è¡Œè§¦å‘é€»è¾‘
     private void ExecuteTriggerLogic()
     {
         /*
-        // 1. ²¥·ÅÖ¸¶¨¶¯»­
+        // 1. æ’­æ”¾æŒ‡å®šåŠ¨ç”»
         if (PlayerAnimator != null)
         {
             PlayerAnimator.SetTrigger("ReStart");
         }
 
-        // 2. ´¦Àí´«ËÍÂß¼­
+        // 2. å¤„ç†ä¼ é€é€»è¾‘
         if (teleportAfterAnimation)
         {
-            // ÑÓ³Ù´«ËÍ£¨µÈ´ı¶¯»­²¥·Å£©
+            // å»¶è¿Ÿä¼ é€ï¼ˆç­‰å¾…åŠ¨ç”»æ’­æ”¾ï¼‰
             Invoke(nameof(TeleportPlayer), animationDelay);
         }
         else
         {
         */
-        // Á¢¼´´«ËÍ
-        Debug.Log("222");
+        // ç«‹å³ä¼ é€
         TeleportPlayer();
        // }
     }
 
-    // ´«ËÍÍæ¼Òµ½Ö¸¶¨Î»ÖÃ
+    // ä¼ é€ç©å®¶åˆ°æŒ‡å®šä½ç½®
     private void TeleportPlayer()
     {
-            // ÖØÖÃÍæ¼ÒÎ»ÖÃ£¨±£ÁôĞı×ª£©
+            // é‡ç½®ç©å®¶ä½ç½®ï¼ˆä¿ç•™æ—‹è½¬ï¼‰
             player.transform.position = startPlace.transform.position;
-
-            Debug.Log("Íæ¼ÒÒÑ´«ËÍµ½ÆğÊ¼Î»ÖÃ£¡");
     }
-
-
-
-   
 }
