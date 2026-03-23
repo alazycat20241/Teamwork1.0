@@ -16,7 +16,7 @@ public class ShakeCollision : MonoBehaviour
         ImpulseSource = GetComponent<CinemachineImpulseSource>();
         if (ImpulseSource == null)
         {
-            ImpulseSource=gameObject.AddComponent<CinemachineImpulseSource>();
+            ImpulseSource = gameObject.AddComponent<CinemachineImpulseSource>();
         }
 
         // 配置抖动参数
@@ -31,10 +31,13 @@ public class ShakeCollision : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player == null || parentMagnet == null) return;
 
+        // 如果玩家已经站在磁铁上，不触发抖动
+        if (player.isOnMagnet) return;
+
         // 检查是否互相吸引（不同磁极）
         bool isAttracting = player.currentPole != parentMagnet.pole;
 
-        // 只有互相吸引时才触发抖动
+        // 只有互相吸引且未附着时才触发抖动
         if (isAttracting)
         {
             ImpulseSource.GenerateImpulse();

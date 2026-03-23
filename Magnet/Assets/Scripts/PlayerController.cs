@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttracting;                       // 是否正在吸附中
 
-    private bool isOnMagnet = false;        // 是否站在磁铁上
+    public bool isOnMagnet = false;        // 是否站在磁铁上
     private Magnet currentMagnetGround;     // 当前站立的磁铁
     private Vector2 attachOffset;           // 相对于磁铁的位置偏移
 
