@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5283894509777405633}
   - component: {fileID: 4900256082460866210}
   - component: {fileID: 6335077101856112253}
-  - component: {fileID: 8481161192957077721}
+  - component: {fileID: 8471972529763053919}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.863189, y: -0.15432899, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.26, y: 0.26, z: 0.26}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,10 +101,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   currentPole: 1
-  magneticForce: 300
-  maxRepelCharge: 2
-  maxRepelForce: 80
-  minRepelForce: 8
+  canMove: 1
+  attractForce: 350
+  repelForce: 50
+  chargeRange: 5
+  maxChargeTime: 3
+  maxRepelForce: 20
+  minRepelForce: 15
+  maxAttractForce: 20
+  minAttractForce: 10
+  cameraZoom: {fileID: 0}
 --- !u!50 &6335077101856112253
 Rigidbody2D:
   serializedVersion: 4
@@ -118,7 +124,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.5
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -132,8 +138,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &8481161192957077721
-BoxCollider2D:
+--- !u!58 &8471972529763053919
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -165,15 +171,5 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.49999997

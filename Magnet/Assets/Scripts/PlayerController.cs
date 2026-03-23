@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
     public enum MagneticPole { North, South }       // 磁极枚举
     public MagneticPole currentPole = MagneticPole.North;  // 当前玩家磁极
 
-    public bool canMove = true;
-
     [Header("持续磁力设置")]
     public float attractForce = 15f;      // 吸附时的持续拉力
     public float repelForce = 8f;         // 排斥时的持续推力
@@ -27,6 +25,10 @@ public class PlayerController : MonoBehaviour
     public float minAttractForce = 5f;               // 最小吸附力度
 
     private bool isAttracting;                       // 是否正在吸附中
+
+    private bool isOnMagnet = false;        // 是否站在磁铁上
+    private Magnet currentMagnetGround;     // 当前站立的磁铁
+    private Vector2 attachOffset;           // 相对于磁铁的位置偏移
 
     [Header("相机效果")]
     public Pullaway cameraZoom;
@@ -62,26 +64,42 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             SwitchPole();
+            // 如果在磁铁上且切换后变排斥，就脱离
+            if (isOnMagnet && currentMagnetGround != null)
+            {
+                bool isNowAttract = (currentPole == MagneticPole.North && currentMagnetGround.pole == MagneticPole.South) ||
+                                    (currentPole == MagneticPole.South && currentMagnetGround.pole == MagneticPole.North);
+                if (!isNowAttract)
+                {
+                    DetachFromMagnet();
+                }
+            }
         }
 
-        // 更新最近的磁铁（用于蓄力）
-        UpdateNearestMagnet();
-
-        // 处理蓄力弹射系统
-        HandleChargeSystem();
+        if (!isOnMagnet)
+        {
+            // 更新最近的磁铁（用于蓄力）
+            UpdateNearestMagnet();
+            // 处理蓄力弹射系统
+            HandleChargeSystem();
+        }
     }
 
     void FixedUpdate()
     {
-        if (isLaunching) return;
-        if (isCharging)return;
-        // 应用移动
-        if (canMove)
+        if (isLaunching||isCharging) return;
+
+        // 如在磁铁上，只维持位置，不应用移动和磁力
+        if (isOnMagnet)
         {
-            ApplyMovement();
+            ApplyMagnetMovement();
+            MaintainAttachPosition();
+            return;
         }
 
-        // 应用持续的磁力（在Collider范围内时）
+        // 应用移动
+        ApplyMovement();
+        // 应用持续的磁力
         ApplyContinuousMagneticForce();
 
         //吸附过程中的拉力
@@ -134,41 +152,45 @@ public class PlayerController : MonoBehaviour
         distanceToNearest = closestDist;
     }
 
-    /// 应用磁力（在Collider范围内生效）
+    /// 应用磁力
     void ApplyContinuousMagneticForce()
     {
-        if (!canMove) return;
         if (currentMagnet == null) return;
 
         // 判断相吸相斥
         bool isAttract = (currentPole == MagneticPole.North && currentMagnet.pole == MagneticPole.South) ||
                          (currentPole == MagneticPole.South && currentMagnet.pole == MagneticPole.North);
 
-        // 计算方向（从玩家指向磁铁）
-        Vector2 direction = (currentMagnet.transform.position - transform.position).normalized;
-
-        // 计算距离（实时）
-        float distance = Vector2.Distance(transform.position, currentMagnet.transform.position);
-
-        // 根据距离计算力度系数（距离越近系数越大）
-        // 假设 Collider 范围是 3f，距离越近系数从 0.2 到 1
-        float distanceFactor = 1 - Mathf.Clamp01(distance / 3f);  // 距离0时=1，距离3时=0
-
-        // 最小力度保证即使在边缘也有微弱影响
-        distanceFactor = Mathf.Lerp(0.3f, 1f, distanceFactor);
-
-        float finalForce = isAttract ? attractForce : repelForce;
-        finalForce *= distanceFactor;
-
-        if (isAttract)
+        // 如排斥，不进入附着状态
+        if (!isAttract)
         {
-            // 相吸：距离越近拉力越大
-            rb.AddForce(direction * finalForce, ForceMode2D.Force);
+            if (isOnMagnet) DetachFromMagnet();
+
+            // 排斥逻辑
+            Vector2 direction = (currentMagnet.transform.position - transform.position).normalized;
+            float distance = Vector2.Distance(transform.position, currentMagnet.transform.position);
+            float distanceFactor = 1 - Mathf.Clamp01(distance / 3f);
+            distanceFactor = Mathf.Lerp(0.3f, 1f, distanceFactor);
+            rb.AddForce(-direction * repelForce * distanceFactor, ForceMode2D.Force);
+            return;
+        }
+
+        // 相吸逻辑
+        float distanceToMagnet = Vector2.Distance(transform.position, currentMagnet.transform.position);
+        float attachDistance = 0.5f;
+
+        if (!isOnMagnet && distanceToMagnet <= attachDistance)
+        {
+            // 足够近，附着到磁铁
+            AttachToMagnet(currentMagnet);
         }
         else
         {
-            // 相斥：距离越近推力越大
-            rb.AddForce(-direction * finalForce, ForceMode2D.Force);
+            // 还没到附着距离，施加拉力
+            Vector2 direction = (currentMagnet.transform.position - transform.position).normalized;
+            float distanceFactor = 1 - Mathf.Clamp01(distanceToMagnet / 3f);
+            distanceFactor = Mathf.Lerp(0.3f, 1f, distanceFactor);
+            rb.AddForce(direction * attractForce * distanceFactor, ForceMode2D.Force);
         }
     }
 
@@ -327,17 +349,111 @@ public class PlayerController : MonoBehaviour
     /// 应用水平移动
     void ApplyMovement()
     {
-        Vector2 velocity = rb.velocity;
-        velocity.x = horizontalMove * moveSpeed;
-        rb.velocity = velocity;
+        if (!isOnMagnet)
+        {
+            Vector2 velocity = rb.velocity;
+            velocity.x = horizontalMove * moveSpeed;
+            rb.velocity = velocity;
+        }
     }
 
-
-    /// 可动
-    public void SetCanMove(bool canMove)
+    void AttachToMagnet(Magnet magnet)
     {
-        this.canMove = canMove;
+        isOnMagnet = true;
+        currentMagnetGround = magnet;
+
+        // 计算相对于磁铁的局部坐标（会随磁铁旋转/移动）
+        attachOffset = magnet.transform.InverseTransformPoint(transform.position);
+
+        // 禁用物理影响
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;  // 变成运动学刚体，完全由代码控制位置
+
+        // 如果是荡绳磁铁，触发摆动
+        SwingMagnet swing = magnet.GetComponent<SwingMagnet>();
+        if (swing != null)
+        {
+            swing.AttachPlayer(this);
+        }
     }
+
+    void DetachFromMagnet()
+    {
+        if (!isOnMagnet) return;
+
+        // 让荡绳磁铁停止接收玩家输入
+        if (currentMagnetGround != null)
+        {
+            SwingMagnet swing = currentMagnetGround.GetComponent<SwingMagnet>();
+            if (swing != null)
+            {
+                swing.DetachPlayer();
+            }
+        }
+
+        isOnMagnet = false;
+        rb.isKinematic = false;
+        rb.gravityScale = 1;
+        currentMagnetGround = null;
+    }
+
+    void MaintainAttachPosition()
+    {
+        if (currentMagnetGround == null) return;
+
+        // 使用局部坐标转世界坐标，自动跟随磁铁的移动和旋转
+        Vector2 targetPosition = currentMagnetGround.transform.TransformPoint(attachOffset);
+        rb.MovePosition(targetPosition);
+
+        // 保持速度为0
+        rb.velocity = Vector2.zero;
+    }
+    void ApplyMagnetMovement()
+    {
+        if (currentMagnetGround == null) return;
+
+        // 获取磁铁半长
+        float halfLength = GetSurfaceHalfLength();
+        float localX = attachOffset.x;
+        float edgeDistance = halfLength - Mathf.Abs(localX);
+
+        // 计算速度系数（边缘减速）
+        float speedMultiplier = 1f;
+        float edgeStart = halfLength * 0.7f;
+
+        if (edgeDistance < edgeStart && horizontalMove != 0)
+        {
+            float t = 1f - (edgeDistance / edgeStart);
+            speedMultiplier = Mathf.Lerp(1f, 0.2f, t);
+        }
+
+        // 移动
+        float actualSpeed = moveSpeed * speedMultiplier;
+        attachOffset.x += horizontalMove * actualSpeed * Time.fixedDeltaTime;
+
+        // 限制在磁铁范围内
+        attachOffset.x = Mathf.Clamp(attachOffset.x, -halfLength, halfLength);
+    }
+
+    float GetSurfaceHalfLength()
+    {
+        Collider2D collider = currentMagnetGround.GetComponent<Collider2D>();
+
+        if (collider is BoxCollider2D box)
+            return box.size.x / 2f;
+        if (collider is CircleCollider2D circle)
+            return circle.radius;
+
+        return 1f;  // 默认
+    }
+
+    // 其他脚本可以获取玩家的移动输入
+    public int GetHorizontalMove()
+    {
+        return horizontalMove;
+    }
+
     /// 切换磁极
     void SwitchPole()
     {
