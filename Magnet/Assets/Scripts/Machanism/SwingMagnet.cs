@@ -46,9 +46,6 @@ public class SwingMagnet : MonoBehaviour
     {
         isPlayerAttached = true;
         player = playerController;
-
-        // 可选：让磁铁稍微变重一点
-        rb.mass = 1f;
     }
 
     public void DetachPlayer()
