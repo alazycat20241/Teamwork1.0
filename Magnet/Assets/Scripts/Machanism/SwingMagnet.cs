@@ -25,20 +25,16 @@ public class SwingMagnet : MonoBehaviour
     {
         if (!isPlayerAttached || player == null) return;
 
-        // 获取玩家的移动方向
         float moveInput = player.GetHorizontalMove();
 
         if (moveInput != 0)
         {
-            // 给磁铁一个水平方向的力
-            Vector2 force = new Vector2(moveInput * pushForce, 0);
-            rb.AddForce(force, ForceMode2D.Force);
+            // 给角速度，而不是线速度
+            float torque = -moveInput * pushForce;  // 负号根据悬挂点位置调整
+            rb.AddTorque(torque, ForceMode2D.Force);
 
-            // 限制最大速度，避免飞得太远
-            rb.velocity = new Vector2(
-                Mathf.Clamp(rb.velocity.x, -maxSwingSpeed, maxSwingSpeed),
-                rb.velocity.y
-            );
+            // 限制角速度
+            rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -maxSwingSpeed, maxSwingSpeed);
         }
     }
 

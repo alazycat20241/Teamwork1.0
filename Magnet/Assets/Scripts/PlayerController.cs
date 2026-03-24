@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class PlayerController : MonoBehaviour
     [Header("相机效果")]
     public Pullaway cameraZoom;
 
+    //角色动画切换
+    private Animator animator;
+    private SpriteRenderer sprite;
+
     // 组件引用
     private Rigidbody2D rb;
     private Magnet currentMagnet;                     // 当前在Collider范围内的磁铁
@@ -51,10 +56,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        //动画
+        UpdateAnimationParameters();
+        UpdateFacingDirection();
         if (isLaunching) return;  // 弹射中不能操作
 
         // 处理移动输入
@@ -458,5 +468,22 @@ public class PlayerController : MonoBehaviour
     void SwitchPole()
     {
         currentPole = (currentPole == MagneticPole.North) ? MagneticPole.South : MagneticPole.North;
+    }
+
+    //动画
+    void UpdateAnimationParameters()
+    {
+        // 水平移动速度（取绝对值）
+        float horizontalSpeed = Mathf.Abs(rb.velocity.x);
+        animator.SetFloat("Speed", horizontalSpeed);
+    }
+    //转向
+    void UpdateFacingDirection()
+    {
+        if (horizontalMove != 0)
+        {
+            // horizontalMove = -1 向左，1 向右
+            sprite.flipX = horizontalMove < 0;
+        }
     }
 }
