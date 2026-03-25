@@ -342,13 +342,10 @@ public class PlayerController : MonoBehaviour
         isLaunching = true;
 
         // 清除原有速度，应用弹射力
-        rb.velocity = Vector2.zero;
+        //rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
 
         yield return null;
-        //// 等待弹射完成
-        //float waitTime = Mathf.Clamp(force.magnitude / 50f, 0.2f, 0.8f);
-        //yield return new WaitForSeconds(waitTime);
 
         isLaunching = false;
     }
