@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768863376069387485}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.12374863, y: 4.949949, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 4.949949, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,7 +76,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.12374895, y: -0.23552841}
+  m_ConnectedAnchor: {x: 0, y: -0.23552576}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -161,7 +161,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: -0.14303564, y: 0.013545773}
-  m_ConnectedAnchor: {x: 3.4913805, y: 1.0858241}
+  m_ConnectedAnchor: {x: 8.06138, y: 13.115825}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -310,6 +310,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2425427689366823978, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
+      propertyPath: m_Size.x
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425427689366823978, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
+      propertyPath: m_Size.y
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425427689366823978, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0344731
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157755550863737862, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.007
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157755550863737862, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.03
+      objectReference: {fileID: 0}
     - target: {fileID: 3324340605459830141, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       propertyPath: force
       value: 0.01
@@ -356,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7820949131376365421, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.07374992
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7820949131376365421, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       propertyPath: m_LocalPosition.y
@@ -436,9 +456,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7695606648663452377, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7113894886973363842}
-    - targetCorrespondingSourceObject: {fileID: 7695606648663452377, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5793312157662968164}
   m_SourcePrefab: {fileID: 100100000, guid: 220a257f0b2cae645b16a8f1c2e68963, type: 3}
 --- !u!4 &8226534957585733452 stripped
 Transform:
@@ -462,10 +479,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 40
+  m_Mass: 20
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1.5
+  m_GravityScale: 6
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -486,7 +503,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8390024962753540856}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 5779543774462463014}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -497,22 +514,8 @@ HingeJoint2D:
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
+    m_MaximumMotorForce: 10
   m_UseLimits: 0
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: -180
---- !u!114 &5793312157662968164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390024962753540856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b01c4d2214409d4c9730cb8f7e9aa7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 20
-  maxSwingSpeed: 4

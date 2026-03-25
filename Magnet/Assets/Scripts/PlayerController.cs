@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
     Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
     
     // 瞬间吸附！像弹射一样
-    StartCoroutine(LaunchCoroutine(direction * attractForce));
+    StartCoroutine(SmoothAttractCoroutine(nearestMagnet, attractForce));
     }
 
 
@@ -377,10 +377,9 @@ public class PlayerController : MonoBehaviour
         attachOffset = magnet.transform.InverseTransformPoint(transform.position);
 
         // 禁用物理影响
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
-        rb.isKinematic = true;  // 变成运动学刚体，完全由代码控制位置
-
+        //rb.gravityScale = 0;
+        //rb.velocity = Vector2.zero;
+        //rb.isKinematic = true;  // 变成运动学刚体，完全由代码控制位置
         // 如果是荡绳磁铁，触发摆动
         SwingMagnet swing = magnet.GetComponent<SwingMagnet>();
         if (swing != null)
@@ -404,8 +403,8 @@ public class PlayerController : MonoBehaviour
         }
 
         isOnMagnet = false;
-        rb.isKinematic = false;
-        rb.gravityScale = 1;
+        //rb.isKinematic = false;
+        //rb.gravityScale = 5;
         currentMagnetGround = null;
     }
 
@@ -486,5 +485,44 @@ public class PlayerController : MonoBehaviour
             // horizontalMove = -1 向左，1 向右
             sprite.flipX = horizontalMove < 0;
         }
+    }
+
+    IEnumerator SmoothAttractCoroutine(Magnet targetMagnet, float force)
+    {
+        isLaunching = true;  // 禁用操作
+        isAttracting = true;
+
+        Vector2 startPos = transform.position;
+        Vector2 targetPos = targetMagnet.transform.position;
+        float distance = Vector2.Distance(startPos, targetPos);
+
+        // 根据距离和力度计算吸附时间（力度越大越快）
+        float attractTime = Mathf.Clamp(distance / force, 0.1f, 0.5f);
+        float elapsedTime = 0f;
+
+        while (elapsedTime < attractTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / attractTime;
+
+            // 缓动：先快后慢，更自然
+            t = 1 - Mathf.Pow(1 - t, 2);
+
+            // 平滑移动
+            rb.MovePosition(Vector2.Lerp(startPos, targetPos, t));
+            rb.velocity = Vector2.zero;  // 保持速度为零，避免碰撞
+
+            yield return null;
+        }
+
+        // 确保到达精确位置
+        rb.MovePosition(targetPos);
+        rb.velocity = Vector2.zero;
+
+        // 吸附完成，附着到磁铁
+        AttachToMagnet(targetMagnet);
+
+        isLaunching = false;
+        isAttracting = false;
     }
 }
