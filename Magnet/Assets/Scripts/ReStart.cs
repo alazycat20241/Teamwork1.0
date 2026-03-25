@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // 挂载在 JIANCI 物体上的触发脚本
-public class JianciTrigger : MonoBehaviour
+public class ReStart : MonoBehaviour
 {
     // 在Inspector面板中赋值的引用
     [Header("核心引用")]
