@@ -18,8 +18,14 @@ public class PlayerController : MonoBehaviour
     [Header("蓄力弹射设置")]
     public float chargeRange = 5f;                   // 蓄力触发范围
     public float maxChargeTime = 2f;                 // 最大蓄力时间（秒）
-    public float maxRepelForce = 30f;                // 最大弹射力度
-    public float minRepelForce = 8f;                 // 最小弹射力度
+
+    [Header("水平弹射力度")]
+    public float minHorizontalRepelForce = 10f;      // 水平最小弹射力度
+    public float maxHorizontalRepelForce = 50f;      // 水平最大弹射力度
+
+    [Header("垂直弹射力度")]
+    public float minVerticalRepelForce = 8f;         // 垂直最小弹射力度
+    public float maxVerticalRepelForce = 30f;        // 垂直最大弹射力度
 
     [Header("吸附蓄力设置")]
     public float maxAttractForce = 25f;              // 最大吸附力度
@@ -30,6 +36,11 @@ public class PlayerController : MonoBehaviour
     public bool isOnMagnet = false;        // 是否站在磁铁上
     private Magnet currentMagnetGround;     // 当前站立的磁铁
     private Vector2 attachOffset;           // 相对于磁铁的位置偏移
+
+    [Header("落地设置")]
+    public float groundCheckDistance = 0.3f;     // 地面检测距离
+    public LayerMask groundLayer;                // 地面层（需要在Inspector中设置）
+    private bool wasGrounded;                    // 上一帧是否在地面
 
     [Header("相机效果")]
     public Pullaway cameraZoom;
@@ -62,9 +73,24 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //动画
-        UpdateAnimationParameters();
+        // 落地检测（放在最前面）
+        bool isGrounded = IsGrounded();
+        Debug.Log(isGrounded);
+        // 检测落地事件（从空中到地面）
+        if (!wasGrounded && isGrounded && !isOnMagnet&&!isLaunching)
+        {
+            // 触发落地动画
+            animator.SetTrigger("Land");
+            Debug.Log("??");
+        }
+
+        // 更新上一帧状态
+        wasGrounded = isGrounded;
+
+        // 动画参数更新
+        UpdateAnimationParameters(isGrounded);  
         UpdateFacingDirection();
+
         if (isLaunching) return;  // 弹射中不能操作
 
         // 处理移动输入
@@ -119,6 +145,13 @@ public class PlayerController : MonoBehaviour
             Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
             rb.AddForce(direction * maxAttractForce, ForceMode2D.Force);
         }
+    }
+
+    /// 检测是否在地面
+    bool IsGrounded()
+    {
+        // 从角色脚下向下发射
+        return Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer); ;
     }
 
     /// 进入磁铁范围
@@ -276,15 +309,27 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Realse");
         // 根据蓄力时间计算弹射力度
         float chargePercent = currentChargeTime / maxChargeTime;
-        float repelForce = Mathf.Lerp(minRepelForce, maxRepelForce, chargePercent);
-
-        // 弹射方向：远离磁铁
+        // 计算方向：远离磁铁
         Vector2 direction = (transform.position - currentMagnet.transform.position).normalized;
 
-        // 添加向上的分量，让弹射更自然
-        direction = (direction + Vector2.up * 0.5f).normalized;
+        // 根据方向分别计算力度
+        float repelForce;
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            // 水平方向为主（左右弹射）
+            repelForce = Mathf.Lerp(minHorizontalRepelForce, maxHorizontalRepelForce, chargePercent);
+        }
+        else
+        {
+            // 垂直方向为主（上下弹射）
+            repelForce = Mathf.Lerp(minVerticalRepelForce, maxVerticalRepelForce, chargePercent);
+        }
 
-        StartCoroutine(LaunchCoroutine(direction * repelForce));
+        // 弹射方向：远离磁铁
+        Vector2 finalForce = direction * repelForce;
+
+        StartCoroutine(LaunchCoroutine(finalForce));
+
         //镜头恢复
         cameraZoom.ResetZoom();
         // 重置蓄力状态
@@ -300,9 +345,10 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
 
-        // 等待弹射完成
-        float waitTime = Mathf.Clamp(force.magnitude / 50f, 0.2f, 0.8f);
-        yield return new WaitForSeconds(waitTime);
+        yield return null;
+        //// 等待弹射完成
+        //float waitTime = Mathf.Clamp(force.magnitude / 50f, 0.2f, 0.8f);
+        //yield return new WaitForSeconds(waitTime);
 
         isLaunching = false;
     }
@@ -318,7 +364,7 @@ public class PlayerController : MonoBehaviour
     // 计算方向：指向磁铁
     Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
     
-    // 瞬间吸附！像弹射一样
+    // 吸附 像弹射
     StartCoroutine(SmoothAttractCoroutine(nearestMagnet, attractForce));
     }
 
@@ -328,6 +374,12 @@ public class PlayerController : MonoBehaviour
     {
         isCharging = false;
         currentChargeTime = 0;
+
+        // 恢复相机视角
+        if (cameraZoom != null)
+        {
+            cameraZoom.ResetZoom();
+        }
     }
 
 
@@ -376,9 +428,6 @@ public class PlayerController : MonoBehaviour
         // 计算相对于磁铁的局部坐标（会随磁铁旋转/移动）
         attachOffset = magnet.transform.InverseTransformPoint(transform.position);
 
-        // 禁用物理影响
-        //rb.gravityScale = 0;
-        //rb.velocity = Vector2.zero;
         //rb.isKinematic = true;  // 变成运动学刚体，完全由代码控制位置
         // 如果是荡绳磁铁，触发摆动
         SwingMagnet swing = magnet.GetComponent<SwingMagnet>();
@@ -388,25 +437,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //松开吸附
     void DetachFromMagnet()
     {
         if (!isOnMagnet) return;
 
-        // 让荡绳磁铁停止接收玩家输入
-        if (currentMagnetGround != null)
-        {
-            SwingMagnet swing = currentMagnetGround.GetComponent<SwingMagnet>();
-            if (swing != null)
-            {
-                swing.DetachPlayer();
-            }
-        }
+        //// 让荡绳磁铁停止接收玩家输入
+        //if (currentMagnetGround != null)
+        //{
+        //    SwingMagnet swing = currentMagnetGround.GetComponent<SwingMagnet>();
+        //    if (swing != null)
+        //    {
+        //        swing.DetachPlayer();
+        //    }
+        //}
 
         isOnMagnet = false;
-        //rb.isKinematic = false;
-        //rb.gravityScale = 5;
         currentMagnetGround = null;
     }
+
+
 
     void MaintainAttachPosition()
     {
@@ -419,6 +469,7 @@ public class PlayerController : MonoBehaviour
         // 保持速度为0
         rb.velocity = Vector2.zero;
     }
+    //控制吸附时候状态
     void ApplyMagnetMovement()
     {
         if (currentMagnetGround == null) return;
@@ -458,12 +509,6 @@ public class PlayerController : MonoBehaviour
         return 1f;  // 默认
     }
 
-    // 其他脚本可以获取玩家的移动输入
-    public int GetHorizontalMove()
-    {
-        return horizontalMove;
-    }
-
     /// 切换磁极
     void SwitchPole()
     {
@@ -471,11 +516,14 @@ public class PlayerController : MonoBehaviour
     }
 
     //动画
-    void UpdateAnimationParameters()
+    void UpdateAnimationParameters(bool isGrounded)
     {
         // 水平移动速度（取绝对值）
         float horizontalSpeed = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("Speed", horizontalSpeed);
+
+        // 是否在地面 可能未来有用吧。
+        animator.SetBool("IsGrounded", isGrounded);
     }
     //转向
     void UpdateFacingDirection()
@@ -487,6 +535,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //吸附时候飞过去操作
     IEnumerator SmoothAttractCoroutine(Magnet targetMagnet, float force)
     {
         isLaunching = true;  // 禁用操作
