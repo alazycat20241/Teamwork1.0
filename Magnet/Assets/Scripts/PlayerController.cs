@@ -71,8 +71,9 @@ public class PlayerController : MonoBehaviour
         HandleMovementInput();
 
         // 处理磁极切换
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.J))
         {
+            animator.SetTrigger("J");
             SwitchPole();
             // 如果在磁铁上且切换后变排斥，就脱离
             if (isOnMagnet && currentMagnetGround != null)
@@ -271,8 +272,8 @@ public class PlayerController : MonoBehaviour
     /// 释放弹射
     void ReleaseRepel()
     {
-        if (!isCharging || currentMagnet == null) return;  
-
+        if (!isCharging || currentMagnet == null) return;
+        animator.SetTrigger("Realse");
         // 根据蓄力时间计算弹射力度
         float chargePercent = currentChargeTime / maxChargeTime;
         float repelForce = Mathf.Lerp(minRepelForce, maxRepelForce, chargePercent);
