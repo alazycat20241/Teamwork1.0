@@ -281,8 +281,6 @@ public class PlayerController : MonoBehaviour
     {
         isCharging = true;
         currentChargeTime = 0;
-        // 停住！清除速度
-        rb.velocity = Vector2.zero;
     }
 
     /// 持续蓄力
@@ -425,7 +423,6 @@ public class PlayerController : MonoBehaviour
         // 计算相对于磁铁的局部坐标（会随磁铁旋转/移动）
         attachOffset = magnet.transform.InverseTransformPoint(transform.position);
 
-        //rb.isKinematic = true;  // 变成运动学刚体，完全由代码控制位置
         // 如果是荡绳磁铁，触发摆动
         SwingMagnet swing = magnet.GetComponent<SwingMagnet>();
         if (swing != null)
@@ -440,14 +437,14 @@ public class PlayerController : MonoBehaviour
         if (!isOnMagnet) return;
 
         //// 让荡绳磁铁停止接收玩家输入
-        //if (currentMagnetGround != null)
-        //{
-        //    SwingMagnet swing = currentMagnetGround.GetComponent<SwingMagnet>();
-        //    if (swing != null)
-        //    {
-        //        swing.DetachPlayer();
-        //    }
-        //}
+        if (currentMagnetGround != null)
+        {
+            SwingMagnet swing = currentMagnetGround.GetComponent<SwingMagnet>();
+            if (swing != null)
+            {
+                swing.DetachPlayer();
+            }
+        }
 
         isOnMagnet = false;
         currentMagnetGround = null;
@@ -471,27 +468,48 @@ public class PlayerController : MonoBehaviour
     {
         if (currentMagnetGround == null) return;
 
-        // 获取磁铁半长
-        float halfLength = GetSurfaceHalfLength();
-        float localX = attachOffset.x;
-        float edgeDistance = halfLength - Mathf.Abs(localX);
-
-        // 计算速度系数（边缘减速）
-        float speedMultiplier = 1f;
-        float edgeStart = halfLength * 0.7f;
-
-        if (edgeDistance < edgeStart && horizontalMove != 0)
+        if (horizontalMove != 0)
         {
-            float t = 1f - (edgeDistance / edgeStart);
-            speedMultiplier = Mathf.Lerp(1f, 0.2f, t);
+            // 1. 获取磁铁当前的右方向（局部X轴在世界中的方向）
+            Vector2 magnetRight = currentMagnetGround.transform.right;
+
+            // 2. 获取屏幕向右的方向（世界X轴正方向）
+            Vector2 worldRight = Vector2.right;
+
+            // 3. 计算玩家输入方向与磁铁右方向的点积，判断是否需要反转
+            //    如果磁铁右方向指向屏幕左边（点积为负），则需要反转输入
+            float alignment = Vector2.Dot(magnetRight, worldRight);
+
+            // 4. 确定实际移动方向
+            int effectiveMove = horizontalMove;
+
+            // 如果磁铁方向与屏幕方向相反，反转控制
+            if (alignment < 0)
+            {
+                effectiveMove = -horizontalMove;
+            }
+
+            // 5. 计算移动距离（局部坐标系下）
+            float halfLength = GetSurfaceHalfLength();
+            float localX = attachOffset.x;
+            float edgeDistance = halfLength - Mathf.Abs(localX);
+
+            // 边缘减速
+            float speedMultiplier = 1f;
+            float edgeStart = halfLength * 0.7f;
+            if (edgeDistance < edgeStart)
+            {
+                float t = 1f - (edgeDistance / edgeStart);
+                speedMultiplier = Mathf.Lerp(1f, 0.2f, t);
+            }
+
+            float actualSpeed = moveSpeed * speedMultiplier;
+            float deltaMove = effectiveMove * actualSpeed * Time.fixedDeltaTime;
+
+            // 6. 更新局部偏移
+            attachOffset.x += deltaMove;
+            attachOffset.x = Mathf.Clamp(attachOffset.x, -halfLength, halfLength);
         }
-
-        // 移动
-        float actualSpeed = moveSpeed * speedMultiplier;
-        attachOffset.x += horizontalMove * actualSpeed * Time.fixedDeltaTime;
-
-        // 限制在磁铁范围内
-        attachOffset.x = Mathf.Clamp(attachOffset.x, -halfLength, halfLength);
     }
 
     float GetSurfaceHalfLength()

@@ -40,7 +40,11 @@ public class ShakeCollision : MonoBehaviour
         // 只有互相吸引且未附着时才触发抖动
         if (isAttracting)
         {
-            ImpulseSource.GenerateImpulse();
+            // 计算方向
+            Vector3 direction = (other.transform.position - transform.position).normalized;
+
+            // 生成带方向的抖动，第二个参数是速度向量
+            ImpulseSource.GenerateImpulseWithVelocity(direction * force);
         }
     }
 }

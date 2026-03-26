@@ -836,6 +836,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: NONONO
+      rect:
+        serializedVersion: 2
+        x: 2338
+        y: 44
+        width: 555
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97cf33743e1d1704d829c52fde7112d6
+      internalID: 692939594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -873,6 +894,7 @@ TextureImporter:
       8: -1561671083
       9: -764609486
       BlueRope: 2079612496
+      NONONO: 692939594
       RedRope: 313511824
       Rope: 845954496
       Rotation: -465617700

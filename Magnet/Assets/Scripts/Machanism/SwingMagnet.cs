@@ -5,52 +5,91 @@ using UnityEngine;
 public class SwingMagnet : MonoBehaviour
 {
     [Header("摆动设置")]
-    public float pushForce;      // 玩家移动时给磁铁的推力
-    public float maxSwingSpeed;
+    public float swingForce = 20f;           // 摆动力量
+    public float maxSwingAngle = 90f;        // 最大摆动角度
+    public float damping = 0.98f;            // 阻尼（越小停得越快）
 
-    private Rigidbody2D rb;
+    [Header("组件引用")]
+    public Rigidbody2D pendulumRod;          // 杆子的 Rigidbody2D
+
+    private PlayerController attachedPlayer;
     private bool isPlayerAttached = false;
-    private PlayerController player;
-    private Magnet magnet;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        magnet = GetComponent<Magnet>();
-    }
-
-    void FixedUpdate()
-    {
-        if (!isPlayerAttached || player == null) return;
-        //HandleKeySwingControl();
-        rb.AddForce(Vector2.down * pushForce, ForceMode2D.Force);
-
-    }
-    void HandleKeySwingControl()
-    {
-        if (Input.GetKey(KeyCode.A))
+        // 获取杆子的 Rigidbody（向上找父物体）
+        if (pendulumRod == null)
         {
-            rb.AddForce(Vector2.left * pushForce, ForceMode2D.Force);
-
+            pendulumRod = GetComponentInParent<Rigidbody2D>();
         }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(Vector2.right * pushForce, ForceMode2D.Force);
-        }
-
-        // 可选：限制最大速度
-        rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSwingSpeed);
     }
 
-    public void AttachPlayer(PlayerController playerController)
+    void Update()
     {
+        if (!isPlayerAttached) return;
+
+        // 获取玩家输入 (A/D 或 左右箭头)
+        float horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (horizontal != 0 && pendulumRod != null)
+        {
+            ApplySwingForce(horizontal);
+        }
+    }
+
+    void ApplySwingForce(float direction)
+    {
+        // 获取当前杆子的角度
+        float currentAngle = pendulumRod.rotation;
+
+        // 归一化到 -180 到 180
+        if (currentAngle > 180) currentAngle -= 360;
+
+        // 检查是否超过最大摆动角度
+        if (Mathf.Abs(currentAngle) >= maxSwingAngle)
+        {
+            // 如果已经达到最大角度且还在往同方向加力，则停止
+            bool isAtMaxAngle = (currentAngle >= maxSwingAngle && direction > 0) ||
+                                (currentAngle <= -maxSwingAngle && direction < 0);
+            if (isAtMaxAngle) return;
+        }
+
+        //直接施加扭矩
+         float torque = swingForce * direction;
+         pendulumRod.AddTorque(torque, ForceMode2D.Force);
+    }
+
+    public void AttachPlayer(PlayerController player)
+    {
+        attachedPlayer = player;
         isPlayerAttached = true;
-        player = playerController;
+
+        // 增加一点质量，让摆动更真实
+        if (pendulumRod != null)
+        {
+            pendulumRod.mass += 0.5f;
+        }
     }
 
     public void DetachPlayer()
     {
         isPlayerAttached = false;
-        player = null;
+        attachedPlayer = null;
+
+        // 恢复质量
+        if (pendulumRod != null)
+        {
+            pendulumRod.mass -= 0.5f;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        // 应用阻尼，让摆动慢慢停止
+        if (pendulumRod != null && damping < 1f && !isPlayerAttached)
+        {
+            pendulumRod.velocity *= damping;
+            pendulumRod.angularVelocity *= damping;
+        }
     }
 }

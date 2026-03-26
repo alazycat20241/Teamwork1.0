@@ -1,56 +1,50 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
-public class RobotAsyncSceneLoad : MonoBehaviour
+public class CutScene : MonoBehaviour
 {
-    // Ä¿±ê³¡¾°µÄBuildË÷Òý
-    public int targetSceneIndex = 1;
-    private AsyncOperation operation;
-    private float timer = 0;
     private bool isLoading = false;
-    //²¥·ÅµÄ¹ý³¡¶¯»­
-    public Animator CutAnimator;
+
+    // æ’­æ”¾çš„è¿‡åœºåŠ¨ç”»
     public Animator RobotAnimator;
 
-    // Êó±êµã»÷RobotÊ±´¥·¢
-    private void OnMouseDown()
+    // å…¬å¼€çš„æŒ‰é’®å¼•ç”¨ï¼ˆå¯åœ¨Inspectorä¸­æ‰‹åŠ¨ç»‘å®šï¼‰
+    public Button targetButton;
+
+    void Start()
     {
-        if (!isLoading)
+        if (targetButton != null)
         {
-            RobotAnimator.SetTrigger("R");
-            isLoading = true;
-            // ¿ªÊ¼Òì²½¼ÓÔØ³¡¾°£¬µ«ÏÈ²»¼¤»î
-            StartCoroutine(LoadSceneAsync());
+            targetButton.onClick.AddListener(OnButtonClick);
         }
     }
 
-    // Òì²½¼ÓÔØ³¡¾°Ð­³Ì
-    IEnumerator LoadSceneAsync()
+    // æŒ‰é’®ç‚¹å‡»æ—¶è§¦å‘
+    public void OnButtonClick()
     {
-        // Òì²½¼ÓÔØ³¡¾°£¬²»×Ô¶¯¼¤»î
-        operation = SceneManager.LoadSceneAsync(targetSceneIndex);
-        operation.allowSceneActivation = false;
-        CutAnimator.SetTrigger("R");
-        yield return operation;
+        if (!isLoading)
+        {
+            // æ’­æ”¾åŠ¨ç”»
+            if (RobotAnimator != null)
+            {
+                RobotAnimator.SetTrigger("R");
+            }
+
+            isLoading = true;
+
+            // å¼‚æ­¥åŠ è½½åœºæ™¯
+            LoadAni.SwitchToScene(1);
+        }
     }
 
-    private void Update()
+    void OnDestroy()
     {
-        // Ö»ÓÐÔÚ¼ÓÔØÖÐ²Å¼ÆÊ±
-        if (isLoading && operation != null)
+        // ç§»é™¤ç›‘å¬å™¨ï¼Œé¿å…å†…å­˜æ³„æ¼
+        if (targetButton != null)
         {
-            // ´òÓ¡¼ÓÔØ½ø¶È£¨0~0.9£¬0.9´ú±í¼ÓÔØÍê³É£©
-            Debug.Log("¼ÓÔØ½ø¶È: " + operation.progress);
-
-            timer += Time.deltaTime;
-            // 1Ãëºó¼¤»î³¡¾°
-            if (timer > 1.5f)
-            {
-                operation.allowSceneActivation = true;
-                isLoading = false;
-                timer = 0;
-            }
+            targetButton.onClick.RemoveListener(OnButtonClick);
         }
     }
 }
