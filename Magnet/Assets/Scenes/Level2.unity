@@ -2908,6 +2908,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
+      propertyPath: startPlace
+      value: 
+      objectReference: {fileID: 1984990697}
+    - target: {fileID: 4900256082460866210, guid: fc4b58fc2344b494a8cdfdb16e3a306c, type: 3}
       propertyPath: chargeRange
       value: 4
       objectReference: {fileID: 0}

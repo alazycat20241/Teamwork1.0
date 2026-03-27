@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.U2D;
 
 public class PlayerController : MonoBehaviour
 {
+    public float wait;
     [Header("移动设置")]
     public float moveSpeed = 8f;                    // 左右移动速度
     public enum MagneticPole { North, South }       // 磁极枚举
@@ -48,6 +50,15 @@ public class PlayerController : MonoBehaviour
     [Header("相机效果")]
     public Pullaway cameraZoom;
 
+
+    [Header("死亡重生设置")]
+    public Transform startPlace;      //重生点
+
+    [Header("抖动设置")]
+    public float force;
+    private CinemachineImpulseSource ImpulseSource;
+
+
     //角色动画切换
     private Animator animator;
     private SpriteRenderer sprite;
@@ -71,6 +82,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        ImpulseSource = GetComponent<CinemachineImpulseSource>();
+        // 配置抖动参数
+        ImpulseSource.m_ImpulseDefinition.m_AmplitudeGain = force;//强度
     }
 
     void Update()
@@ -171,6 +185,12 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Magnet"))
         {
             currentMagnet = other.GetComponent<Magnet>();
+        }
+        else if (other.CompareTag("JIANCI"))
+        { 
+            ImpulseSource.GenerateImpulse();
+            animator.SetTrigger("ReStart");
+            StartCoroutine(DisableAndTeleportAfterDelay());
         }
     }
 
@@ -648,5 +668,14 @@ public class PlayerController : MonoBehaviour
         }
 
         isAttracting = false;
+    }
+
+    IEnumerator DisableAndTeleportAfterDelay()
+    {
+       // 等待 1 秒（不受 Time.timeScale 影响）
+        yield return new WaitForSecondsRealtime(wait);
+
+       transform.position = startPlace.position;
+
     }
 }
