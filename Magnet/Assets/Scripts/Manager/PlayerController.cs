@@ -326,9 +326,8 @@ public class PlayerController : MonoBehaviour
         {
             // 水平弹射 - 直接改坐标
             float distance = Mathf.Lerp(minHorizontalRepelForce, maxHorizontalRepelForce, chargePercent);
-            transform.position += new Vector3(direction.x * distance, 0, 0);
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            rb.AddForce(Vector2.up * 15f, ForceMode2D.Impulse);
+            transform.position += new Vector3(direction.x * distance, 0.5f, 0);
+            //rb.velocity = new Vector2(0, rb.velocity.y);
         }
         else
         {
@@ -601,6 +600,10 @@ public class PlayerController : MonoBehaviour
         float attractTime = Mathf.Clamp(distance / force, 0.1f, 0.5f);
         float elapsedTime = 0f;
 
+        // 记录上一帧位置，用于检测是否被卡住
+        Vector2 lastPos = startPos;
+        float stuckTime = 0f;
+
         while (elapsedTime < attractTime)
         {
             elapsedTime += Time.deltaTime;
@@ -609,19 +612,40 @@ public class PlayerController : MonoBehaviour
             // 缓动：先快后慢，更自然
             t = 1 - Mathf.Pow(1 - t, 2);
 
+            Vector2 currentPos = Vector2.Lerp(startPos, targetPos, t);
             // 平滑移动
-            rb.MovePosition(Vector2.Lerp(startPos, targetPos, t));
+            rb.MovePosition(currentPos);
             rb.velocity = Vector2.zero;  // 保持速度为零，避免碰撞
 
+            // 检测是否被卡住（移动距离过小）
+            float movedDistance = Vector2.Distance(currentPos, lastPos);
+            if (movedDistance < 0.05f)
+            {
+                stuckTime += Time.deltaTime;
+                if (stuckTime > 0.1f)  // 被卡住超过0.1秒
+                {
+                    // 被障碍物挡住，取消吸附
+                    Debug.Log("吸附被障碍物阻挡");
+                    isAttracting = false;
+                    yield break;  // 退出协程，不吸附
+                }
+            }
+            else
+            {
+                stuckTime = 0f;
+            }
+            lastPos = currentPos;
             yield return null;
         }
 
-        // 确保到达精确位置
-        rb.MovePosition(targetPos);
-        rb.velocity = Vector2.zero;
-
-        // 吸附完成，附着到磁铁
-        AttachToMagnet(targetMagnet);
+        // 最终检查是否真的到达
+        float finalDistance = Vector2.Distance(transform.position, targetMagnet.transform.position);
+        if (finalDistance <= 0.5f)
+        {
+            rb.MovePosition(targetPos);
+            rb.velocity = Vector2.zero;
+            AttachToMagnet(targetMagnet);
+        }
 
         isAttracting = false;
     }

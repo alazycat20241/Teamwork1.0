@@ -15,9 +15,14 @@ public class SecneChange : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        // 如果下一个场景索引超出范围，则回到第一个场景（索引0）
+        if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
         {
-            LoadAni.SwitchToScene(currentSceneIndex + 1);
+            nextSceneIndex = 0;
         }
+
+        LoadAni.SwitchToScene(nextSceneIndex);
     }
 }

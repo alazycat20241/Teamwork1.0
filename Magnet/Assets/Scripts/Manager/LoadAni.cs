@@ -8,7 +8,6 @@ public class LoadAni : MonoBehaviour
     [Header("动画设置")]
     public Animator transitionAnimator;      // 淡入淡出动画的 Animator
     public string fadeOutTrigger = "FadeOut"; // 淡出动画的触发参数名
-    //public string fadeInTrigger = "FadeIn";   // 淡入动画的触发参数名
     public float fadeOutDuration;      // 淡出动画时长
 
     private static LoadAni instance;
@@ -26,15 +25,6 @@ public class LoadAni : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    //void Start()
-    //{
-    //    // 场景加载完成后自动淡入
-    //    if (transitionAnimator != null)
-    //    {
-    //        transitionAnimator.SetTrigger(fadeInTrigger);
-    //    }
-    //}
 
     /// <summary>
     /// 场景切换（淡出 → 加载新场景 → 淡入）
@@ -72,12 +62,6 @@ public class LoadAni : MonoBehaviour
         {
             yield return null;
         }
-
-        //// 4. 场景加载完成后，播放淡入动画
-        //if (transitionAnimator != null)
-        //{
-        //    transitionAnimator.SetTrigger(fadeInTrigger);
-        //}
     }
 
     /// <summary>
@@ -116,11 +100,5 @@ public class LoadAni : MonoBehaviour
         {
             yield return null;
         }
-
-        //// 4. 场景重载完成后，播放淡入动画
-        //if (transitionAnimator != null)
-        //{
-        //    transitionAnimator.SetTrigger(fadeInTrigger);
-        //}
     }
 }
