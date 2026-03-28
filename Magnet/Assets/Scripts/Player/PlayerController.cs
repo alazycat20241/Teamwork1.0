@@ -331,13 +331,23 @@ public class PlayerController : MonoBehaviour
     {
         isCharging = true;
         currentChargeTime = 0;
+        // 开始持续抖动
+        if (currentMagnet != null)
+        {
+            Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StartContinuousShake(0.05f);
+        }
+        else if (nearestMagnet != null)
+        {
+            Magnet shake = nearestMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StartContinuousShake(0.05f);
+        }
     }
 
     /// 持续蓄力
     void ContinueCharging()
     {
         currentChargeTime += Time.deltaTime;
-
         if (currentChargeTime > maxChargeTime)
         {
             currentChargeTime = maxChargeTime;
@@ -436,6 +446,18 @@ public class PlayerController : MonoBehaviour
         isCharging = false;
         currentChargeTime = 0;
 
+        // 停止持续抖动
+        if (currentMagnet != null)
+        {
+            Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StopContinuousShake();
+        }
+        else if (nearestMagnet != null)
+        {
+            Magnet shake = nearestMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StopContinuousShake();
+        }
+
         // 恢复相机视角
         if (cameraZoom != null)
         {
@@ -497,7 +519,7 @@ public class PlayerController : MonoBehaviour
 
         // 计算相对于磁铁的局部坐标（会随磁铁旋转/移动）
         attachOffset = magnet.transform.InverseTransformPoint(transform.position);
-
+        
         // 如果是荡绳磁铁，触发摆动
         SwingMagnet swing = magnet.GetComponent<SwingMagnet>();
         if (swing != null)

@@ -43,6 +43,8 @@ public class ShakeCollision : MonoBehaviour
             // 计算方向
             Vector3 direction = (other.transform.position - transform.position).normalized;
 
+            parentMagnet.Shake(0.1f, 0.1f);  // 贴上时抖动弱一些
+
             // 生成带方向的抖动，第二个参数是速度向量
             ImpulseSource.GenerateImpulseWithVelocity(direction * force);
         }
