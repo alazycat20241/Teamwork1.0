@@ -7,11 +7,17 @@ using UnityEngine.U2D;
 
 public class PlayerController : MonoBehaviour
 {
-    public float wait;
     [Header("移动设置")]
     public float moveSpeed = 8f;                    // 左右移动速度
     public enum MagneticPole { North, South }       // 磁极枚举
     public MagneticPole currentPole = MagneticPole.North;  // 当前玩家磁极
+    [Header("墙壁检测")]
+    public Transform wallCheck;
+    public Vector2 wallCheckSize = new Vector2(0.8f, 1.2f);
+    public LayerMask wallLayer;
+
+    private bool touchingLeftWall;
+    private bool touchingRightWall;
 
     [Header("持续磁力设置")]
     public float attractForce = 15f;      // 吸附时的持续拉力
@@ -44,6 +50,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;                // 地面层（需要在Inspector中设置）
     private bool wasGrounded;                    // 上一帧是否在地面
     [Header("动画设置")]
+    private MagneticPole pendingPole;  // 待切换的磁极
+    private bool isSwitchingPole = false;
+
     private bool isRising = false;      // 是否正在上升
     private bool isFalling = false;     // 是否正在下落
 
@@ -53,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("死亡重生设置")]
     public Transform startPlace;      //重生点
+    public float wait;
 
     [Header("抖动设置")]
     public float force;
@@ -89,11 +99,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Debug.Log("测试力 - 施加向右500的力");
-            rb.AddForce(new Vector3(500f, 100f,0), ForceMode2D.Impulse);
-        }
         // 落地检测
         bool isGrounded = IsGrounded();
 
@@ -122,20 +127,17 @@ public class PlayerController : MonoBehaviour
         HandleMovementInput();
 
         // 处理磁极切换
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.LeftShift)|| Input.GetKeyDown(KeyCode.RightShift))
         {
+            isSwitchingPole = true;
+
+            // 计算要切换到的目标磁极
+            pendingPole = (currentPole == MagneticPole.North) ? MagneticPole.South : MagneticPole.North;
+
+            // 触发动画
             animator.SetTrigger("J");
-            SwitchPole();
-            // 如果在磁铁上且切换后变排斥，就脱离
-            if (isOnMagnet && currentMagnetGround != null)
-            {
-                bool isNowAttract = (currentPole == MagneticPole.North && currentMagnetGround.pole == MagneticPole.South) ||
-                                    (currentPole == MagneticPole.South && currentMagnetGround.pole == MagneticPole.North);
-                if (!isNowAttract)
-                {
-                    DetachFromMagnet();
-                }
-            }
+
+            // 注 不立即调用 SwitchPole()
         }
 
         if (!isOnMagnet)
@@ -148,7 +150,23 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
+    {// 检测碰撞
+        Collider2D[] hits = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
+
+        touchingLeftWall = false;
+        touchingRightWall = false;
+
+        foreach (var hit in hits)
+        {
+            // 计算碰撞点相对于玩家的位置
+            Vector2 hitPoint = hit.ClosestPoint(transform.position);
+            float xDiff = hitPoint.x - transform.position.x;
+
+            if (xDiff < -0.1f)  // 在左边
+                touchingLeftWall = true;
+            else if (xDiff > 0.1f)  // 在右边
+                touchingRightWall = true;
+        }
         if (isCharging) return;
 
         // 如在磁铁上，只维持位置，不应用移动和磁力
@@ -190,7 +208,7 @@ public class PlayerController : MonoBehaviour
         { 
             ImpulseSource.GenerateImpulse();
             animator.SetTrigger("ReStart");
-            StartCoroutine(DisableAndTeleportAfterDelay());
+            
         }
     }
 
@@ -436,10 +454,19 @@ public class PlayerController : MonoBehaviour
     /// 应用水平移动
     void ApplyMovement()
     {
-        if (!isOnMagnet)
+        if (!isOnMagnet && !isCharging)
         {
             Vector2 velocity = rb.velocity;
-            velocity.x = horizontalMove * moveSpeed;
+            // 根据左右墙壁限制移动
+            if ((horizontalMove == -1 && touchingLeftWall) ||
+                (horizontalMove == 1 && touchingRightWall))
+            {
+                velocity.x = 0;
+            }
+            else
+            {
+                velocity.x = horizontalMove * moveSpeed;
+            }
             rb.velocity = velocity;
         }
     }
@@ -670,12 +697,29 @@ public class PlayerController : MonoBehaviour
         isAttracting = false;
     }
 
-    IEnumerator DisableAndTeleportAfterDelay()
+    
+
+    public void ReStart()
     {
-       // 等待 1 秒（不受 Time.timeScale 影响）
-        yield return new WaitForSecondsRealtime(wait);
+        transform.position = startPlace.position;
+    }
 
-       transform.position = startPlace.position;
+    public void OnPoleSwitchAnimationEvent()
+    {
+        // 实际切换磁极
+        currentPole = pendingPole;
 
+        // 处理磁铁上的脱离逻辑
+        if (isOnMagnet && currentMagnetGround != null)
+        {
+            bool isNowAttract = (currentPole == MagneticPole.North && currentMagnetGround.pole == MagneticPole.South) ||
+                                (currentPole == MagneticPole.South && currentMagnetGround.pole == MagneticPole.North);
+            if (!isNowAttract)
+            {
+                DetachFromMagnet();
+            }
+        }
+
+        isSwitchingPole = false;
     }
 }

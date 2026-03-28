@@ -32,9 +32,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.863189, y: -0.15432899, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 3212888206467783913}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5283894509777405633
@@ -101,15 +102,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a81b9ff466a754bb923497809fd171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wait: 0.9
   moveSpeed: 5
   currentPole: 0
+  wallCheck: {fileID: 3212888206467783913}
+  wallCheckSize: {x: 0.8, y: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
   attractForce: 200
   repelForce: 100
-  chargeRange: 6.5
+  chargeRange: 4
   maxChargeTime: 2
-  minHorizontalRepelForce: 1.5
-  maxHorizontalRepelForce: 3
+  minHorizontalRepelForce: 0.5
+  maxHorizontalRepelForce: 6
   minVerticalRepelForce: 15
   maxVerticalRepelForce: 30
   maxAttractForce: 40
@@ -121,6 +126,7 @@ MonoBehaviour:
     m_Bits: 8
   cameraZoom: {fileID: 0}
   startPlace: {fileID: 0}
+  wait: 0.9
   force: 0
 --- !u!50 &6335077101856112253
 Rigidbody2D:
@@ -183,7 +189,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.31
+  m_Radius: 2.4
 --- !u!95 &6448333949857862480
 Animator:
   serializedVersion: 5
@@ -258,3 +264,34 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!1 &3892366901209966532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3212888206467783913}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3212888206467783913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3892366901209966532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8277738651187384053}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
