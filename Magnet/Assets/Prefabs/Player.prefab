@@ -112,13 +112,14 @@ MonoBehaviour:
   attractForce: 200
   repelForce: 100
   chargeRange: 4
-  maxChargeTime: 2
-  minHorizontalRepelForce: 0.5
-  maxHorizontalRepelForce: 6
-  minVerticalRepelForce: 15
-  maxVerticalRepelForce: 30
-  maxAttractForce: 40
-  minAttractForce: 20
+  maxChargeTime: 1
+  minHorizontalRepelForce: 1.5
+  maxHorizontalRepelForce: 3
+  minVerticalRepelForce: 10
+  maxVerticalRepelForce: 20
+  maxAttractForce: 30
+  minAttractForce: 10
+  minChargeTimeToAttract: 0.2
   isOnMagnet: 0
   groundCheckDistance: 0.5
   groundLayer:
@@ -127,7 +128,7 @@ MonoBehaviour:
   cameraZoom: {fileID: 0}
   startPlace: {fileID: 0}
   wait: 0.9
-  force: 0
+  force: 300
 --- !u!50 &6335077101856112253
 Rigidbody2D:
   serializedVersion: 4

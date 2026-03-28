@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     [Header("吸附蓄力设置")]
     public float maxAttractForce = 25f;              // 最大吸附力度
     public float minAttractForce = 5f;               // 最小吸附力度
+    public float minChargeTimeToAttract = 0.2f;  // 最小蓄力时间才能吸附
 
     private bool isAttracting;                       // 是否正在吸附中
 
@@ -398,13 +399,31 @@ public class PlayerController : MonoBehaviour
     void ReleaseAttract()
     {
         if (!isCharging || nearestMagnet == null) return;
-    
-    // 根据蓄力时间计算吸附力度
-    float chargePercent = currentChargeTime / maxChargeTime;
-    float attractForce = Mathf.Lerp(minAttractForce, maxAttractForce, chargePercent);
+
+        // 计算到磁铁的距离
+        float distanceToMagnet = Vector2.Distance(transform.position, nearestMagnet.transform.position);
+
+        // 根据距离计算所需的最小蓄力时间（距离越远，需要时间越长）
+
+        float requiredChargeTime = Mathf.Lerp(
+            minChargeTimeToAttract,                    // 距离=0时需要的时间
+            maxChargeTime,                              // 距离=chargeRange时需要的时间
+            Mathf.Clamp01(distanceToNearest / chargeRange)
+        );
+
+        // 检查是否达到所需的最小蓄力时间
+        if (currentChargeTime < requiredChargeTime)
+        {
+            CancelCharging();
+            return;
+        }
+
+        // 根据蓄力时间计算吸附力度
+        float chargePercent = currentChargeTime / maxChargeTime;
+        float attractForce = Mathf.Lerp(minAttractForce, maxAttractForce, chargePercent);
     
     // 计算方向：指向磁铁
-    Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
+    //Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
     
     // 吸附 像弹射
     StartCoroutine(SmoothAttractCoroutine(nearestMagnet, attractForce));
