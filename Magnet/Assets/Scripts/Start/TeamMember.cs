@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class TeamMenber: MonoBehaviour
 {
@@ -7,26 +8,27 @@ public class TeamMenber: MonoBehaviour
     public GameObject targetUI;        // 要显示的UI对象
     public float displayDuration = 3f;  // 显示时长（秒）
 
-    private void OnMouseDown()
+    private Button btn;
+
+    void Awake()
+    {
+        btn = GetComponent<Button>();
+        btn.onClick.AddListener(OnClick);
+    }
+
+    void OnClick()
     {
         StartCoroutine(ShowAndHide());
     }
 
     IEnumerator ShowAndHide()
     {
-        // 显示UI
         if (targetUI != null)
-        {
             targetUI.SetActive(true);
-        }
 
-        // 等待指定时长
         yield return new WaitForSeconds(displayDuration);
 
-        // 隐藏UI
         if (targetUI != null)
-        {
             targetUI.SetActive(false);
-        }
     }
 }

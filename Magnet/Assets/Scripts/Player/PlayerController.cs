@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class PlayerController : MonoBehaviour
 {
@@ -63,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("死亡重生设置")]
     public Transform startPlace;      //重生点
-    public float wait;
 
     [Header("抖动设置")]
     public float force;
@@ -205,8 +202,9 @@ public class PlayerController : MonoBehaviour
         {
             currentMagnet = other.GetComponent<Magnet>();
         }
-        else if (other.CompareTag("JIANCI"))
+        if (other.CompareTag("JIANCI"))
         { 
+            isOnMagnet = false;
             ImpulseSource.GenerateImpulse();
             animator.SetTrigger("ReStart");
             
