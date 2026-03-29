@@ -234,8 +234,12 @@ public class PlayerController : MonoBehaviour
         {
             float distance = Vector2.Distance(transform.position, magnet.transform.position);
 
-            // 只考虑在蓄力范围内的磁铁
-            if (distance <= chargeRange && distance < closestDist)
+            // 检查磁极是否相吸（只有异极才能吸附）
+            bool isAttract = (currentPole == MagneticPole.North && magnet.pole == MagneticPole.South) ||
+                             (currentPole == MagneticPole.South && magnet.pole == MagneticPole.North);
+
+            // 只考虑在蓄力范围内且磁极相吸的磁铁
+            if (distance <= chargeRange && isAttract && distance < closestDist)
             {
                 closestDist = distance;
                 closest = magnet;
@@ -335,12 +339,7 @@ public class PlayerController : MonoBehaviour
         if (currentMagnet != null)
         {
             Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
-            if (shake != null) shake.StartContinuousShake(0.05f);
-        }
-        else if (nearestMagnet != null)
-        {
-            Magnet shake = nearestMagnet.GetComponentInChildren<Magnet>();
-            if (shake != null) shake.StartContinuousShake(0.05f);
+            if (shake != null) shake.StartContinuousShake(0.04f);
         }
     }
 
@@ -364,6 +363,13 @@ public class PlayerController : MonoBehaviour
     void ReleaseRepel()
     {
         if (!isCharging || currentMagnet == null) return;
+        // 停止持续抖动
+        if (currentMagnet != null)
+        {
+            Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StopContinuousShake();
+        }
+
         // 根据蓄力时间计算弹射力度
         float chargePercent = currentChargeTime / maxChargeTime;
         // 计算方向：远离磁铁
@@ -432,11 +438,9 @@ public class PlayerController : MonoBehaviour
         float chargePercent = currentChargeTime / maxChargeTime;
         float attractForce = Mathf.Lerp(minAttractForce, maxAttractForce, chargePercent);
     
-    // 计算方向：指向磁铁
-    //Vector2 direction = (nearestMagnet.transform.position - transform.position).normalized;
     
-    // 吸附 像弹射
-    StartCoroutine(SmoothAttractCoroutine(nearestMagnet, attractForce));
+        // 吸附 像弹射
+        StartCoroutine(SmoothAttractCoroutine(nearestMagnet, attractForce));
     }
 
 
@@ -450,11 +454,6 @@ public class PlayerController : MonoBehaviour
         if (currentMagnet != null)
         {
             Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
-            if (shake != null) shake.StopContinuousShake();
-        }
-        else if (nearestMagnet != null)
-        {
-            Magnet shake = nearestMagnet.GetComponentInChildren<Magnet>();
             if (shake != null) shake.StopContinuousShake();
         }
 
