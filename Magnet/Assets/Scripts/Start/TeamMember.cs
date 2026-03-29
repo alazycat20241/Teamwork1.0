@@ -6,9 +6,9 @@ public class TeamMenber: MonoBehaviour
 {
     [Header("UI设置")]
     public GameObject targetUI;        // 要显示的UI对象
-    public float displayDuration = 3f;  // 显示时长（秒）
-
+   
     private Button btn;
+    private bool isActive = false;
 
     void Awake()
     {
@@ -18,17 +18,16 @@ public class TeamMenber: MonoBehaviour
 
     void OnClick()
     {
-        StartCoroutine(ShowAndHide());
-    }
-
-    IEnumerator ShowAndHide()
-    {
-        if (targetUI != null)
-            targetUI.SetActive(true);
-
-        yield return new WaitForSeconds(displayDuration);
-
-        if (targetUI != null)
+        if (isActive)
+        {
             targetUI.SetActive(false);
+            isActive = false;
+        }
+        else
+        {
+            targetUI.SetActive(true);
+            isActive = true;
+        }
     }
+
 }
