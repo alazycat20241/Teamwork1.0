@@ -66,6 +66,13 @@ public class PlayerController : MonoBehaviour
     public float force;
     private CinemachineImpulseSource ImpulseSource;
 
+    [Header("音效设置")]
+    public AudioSource audioSource;
+    public AudioClip JumpClip;       //跳跃音效
+    public AudioClip ShiftClip;      //转换磁极音效
+    public AudioClip XuliClip;       //蓄力音效
+    public AudioClip ColliderClip;   //跟磁铁碰撞音效
+
 
     //角色动画切换
     private Animator animator;
@@ -135,6 +142,8 @@ public class PlayerController : MonoBehaviour
             // 触发动画
             animator.SetTrigger("J");
 
+            //播放切换磁极音效
+            audioSource.PlayOneShot(ShiftClip);
             // 注 不立即调用 SwitchPole()
         }
 
@@ -339,6 +348,7 @@ public class PlayerController : MonoBehaviour
             Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
             if (shake != null) shake.StartContinuousShake(0.04f);
         }
+        audioSource.PlayOneShot(XuliClip);
     }
 
     /// 持续蓄力
@@ -397,6 +407,8 @@ public class PlayerController : MonoBehaviour
         cameraZoom.ResetZoom();
         // 重置蓄力状态
         CancelCharging();
+        //播放跳跃音效
+        audioSource.PlayOneShot(JumpClip);
     }
 
     /// 弹射协程
@@ -514,6 +526,9 @@ public class PlayerController : MonoBehaviour
         isOnMagnet = true;
         currentMagnetGround = magnet;
 
+        //播放碰撞磁极音效
+        audioSource.PlayOneShot(ColliderClip);
+
         // 计算相对于磁铁的局部坐标（会随磁铁旋转/移动）
         attachOffset = magnet.transform.InverseTransformPoint(transform.position);
         
@@ -622,6 +637,8 @@ public class PlayerController : MonoBehaviour
     void SwitchPole()
     {
         currentPole = (currentPole == MagneticPole.North) ? MagneticPole.South : MagneticPole.North;
+
+        
     }
 
     //动画
