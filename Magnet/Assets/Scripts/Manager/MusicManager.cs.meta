@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b2e79b1a952df534787482d1dd127c30
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bgmAudioSource: {instanceID: 0}
+  - mainMenuBGM: {fileID: 8300000, guid: 3c4564ad26e16ce479d5ad89b44dcd24, type: 3}
+  - levelBGM: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

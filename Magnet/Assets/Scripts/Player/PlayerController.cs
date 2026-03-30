@@ -213,16 +213,21 @@ public class PlayerController : MonoBehaviour
         }
         if (other.CompareTag("JIANCI"))
         { 
-            isOnMagnet = false;
             ImpulseSource.GenerateImpulse();
-            animator.SetTrigger("ReStart");
-            
+            animator.SetBool("ReStart",true);
+            isOnMagnet = false;
         }
     }
 
     /// 离开磁铁范围
     void OnTriggerExit2D(Collider2D other)
     {
+        // 停止持续抖动
+        if (currentMagnet != null)
+        {
+            Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
+            if (shake != null) shake.StopContinuousShake();
+        }
         if (other.CompareTag("Magnet"))
         {
             currentMagnet = null;
@@ -377,7 +382,7 @@ public class PlayerController : MonoBehaviour
             Magnet shake = currentMagnet.GetComponentInChildren<Magnet>();
             if (shake != null) shake.StopContinuousShake();
         }
-
+        rb.velocity = Vector2.zero;
         // 根据蓄力时间计算弹射力度
         float chargePercent = currentChargeTime / maxChargeTime;
         // 计算方向：远离磁铁
@@ -397,10 +402,13 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Realse");
             // 垂直方向为主（上下弹射）
             repelForce = Mathf.Lerp(minVerticalRepelForce, maxVerticalRepelForce, chargePercent);
-        // 弹射方向：远离磁铁
-        Vector2 finalForce = direction * repelForce;
 
-        StartCoroutine(LaunchCoroutine(finalForce));
+            Vector2 verticalDir;
+            verticalDir = Vector2.up;
+
+            // 最终力 = 纯垂直方向 * 力度
+            Vector2 finalForce = verticalDir * repelForce;
+            StartCoroutine(LaunchCoroutine(finalForce));
         }
 
         //镜头恢复
@@ -416,6 +424,8 @@ public class PlayerController : MonoBehaviour
     {
 
         // 清除原有速度，应用弹射力
+        rb.velocity = Vector2.zero;
+
         rb.AddForce(force, ForceMode2D.Impulse);
 
         yield return null;
@@ -633,14 +643,6 @@ public class PlayerController : MonoBehaviour
         return 1f;  // 默认
     }
 
-    /// 切换磁极
-    void SwitchPole()
-    {
-        currentPole = (currentPole == MagneticPole.North) ? MagneticPole.South : MagneticPole.North;
-
-        
-    }
-
     //动画
     void UpdateAnimationParameters(bool isGrounded)
     {
@@ -727,7 +729,6 @@ public class PlayerController : MonoBehaviour
                 if (stuckTime > 0.1f)  // 被卡住超过0.1秒
                 {
                     // 被障碍物挡住，取消吸附
-                    Debug.Log("吸附被障碍物阻挡");
                     isAttracting = false;
                     yield break;  // 退出协程，不吸附
                 }
@@ -756,7 +757,9 @@ public class PlayerController : MonoBehaviour
 
     public void ReStart()
     {
+        isOnMagnet = false;
         transform.position = startPlace.position;
+        animator.SetBool("ReStart", false);
     }
 
     public void OnPoleSwitchAnimationEvent()

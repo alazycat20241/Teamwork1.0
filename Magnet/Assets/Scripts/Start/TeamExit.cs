@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class TeamMenber: MonoBehaviour
+public class TeamExit : MonoBehaviour
 {
     [Header("UI设置")]
     public GameObject targetUI;        // 要显示的UI对象
-   
+
     private Button btn;
 
     void Awake()
@@ -17,7 +18,7 @@ public class TeamMenber: MonoBehaviour
 
     void OnClick()
     {
-        targetUI.SetActive(true);
+        targetUI.SetActive(false);
     }
 
 }
