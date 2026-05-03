@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279cb24181cbe4e45aa85ff9355c621f, type: 3}
   m_Name: BulletConfig
   m_EditorClassIdentifier: 
+  ID: 0
   LifeCycle: 5
   LinearVelocity: 1
   LinearAcceleration: 5
@@ -20,9 +21,9 @@ MonoBehaviour:
   MaxVelocity: 2.1474836e+9
   InitRotation: 0
   SenderAngularVelocity: 30
-  SenderMaxAngularVelocity: 2.1474836e+9
+  SenderMaxAngularVelocity: 2.147484e+9
   SenderAngularAcceleration: 0
   LineCount: 20
   LineAngle: 30
-  SenderInterval: 0.1
+  SenderInterval: 0.12
   prefabs: {fileID: 4699019063831586953, guid: ef61e868bf1c10145b9e71fe72385ca3, type: 3}

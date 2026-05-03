@@ -12,8 +12,7 @@ public class Sender : MonoBehaviour
 
     private void Awake()
     {//创建对象池
-        pool=new BulletPool();
-        pool.bulletObject=bulletObject;
+        pool = PoolManager.Instance.GetPool(bulletObject);
 
         currentAngle = bulletObject.InitRotation;//初始旋转
         currentAngularVelocity = bulletObject.SenderAngularVelocity;

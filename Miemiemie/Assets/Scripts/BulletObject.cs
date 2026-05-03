@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName="Create BulletAsset")]
 public class BulletObject : ScriptableObject
 {
+    public int ID = 0;
     [Header("子弹初始配置")]
     public float LifeCycle=5;//生命周期
     public float LinearVelocity = 0;//线速度
