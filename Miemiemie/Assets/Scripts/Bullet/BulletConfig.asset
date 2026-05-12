@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279cb24181cbe4e45aa85ff9355c621f, type: 3}
   m_Name: BulletConfig
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 3
   LifeCycle: 5
-  LinearVelocity: 1
-  LinearAcceleration: 5
+  LinearVelocity: 100
+  LinearAcceleration: 10
   AngularVelocity: 20
   AngularAcceleration: 10
   MaxVelocity: 2.1474836e+9

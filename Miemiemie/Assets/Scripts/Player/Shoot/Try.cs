@@ -10,6 +10,7 @@ public class Try : MonoBehaviour
     private float chargeTimer = 0f;                    // 蓄力计时
     private bool isCharging = false;                   // 是否正在蓄力
 
+
     void Start()
     {
         sporePool = FindObjectOfType<SporePool>();
