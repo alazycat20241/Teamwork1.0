@@ -43,10 +43,24 @@ public class SporePool : MonoBehaviour
             spore.transform.position = position;       // 设位置
 
             SporeBehav behav = spore.GetComponent<SporeBehav>();
-            behav.moveSpeed = moveSpeed * Random.Range(0.3f, 0.8f);  // 随机速度，有远有近
+            behav.moveSpeed = moveSpeed * Random.Range(0.2f, 0.8f);  // 随机速度，有远有近
             
             // 改成随机存活时间
             behav.lifetime = lifetime + Random.Range(-1f, 1f);   // 有的早1秒消失，有的晚1秒消失
+        }
+
+        for (int i = 0; i < burstCount; i++)
+        {
+            GameObject spore = pool.Get();
+            spore.transform.position = position;
+
+            // 随机大小：0.5倍 到 1.5倍之间
+            float randomScale = Random.Range(0.08f, 0.2f);
+            spore.transform.localScale = Vector3.one * randomScale;
+
+            SporeBehav behav = spore.GetComponent<SporeBehav>();
+            behav.moveSpeed = moveSpeed * Random.Range(0.6f, 1f);
+            behav.lifetime = lifetime + Random.Range(-1f, 1f);
         }
     }
 
