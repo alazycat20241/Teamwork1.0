@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 279cb24181cbe4e45aa85ff9355c621f, type: 3}
+  m_Name: PlayerBulletConfig
+  m_EditorClassIdentifier: 
+  ID: 0
+  LifeCycle: 3
+  LinearVelocity: 10
+  LinearAcceleration: 0
+  AngularVelocity: 0
+  AngularAcceleration: 0
+  MaxVelocity: 2.1474836e+9
+  InitRotation: 0
+  SenderAngularVelocity: 0
+  SenderMaxAngularVelocity: 2.1474836e+9
+  SenderAngularAcceleration: 0
+  LineCount: 1
+  LineAngle: 30
+  SenderInterval: 0.01
+  prefabs: {fileID: 4699019063831586953, guid: ef61e868bf1c10145b9e71fe72385ca3, type: 3}
