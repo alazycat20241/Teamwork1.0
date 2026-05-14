@@ -65,7 +65,13 @@ public class Enemy : MonoBehaviour
         // 还没发现玩家，待机不动
         if (!hasAggro)
         {
-            rb.velocity = Vector2.zero;
+            patrolTimer -= Time.deltaTime;
+            if (patrolTimer <= 0)
+            {
+                patrolDirection = Random.insideUnitCircle.normalized;
+                patrolTimer = Random.Range(1f, 3f);
+            }
+            rb.velocity = patrolDirection * moveSpeed * 0.3f;
             return;
         }
 

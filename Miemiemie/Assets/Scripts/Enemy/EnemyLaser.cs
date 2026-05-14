@@ -14,6 +14,7 @@ public class EnemyLaser : MonoBehaviour
     [SerializeField] private float laserDamagePerSecond = 15f;
     [SerializeField] private LayerMask obstacleLayer;        // 障碍物层
     [SerializeField] private LineRenderer lineRenderer;      // 画线组件
+    public float maxLength;
 
     [Header("定身效果")]
     [SerializeField] private float stunDuration = 1f;        // 定身时长
@@ -27,6 +28,10 @@ public class EnemyLaser : MonoBehaviour
     private bool isLaserReady = true;
 
     private bool hasAggro = false;
+
+    [Header("墙火花特效")]
+    [SerializeField] private EffectPool wallSparkPool;          // 火花对象池（拖场景里的WallSparkPoolManager）
+    private GameObject currentSpark;                            // 当前墙上的火花实例
 
     void Start()
     {
@@ -56,12 +61,13 @@ public class EnemyLaser : MonoBehaviour
         }
 
         // 冷却计时
+        // 冷却计时
         if (!isLaserReady)
         {
             cooldownTimer -= Time.deltaTime;
-            if (cooldownTimer <= 0)
+            if (cooldownTimer <= 0 && currentState != State.LaserAttack)  // 确保不在攻击中
             {
-                isLaserReady = true;  // 冷却好了
+                isLaserReady = true;
             }
         }
 
@@ -98,6 +104,7 @@ public class EnemyLaser : MonoBehaviour
         switch (newState)
         {
             case State.LaserAttack:
+                isLaserReady = false;    // 加这行
                 StartCoroutine(LaserAttack());
                 break;
         }
@@ -114,6 +121,7 @@ public class EnemyLaser : MonoBehaviour
 
         float timer = 0f;
         bool playerHit = false;  // 是否已经命中玩家
+        currentSpark = null;  // 重置火花引用
 
         while (timer < laserDuration)
         {
@@ -123,43 +131,86 @@ public class EnemyLaser : MonoBehaviour
             Vector2 direction = (player.position - transform.position).normalized;
 
             // 射线检测障碍物
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 10f, obstacleLayer);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxLength, obstacleLayer);
 
-            Vector2 endPoint = hit.collider != null
-                ? hit.point
-                : (Vector2)transform.position + direction * 10f;
+            Vector2 endPoint;
+            if (hit.collider != null)
+            {
+                // 碰到墙：截断激光
+                endPoint = hit.point;
 
+                // === 火花逻辑 ===
+                // 如果还没有火花，从池里取一个
+                if (currentSpark == null && wallSparkPool != null)
+                {
+                    currentSpark = wallSparkPool.Get();
+                }
+                // 火花跟随碰撞点
+                if (currentSpark != null)
+                {
+                    currentSpark.transform.position = endPoint;
+                    // 火花朝向：垂直于墙面（hit.normal 是墙面法线方向）
+                    float angle = Mathf.Atan2(hit.normal.y, hit.normal.x) * Mathf.Rad2Deg;
+                    currentSpark.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+                }
+            }
+            else
+            {
+                // 没碰到墙：回收火花
+                if (currentSpark != null && wallSparkPool != null)
+                {
+                    wallSparkPool.Release(currentSpark);
+                    currentSpark = null;
+                }
+                endPoint = (Vector2)transform.position + direction * maxLength;
+            }
             // 画线
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, endPoint);
 
             // 检测玩家是否在射线上
-            RaycastHit2D playerHit2D = Physics2D.Raycast(transform.position, direction,
-                Vector2.Distance(transform.position, endPoint), 1 << player.gameObject.layer);
+            float beamLength = Vector2.Distance(transform.position, endPoint);
+            RaycastHit2D playerHit2D = Physics2D.Raycast(transform.position, direction, beamLength,
+                1 << player.gameObject.layer);
 
             if (playerHit2D.collider != null && !playerHit)
             {
                 playerHit = true;
-                // 对玩家造成伤害
                 Health health = player.GetComponent<Health>();
                 if (health != null)
                     health.TakeDamage(laserDamagePerSecond * laserDuration);
 
-                // 给玩家施加定身Buff
                 // 定身玩家
-                PlayerMove playerMove = player.GetComponent<PlayerMove>();
-                if (playerMove != null)
-                {
-                    playerMove.Stun(stunDuration);  // 定身1秒
-                }
+                PlayerMove playerMovement = player.GetComponent<PlayerMove>();
+                if (playerMovement != null)
+                    playerMovement.Stun(stunDuration);
             }
 
             yield return null;
         }
+        // 激光结束：回收火花
+        if (currentSpark != null && wallSparkPool != null)
+        {
+            wallSparkPool.Release(currentSpark);
+            currentSpark = null;
+        }
 
-        // 射击结束，关闭激光
+        // 射击结束 → 变细消失
+        float fadeOutDuration = 0.15f;
+        float elapsed = 0f;
+        float startWidth = lineRenderer.widthMultiplier;
+
+        while (elapsed < fadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            lineRenderer.widthMultiplier = Mathf.Lerp(startWidth, 0f, elapsed / fadeOutDuration);
+            yield return null;
+        }
+
+        lineRenderer.widthMultiplier = startWidth;  // 恢复宽度
         lineRenderer.enabled = false;
         cooldownTimer = laserCooldown;
+        isLaserReady = false;
         currentState = State.Chase;
     }
 }

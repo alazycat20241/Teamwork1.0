@@ -65,19 +65,25 @@ public class EnemyTrapper : MonoBehaviour
             return;
         }
 
-        // 发现玩家后：远离玩家
-        Flee();
+        // 发现玩家后：在安全距离外自由移动
+        if (dist < fleeDistance)
+        {
+            // 太近了 → 远离玩家
+            Vector2 fleeDir = (transform.position - player.position).normalized;
+            rb.velocity = fleeDir * moveSpeed;
+        }
+        else
+        {
+            // 安全距离外 → 自由巡逻
+            patrolTimer -= Time.deltaTime;
+            if (patrolTimer <= 0)
+            {
+                patrolDirection = Random.insideUnitCircle.normalized;
+                patrolTimer = Random.Range(1f, 3f);
+            }
+            rb.velocity = patrolDirection * moveSpeed * 0.5f;
+        }
 
-    }
-
-    /// <summary>
-    /// 远离玩家移动
-    /// </summary>
-    void Flee()
-    {
-        // 方向 = 怪物位置 - 玩家位置（指向远离玩家的方向）
-        Vector2 fleeDir = (transform.position - player.position).normalized;
-        rb.velocity = fleeDir * moveSpeed;
     }
 
     /// <summary>
