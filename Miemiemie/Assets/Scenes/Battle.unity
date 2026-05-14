@@ -784,18 +784,17 @@ GameObject:
   m_Component:
   - component: {fileID: 1383232642}
   - component: {fileID: 1383232641}
-  - component: {fileID: 1383232640}
   - component: {fileID: 1383232639}
   - component: {fileID: 1383232638}
   - component: {fileID: 1383232637}
   - component: {fileID: 1383232636}
   m_Layer: 6
-  m_Name: TrapEnemy (5)
+  m_Name: TrapEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1383232636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,24 +891,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1383232640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1383232635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 490c516de5f6db74a96f25f0b601b400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  moveSpeed: 4
-  chaseRange: 4.11
-  attackRange: 1.44
-  bulletObject: {fileID: 11400000, guid: e84bc87440f3fa74e9629b2140967bd9, type: 2}
-  fireInterval: 0.5
 --- !u!212 &1383232641
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1042,12 +1023,12 @@ GameObject:
   - component: {fileID: 1495098836}
   - component: {fileID: 1495098835}
   m_Layer: 6
-  m_Name: TurEnemy
+  m_Name: ThrowEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1495098835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1299,7 +1280,7 @@ Transform:
   m_GameObject: {fileID: 1792033035}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.249, y: 0, z: 0}
+  m_LocalPosition: {x: -8.3, y: 5, z: 0}
   m_LocalScale: {x: 0.71, y: 0.71, z: 0.71}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1439,7 +1420,7 @@ GameObject:
   - component: {fileID: 1876193002}
   - component: {fileID: 1876193001}
   m_Layer: 6
-  m_Name: Enemy (1)
+  m_Name: NormalEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1618,12 +1599,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2062878350}
   - component: {fileID: 2062878349}
-  - component: {fileID: 2062878348}
   - component: {fileID: 2062878347}
   - component: {fileID: 2062878346}
   - component: {fileID: 2062878345}
   m_Layer: 6
-  m_Name: Enemy (4)
+  m_Name: StunEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1706,24 +1686,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2062878348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062878344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 490c516de5f6db74a96f25f0b601b400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 1
-  moveSpeed: 4
-  chaseRange: 4.11
-  attackRange: 1.44
-  bulletObject: {fileID: 11400000, guid: e84bc87440f3fa74e9629b2140967bd9, type: 2}
-  fireInterval: 0.5
 --- !u!212 &2062878349
 SpriteRenderer:
   m_ObjectHideFlags: 0

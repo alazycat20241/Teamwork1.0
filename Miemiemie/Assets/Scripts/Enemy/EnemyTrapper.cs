@@ -37,6 +37,14 @@ public class EnemyTrapper : MonoBehaviour
     {
         float dist = Vector2.Distance(transform.position, player.position);
 
+        // 定时种陷阱
+        trapTimer -= Time.deltaTime;
+        if (trapTimer <= 0f)
+        {
+            trapTimer = trapInterval;   // 重置计时
+            PlaceTrap();                // 在脚下放陷阱
+        }
+
         // 首次进入探测范围，激活仇恨
         if (!hasAggro && dist <= detectRange)
         {
@@ -58,16 +66,8 @@ public class EnemyTrapper : MonoBehaviour
         }
 
         // 发现玩家后：远离玩家
-        Vector2 fleeDir = (transform.position - player.position).normalized;
-        rb.velocity = fleeDir * moveSpeed;
+        Flee();
 
-        // 定时种陷阱
-        trapTimer -= Time.deltaTime;
-        if (trapTimer <= 0f)
-        {
-            trapTimer = trapInterval;   // 重置计时
-            PlaceTrap();                // 在脚下放陷阱
-        }
     }
 
     /// <summary>
