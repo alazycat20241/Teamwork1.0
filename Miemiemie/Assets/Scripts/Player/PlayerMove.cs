@@ -10,6 +10,9 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
 
+    // 用于定身
+    private bool isStunned = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,6 +28,12 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if (isStunned)
+        {
+            movement = Vector2.zero;  // 不能移动
+            return;
+        }
+
         // 获取输入
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D 或 左右箭头
         movement.y = Input.GetAxisRaw("Vertical");   // W/S 或 上下箭头
@@ -36,5 +45,21 @@ public class PlayerMove : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = movement * moveSpeed;
+    }
+
+    /// <summary>
+    /// 被定身（外部调用）
+    /// </summary>
+    public void Stun(float duration)
+    {
+        if (!isStunned)
+            StartCoroutine(StunCoroutine(duration));
+    }
+
+    IEnumerator StunCoroutine(float duration)
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
     }
 }

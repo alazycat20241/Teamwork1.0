@@ -5,10 +5,15 @@ public class Enemy : MonoBehaviour
     // 定义所有状态
     private enum State
     {
-        Idle,       // 待机
-        Patrol,     // 巡逻
-        Chase,      // 追击
-        Attack      // 攻击
+        Idle,           // 待机
+        Patrol,         // 巡逻
+        Chase,          // 追击
+        Attack,         // 攻击
+        Pause,          // 停顿（怪2用）
+        Dash,           // 冲刺（怪2用）
+        Stun,           // 硬直（怪2用）
+        Flee,           // 远离（怪5用）
+        LaserAttack     // 激光射击（怪4用）
     }
 
     [Header("敌人参数")]
@@ -16,6 +21,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float chaseRange = 5f;      // 追击范围
     [SerializeField] private float attackRange = 1.5f;   // 攻击范围
+
+    private bool hasAggro = false;  // 是否已激活仇恨（仇恨不消失）
 
     private Transform player;
     private Rigidbody2D rb;
@@ -48,49 +55,39 @@ public class Enemy : MonoBehaviour
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        // 状态切换逻辑
-        switch (currentState)
+        // 首次进入追击范围，激活仇恨（永远不脱战）
+        if (!hasAggro && distanceToPlayer <= chaseRange)
         {
-            case State.Idle:
-            case State.Patrol:
-                // 玩家进入追击范围 → 追击
-                if (distanceToPlayer <= chaseRange)
-                    currentState = State.Chase;
-                break;
+            hasAggro = true;
+            currentState = State.Chase;
+        }
 
-            case State.Chase:
-                // 玩家进入攻击范围 → 攻击
-                if (distanceToPlayer <= attackRange)
-                    currentState = State.Attack;
-                // 玩家跑远 → 回去巡逻
-                else if (distanceToPlayer > chaseRange)
-                    currentState = State.Patrol;
-                break;
+        // 还没发现玩家，待机不动
+        if (!hasAggro)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
 
-            case State.Attack:
-                // 玩家离开攻击范围 → 继续追
-                if (distanceToPlayer > attackRange)
-                    currentState = State.Chase;
-                break;
+        // 仇恨激活后：根据距离切换追击/攻击
+        if (distanceToPlayer <= attackRange)
+        {
+            currentState = State.Attack;  // 进入攻击范围，停下来射击
+        }
+        else
+        {
+            currentState = State.Chase;   // 不在攻击范围，追过去
         }
 
         // 执行当前状态的行为
         switch (currentState)
         {
-            case State.Idle:
-                rb.velocity = Vector2.zero;
-                break;
-
-            case State.Patrol:
-                Patrol();
-                break;
-
             case State.Chase:
-                Chase();
+                Chase();   // 朝玩家移动
                 break;
 
             case State.Attack:
-                Attack();
+                Attack();  // 停住，定时发射子弹
                 break;
         }
     }
@@ -114,7 +111,7 @@ public class Enemy : MonoBehaviour
         rb.velocity = dir * moveSpeed;
     }
 
-    // 攻击：停住，用之前的孢子或子弹系统
+    // 攻击：停住，用之前的孢子或子弹系统（怪1）
     void Attack()
     {
         rb.velocity = Vector2.zero;
