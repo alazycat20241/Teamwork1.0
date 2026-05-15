@@ -16,6 +16,7 @@ public class PlayerInventory : MonoBehaviour
         Instance = this;
         UpdateUI();
     }
+    
 
     public bool UseSeed()
     {
@@ -34,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
         UpdateUI();
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
             SeedText.text = "Seed:" + seedCount;
     }

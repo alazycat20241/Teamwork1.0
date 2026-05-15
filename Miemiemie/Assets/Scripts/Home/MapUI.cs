@@ -110,7 +110,7 @@ public class MapUIManager : MonoBehaviour
         if (!ActionPointManager.Instance.UseActionPoints(2)) return;
         // 关闭所有面板后加载场景
         CloseMap();
-        UnityEngine.SceneManagement.SceneManager.LoadScene("HuntScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Battle");
     }
 
     /// <summary>
