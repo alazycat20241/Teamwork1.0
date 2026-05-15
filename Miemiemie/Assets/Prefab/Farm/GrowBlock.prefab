@@ -41,8 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4640960290806360697}
   - component: {fileID: 1331181236458371730}
-  - component: {fileID: 1885336271405209927}
   - component: {fileID: 5410879694217997619}
+  - component: {fileID: 3225963119335964060}
   m_Layer: 0
   m_Name: GrowBlock
   m_TagString: Untagged
@@ -58,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4589300201451905990}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5, y: 1.1, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -120,7 +120,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1885336271405209927
+--- !u!114 &5410879694217997619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4589300201451905990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76a977b86ef27643a73b0350604bb81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStage: 0
+  barrenSprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf,
+    type: 3}
+  ploughedSprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee,
+    type: 3}
+  plantedSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
+    type: 3}
+  growing1Sprite: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5,
+    type: 3}
+  growing2Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5,
+    type: 3}
+  ripeSprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa,
+    type: 3}
+  timeToGrowing1: 3
+  timeToGrowing2: 3
+  timeToRipe: 3
+  harvestItemPrefab: {fileID: 2632230144370668228, guid: 3ee1c3983909071409e60066e5625361,
+    type: 3}
+  harvestSpawnPoint: {fileID: 8830714190635122899}
+  outlineSR: {fileID: 7103344650848730220}
+  normalColor: {r: 1, g: 1, b: 1, a: 0}
+  hoverColor: {r: 1, g: 0, b: 0, a: 0.57254905}
+--- !u!61 &3225963119335964060
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,7 +169,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -165,40 +199,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5410879694217997619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4589300201451905990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c76a977b86ef27643a73b0350604bb81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentStage: 0
-  barrenSprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf,
-    type: 3}
-  ploughedSprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee,
-    type: 3}
-  plantedSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
-    type: 3}
-  growing1Sprite: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5,
-    type: 3}
-  growing2Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5,
-    type: 3}
-  ripeSprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa,
-    type: 3}
-  timeToGrowing1: 3
-  timeToGrowing2: 3
-  timeToRipe: 3
-  harvestItemPrefab: {fileID: 7692842909281109223, guid: 3ee1c3983909071409e60066e5625361,
-    type: 3}
-  harvestSpawnPoint: {fileID: 8830714190635122899}
-  outlineSR: {fileID: 7103344650848730220}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  hoverColor: {r: 1, g: 0, b: 0, a: 0.57254905}
 --- !u!1 &7225017301164934632
 GameObject:
   m_ObjectHideFlags: 0

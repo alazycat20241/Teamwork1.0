@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -109,14 +110,24 @@ public class GrowBlock : MonoBehaviour
         if (currentStage == GrowthStage.Barren)
         {
             currentStage = GrowthStage.Ploughed;
+            UpdateSprite();
         }
         else if (currentStage == GrowthStage.Ploughed)
         {
-            currentStage = GrowthStage.Planted;
-            growTimer = 0f;
+            // 检测背包是否有种子
+            if (PlayerInventory.Instance != null &&
+                PlayerInventory.Instance.UseSeed())
+            {
+                currentStage = GrowthStage.Planted;
+                growTimer = 0f;
+                UpdateSprite();
+            }
+            else
+            {
+                // 没有种子
+                Debug.Log("种子不足，无法种植！");
+            }
         }
-
-        UpdateSprite();
     }
     //自动生长
     void AutoGrow()
@@ -203,4 +214,5 @@ public class GrowBlock : MonoBehaviour
             Hide();
         }
     }
+    
 }
