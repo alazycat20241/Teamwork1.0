@@ -23,7 +23,11 @@ public class EnemyTrapper : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;

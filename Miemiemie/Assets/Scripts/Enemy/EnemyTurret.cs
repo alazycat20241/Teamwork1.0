@@ -19,7 +19,11 @@ public class EnemyTurret : MonoBehaviour
     void Start()
     {
         // 找玩家
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
         attackTimer = attackCooldown;
 
         // 订阅死亡事件

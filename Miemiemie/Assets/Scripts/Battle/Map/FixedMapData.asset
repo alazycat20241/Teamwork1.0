@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faefbe7b2a8014b479988c0e170c500f, type: 3}
+  m_Name: FixedMapData
+  m_EditorClassIdentifier: 
+  mapName: "\u7B2C\u4E00\u7AE0"
+  rooms:
+  - roomId: 0
+    roomName: StartRoom
+    roomType: 0
+    customRoomPrefab: {fileID: 0}
+    mapPosition: {x: 0, y: 0}
+    isVisited: 0
+    leftExit:
+      targetRoomId: 1
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    rightExit:
+      targetRoomId: 2
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    battleSetting:
+      enemies: []
+      rewardGold: 0
+    shopSetting:
+      items: []
+    eventSetting:
+      eventDescription: 
+      eventType: 0
+  - roomId: 1
+    roomName: Battle000
+    roomType: 1
+    customRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
+      type: 3}
+    mapPosition: {x: 0, y: 0}
+    isVisited: 0
+    leftExit:
+      targetRoomId: 2
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    rightExit:
+      targetRoomId: 0
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    battleSetting:
+      enemies:
+      - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
+          type: 3}
+        spawnPosition: {x: 5.5, y: 4}
+        isElite: 0
+      - enemyPrefab: {fileID: 6077347206989387153, guid: 1a65feff33bd9c741a50e0539d54d920,
+          type: 3}
+        spawnPosition: {x: -4.4, y: -1.6}
+        isElite: 0
+      rewardGold: 0
+    shopSetting:
+      items: []
+    eventSetting:
+      eventDescription: 
+      eventType: 0
+  - roomId: 2
+    roomName: Battle
+    roomType: 1
+    customRoomPrefab: {fileID: 1970818365789911129, guid: a591298431a1cc2409edaa392035323b,
+      type: 3}
+    mapPosition: {x: 0, y: 0}
+    isVisited: 0
+    leftExit:
+      targetRoomId: 0
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    rightExit:
+      targetRoomId: 1
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    battleSetting:
+      enemies:
+      - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
+          type: 3}
+        spawnPosition: {x: -2.8, y: 0.95}
+        isElite: 0
+      - enemyPrefab: {fileID: 2152430162355477292, guid: 73cfa637bd912b744b9ad02b22f437e3,
+          type: 3}
+        spawnPosition: {x: -5.4, y: -0.8}
+        isElite: 0
+      - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
+          type: 3}
+        spawnPosition: {x: -5.4, y: 0.95}
+        isElite: 0
+      rewardGold: 0
+    shopSetting:
+      items: []
+    eventSetting:
+      eventDescription: 
+      eventType: 0
