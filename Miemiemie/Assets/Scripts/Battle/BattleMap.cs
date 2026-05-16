@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 战斗地图控制器
@@ -27,6 +28,9 @@ public class BattleMap : SingletonMono<BattleMap>
     // 按选择顺序记录玩家选过的所有节点，用来画连线
     private List<MapNode> selectedPath = new List<MapNode>();
 
+    //记录当前层两条线的引用
+    private GameObject lineToUpper;   // 连到上路节点的线
+    private GameObject lineToLower;   // 连到下路节点的线
     protected override void Awake()
     {
         base.Awake();
@@ -116,8 +120,19 @@ public class BattleMap : SingletonMono<BattleMap>
         }
 
         currentLevel = level;
-    }
 
+        // 画线：从上一层的选择点到这一层的两个节点
+        if (level > 0 && selectedPath.Count > 0)
+        {
+            MapNode fromNode = selectedPath[selectedPath.Count - 1];
+
+            if (mapNodes[level].Length >= 1)
+                lineToUpper = DrawLine(fromNode, mapNodes[level][0], Color.white);
+
+            if (mapNodes[level].Length >= 2)
+                lineToLower = DrawLine(fromNode, mapNodes[level][1], Color.white);
+        }
+    }
     /// <summary>
     /// 从战斗、事件、商店中随机返回一种（不包含Boss和Start）
     /// </summary>
@@ -154,7 +169,19 @@ public class BattleMap : SingletonMono<BattleMap>
         if (mapNodes[currentLevel].Length > 1)
         {
             int otherIndex = (nodeIndex == 0) ? 1 : 0;
-            mapNodes[currentLevel][otherIndex].SetReachable(false);
+            mapNodes[currentLevel][otherIndex].Hide();
+        }
+
+        // 删掉没被选中的那条线
+        if (nodeIndex == 0 && lineToLower != null)
+        {
+            Destroy(lineToLower);
+            lineToLower = null;
+        }
+        else if (nodeIndex == 1 && lineToUpper != null)
+        {
+            Destroy(lineToUpper);
+            lineToUpper = null;
         }
 
         // 如果还没到最后一层，解锁下一层
@@ -162,9 +189,6 @@ public class BattleMap : SingletonMono<BattleMap>
         {
             RevealLevel(currentLevel + 1);
         }
-
-        // 重新画线
-        DrawAllLines();
     }
 
     /// <summary>
@@ -216,54 +240,41 @@ public class BattleMap : SingletonMono<BattleMap>
         }
     }
 
-    /// <summary>
-    /// 画所有连线：玩家路径（白线）+ 当前层节点间横线（灰线）
-    /// </summary>
-    private void DrawAllLines()
-    {
-        // 删除旧线
-        foreach (Transform child in transform)
-        {
-            if (child.name.StartsWith("Line"))
-            {
-                Destroy(child.gameObject);
-            }
-        }
-
-        // 画玩家选择路径的白线
-        for (int i = 0; i < selectedPath.Count - 1; i++)
-        {
-            DrawLine(selectedPath[i], selectedPath[i + 1], Color.white);
-        }
-
-        // 如果当前层有2个节点，画它们之间的灰色横线
-        if (currentLevel < maxLevel && mapNodes[currentLevel].Length == 2)
-        {
-            MapNode upper = mapNodes[currentLevel][0];
-            MapNode lower = mapNodes[currentLevel][1];
-
-            if (upper != null && lower != null && upper.isUsed && lower.isUsed)
-            {
-                DrawLine(upper, lower, Color.gray);
-            }
-        }
-    }
 
     /// <summary>
     /// 在两个节点之间画一条线
     /// </summary>
-    private void DrawLine(MapNode a, MapNode b, Color color)
+    private GameObject DrawLine(MapNode a, MapNode b, Color color)
     {
+        RectTransform rectA = a.GetComponent<RectTransform>();
+        RectTransform rectB = b.GetComponent<RectTransform>();
+        RectTransform parentRt = a.transform.parent.parent.GetComponent<RectTransform>(); // Canvas
+
+        // 都转成相对于 Canvas 的坐标
+        Vector2 posA = rectA.anchoredPosition + (Vector2)a.transform.parent.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 posB = rectB.anchoredPosition + (Vector2)b.transform.parent.GetComponent<RectTransform>().anchoredPosition;
+
+        // 创建线物体，挂到 Canvas 下
         GameObject lineObj = new GameObject("Line");
-        lineObj.transform.SetParent(transform);
+        lineObj.transform.SetParent(parentRt, false);
 
-        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
-        lr.startWidth = 2f;
-        lr.endWidth = 2f;
-        lr.startColor = color;
-        lr.endColor = color;
+        RectTransform lineRt = lineObj.AddComponent<RectTransform>();
+        lineRt.pivot = new Vector2(0, 0.5f);
 
-        lr.SetPositions(new Vector3[] { a.transform.position, b.transform.position });
+        Image img = lineObj.AddComponent<Image>();
+        img.color = color;
+        img.raycastTarget = false;
+
+        // 计算方向和距离
+        Vector2 dir = posB - posA;
+        float distance = dir.magnitude;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        lineRt.anchoredPosition = posA;
+        lineRt.sizeDelta = new Vector2(distance, 3f);
+        lineRt.localRotation = Quaternion.Euler(0, 0, angle);
+
+        return lineObj;   // 返回线物体
     }
 
     /// <summary>
@@ -282,7 +293,6 @@ public class BattleMap : SingletonMono<BattleMap>
         }
 
         RevealLevel(0);
-        DrawAllLines();
     }
 
     protected override void OnDestroy()

@@ -68,9 +68,6 @@ public class MapNode : MonoBehaviour
         isVisited = true;
         isReachable = false;
         button.interactable = false;                     // 按钮不可交互
-
-        // 变成暗色表示已经选过了
-        nodeImage.color = new Color(0.4f, 0.4f, 0.4f, 1f);
     }
 
     /// <summary>
@@ -131,5 +128,16 @@ public class MapNode : MonoBehaviour
         button.interactable = false;
         nodeImage.color = Color.white;   // 恢复白色
         gameObject.SetActive(false);     // 隐藏
+    }
+
+    /// <summary>
+    /// 隐藏节点（未被选择的那个直接消失）
+    /// </summary>
+    public void Hide()
+    {
+        isUsed = false;
+        isReachable = false;
+        button.interactable = false;
+        gameObject.SetActive(false);
     }
 }
