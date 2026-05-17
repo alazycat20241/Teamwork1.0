@@ -65,7 +65,7 @@ public class Health : MonoBehaviour,IDamageable
         // 判断是不是玩家
         if (gameObject.CompareTag("Player"))
         {
-            FixedRoomManager.Instance.ReturnToHome();
+            FixedRoomManager.Instance.ReturnToHome(false);
         }
         gameObject.SetActive(false);
     }

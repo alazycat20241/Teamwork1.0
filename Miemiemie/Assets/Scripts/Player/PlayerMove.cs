@@ -62,4 +62,20 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isStunned = false;
     }
+
+    /// <summary>
+    /// 定身（直到调用 Resume 解除）
+    /// </summary>
+    public void Freeze()
+    {
+        isStunned = true;
+    }
+
+    /// <summary>
+    /// 解除定身
+    /// </summary>
+    public void Resume()
+    {
+        isStunned = false;
+    }
 }

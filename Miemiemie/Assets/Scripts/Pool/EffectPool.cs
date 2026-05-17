@@ -29,8 +29,11 @@ public class EffectPool : MonoBehaviour
     /// </summary>
     public void PlayAt(Vector3 position)
     {
-        GameObject effect = pool.Get();
-        effect.transform.position = position;
+        GameObject effect = Get();
+        if (effect != null)
+        {
+            effect.transform.position = position;
+        }
     }
 
     /// <summary>
@@ -38,7 +41,20 @@ public class EffectPool : MonoBehaviour
     /// </summary>
     public GameObject Get()
     {
-        return pool.Get();
+        GameObject obj = null;
+        try
+        {
+            obj = pool.Get();
+            if (obj == null)
+            {
+                obj = Instantiate(effectPrefab);
+            }
+        }
+        catch (MissingReferenceException)
+        {
+            obj = Instantiate(effectPrefab);
+        }
+        return obj;
     }
 
     /// <summary>
@@ -47,5 +63,23 @@ public class EffectPool : MonoBehaviour
     public void Release(GameObject effect)
     {
         pool.Release(effect);
+    }
+
+    public void Clear()
+    {
+        try
+        {
+            pool?.Clear();
+        }
+        catch (MissingReferenceException) { }
+    }
+
+    void OnDestroy()
+    {
+        try
+        {
+            pool?.Clear();
+        }
+        catch (MissingReferenceException) { }
     }
 }

@@ -40,7 +40,10 @@ public class BulletPool
 
     private void OnDestroyItem(BulletBehav bh)
     {
-        GameObject.Destroy(bh.gameObject);
+        if (bh != null && bh.gameObject != null)
+        {
+            GameObject.Destroy(bh.gameObject);
+        }
     }
     private void OnRealseItem(BulletBehav bh)
     {
@@ -48,7 +51,20 @@ public class BulletPool
     }
     private void OnGetItem(BulletBehav bh)
     {
+        if (bh == null || bh.gameObject == null) return;
         InitBullet(bh); 
         bh.gameObject.SetActive(true);
+    }
+
+    public void Clear()
+    {
+        try
+        {
+            pool?.Clear();
+        }
+        catch (MissingReferenceException)
+        {
+            // 对象已销毁，忽略
+        }
     }
 }

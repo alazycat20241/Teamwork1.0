@@ -23,7 +23,6 @@ public class ExitTriggerZone : MonoBehaviour
     {
         isActive = true;
         triggerCollider.enabled = true;
-        Debug.Log("TRUE");
 
     }
 
@@ -31,26 +30,22 @@ public class ExitTriggerZone : MonoBehaviour
     {
         isActive = false;
         triggerCollider.enabled = false;
-        Debug.Log("FALSE");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!isActive)
         {
-            Debug.Log("碰撞了但 isActive 是 false");
             return;
         }
 
         if (exitData == null)
         {
-            Debug.LogError($"exitData 是 null！物体名: {gameObject.name}");
             return;
         }
 
         if (FixedRoomManager.Instance == null)
         {
-            Debug.LogError("FixedRoomManager.Instance 是 null！");
             return;
         }
 

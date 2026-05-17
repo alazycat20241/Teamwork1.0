@@ -5,6 +5,8 @@ using UnityEngine.Pool;
 
 public class SporePool : MonoBehaviour
 {
+    public static SporePool Instance { get; private set; }  // ← 加这行
+
     [Header("孢子预制体")]
     [SerializeField] private GameObject sporePrefab;
 
@@ -40,27 +42,22 @@ public class SporePool : MonoBehaviour
         for (int i = 0; i < burstCount; i++)
         {
             GameObject spore = pool.Get();            // 从池里拿
+            if (spore == null) continue;
+
             spore.transform.position = position;       // 设位置
 
             SporeBehav behav = spore.GetComponent<SporeBehav>();
-            behav.moveSpeed = moveSpeed * Random.Range(0.2f, 0.8f);  // 随机速度，有远有近
-            
-            // 改成随机存活时间
-            behav.lifetime = lifetime + Random.Range(-1f, 1f);   // 有的早1秒消失，有的晚1秒消失
-        }
+            if (behav != null)
+            {
+                behav.moveSpeed = moveSpeed * Random.Range(0.2f, 0.8f);  // 随机速度，有远有近
 
-        for (int i = 0; i < burstCount; i++)
-        {
-            GameObject spore = pool.Get();
-            spore.transform.position = position;
+                // 改成随机存活时间
+                behav.lifetime = lifetime + Random.Range(-1f, 1f);   // 有的早1秒消失，有的晚1秒消失
+            }
 
             // 随机大小：0.5倍 到 1.5倍之间
             float randomScale = Random.Range(0.08f, 0.2f);
             spore.transform.localScale = Vector3.one * randomScale;
-
-            SporeBehav behav = spore.GetComponent<SporeBehav>();
-            behav.moveSpeed = moveSpeed * Random.Range(0.6f, 1f);
-            behav.lifetime = lifetime + Random.Range(-1f, 1f);
         }
     }
 
@@ -69,6 +66,27 @@ public class SporePool : MonoBehaviour
     /// </summary>
     public void ReleaseSpore(GameObject spore)
     {
-        pool.Release(spore);
+        if (spore != null) pool.Release(spore);
+    }
+
+    /// <summary>
+    /// 清空池子（场景切换前调用）
+    /// </summary>
+    public void Clear()
+    {
+        try
+        {
+            pool?.Clear();
+        }
+        catch (MissingReferenceException) { }
+    }
+
+    void OnDestroy()
+    {
+        try
+        {
+            pool?.Clear();
+        }
+        catch (MissingReferenceException) { }
     }
 }

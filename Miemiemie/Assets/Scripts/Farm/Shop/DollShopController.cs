@@ -1,4 +1,4 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ public class DollShopController : MonoBehaviour
 
     public int playerGold = 100;
 
-    [Header("农场商店面板")]
-    [SerializeField] private SlidePanel FarmPanel;              // 商店面板
-    [SerializeField] private Button backButton;                // 返回按钮
+    [Header("鍐滃満鍟嗗簵闈㈡澘")]
+    //[SerializeField] private SlidePanel FarmPanel;              // 鍟嗗簵闈㈡澘
+    [SerializeField] private Button backButton;                // 杩斿洖鎸夐挳
 
     private void Awake()
     {
@@ -23,8 +23,8 @@ public class DollShopController : MonoBehaviour
 
     public void closeMap()
     {
-    
-        FarmPanel.Close();
+        //FarmPanel.Close();
+        MapUIManager.Instance.CloseMap(); 
     }
     void OnEnable()
     {
@@ -59,13 +59,13 @@ public class DollShopController : MonoBehaviour
     {
         if (playerGold < item.price)
         {
-            Debug.Log("金币不够");
+            Debug.Log("閲戝竵涓嶅");
             return;
         }
         else
         {
             playerGold -= item.price;
-            Debug.Log("购买了：" + item.itemName);
+            Debug.Log("璐拱浜嗭細" + item.itemName);
 
             if (item.itemID == 1)
             {

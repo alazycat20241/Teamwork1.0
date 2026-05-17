@@ -26,7 +26,7 @@ MonoBehaviour:
       exitDescription: 
       exitPosition: {x: 0, y: 0}
     rightExit:
-      targetRoomId: 2
+      targetRoomId: 10
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -101,6 +101,35 @@ MonoBehaviour:
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
         spawnPosition: {x: -5.4, y: 0.95}
+        isElite: 0
+      rewardGold: 0
+    shopSetting:
+      items: []
+    eventSetting:
+      eventDescription: 
+      eventType: 0
+  - roomId: 10
+    roomName: Boss
+    roomType: 4
+    customRoomPrefab: {fileID: 3339322651253022650, guid: 2ae2d09aa4d87504a84f3d4295ba8378,
+      type: 3}
+    mapPosition: {x: 0, y: 0}
+    isVisited: 0
+    leftExit:
+      targetRoomId: 0
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    rightExit:
+      targetRoomId: 1
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    battleSetting:
+      enemies:
+      - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
+          type: 3}
+        spawnPosition: {x: 0, y: 0}
         isElite: 0
       rewardGold: 0
     shopSetting:

@@ -118,7 +118,6 @@ public class FixedRoomManager : MonoBehaviour
     // 标记房间已通关
     public void MarkRoomCleared(string roomId)
     {
-        Debug.Log($"MarkRoomCleared: {roomId}");
         if (clearedRooms.ContainsKey(roomId))
         {
             clearedRooms[roomId] = true;
@@ -160,8 +159,21 @@ public class FixedRoomManager : MonoBehaviour
     }
 
     // 返回家园
-    public void ReturnToHome()
+    public void ReturnToHome(bool victory)
     {
+        // 战败处理：通知行动点管理器
+        if (!victory && ActionPointManager.Instance != null)
+        {
+            ActionPointManager.Instance.DefeatedInHunt();
+        }
+
+        // ========== 清空所有对象池 ==========
+        if (PoolManager.Instance != null)PoolManager.Instance.ClearAllPools();
+
+        if (EffectPool.Instance != null)EffectPool.Instance.Clear();
+
+        if (SporePool.Instance != null)SporePool.Instance.Clear();
+
         // 销毁玩家
         if (playerInstance != null)
         {

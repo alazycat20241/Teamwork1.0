@@ -20,4 +20,13 @@ public class PoolManager : Singleton<PoolManager>
         }
         return pools[bulletObject.ID];
     }
+
+    public void ClearAllPools()
+    {
+        foreach (var pool in pools.Values)
+        {
+            pool.Clear();
+        }
+        pools.Clear();
+    }
 }
