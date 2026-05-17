@@ -5,12 +5,11 @@ using System.Collections.Generic;
 
 public class DollShopController : MonoBehaviour
 {
+    
     public List<ItemData> itemsForSale = new();
 
     public GameObject shopItemPrefab;
     public Transform contentParent;
-
-    public int playerGold = 100;
 
     [Header("农场商店面板")]
     //[SerializeField] private SlidePanel FarmPanel;              // 商店面板
@@ -19,6 +18,7 @@ public class DollShopController : MonoBehaviour
     private void Awake()
     {
         backButton.onClick.AddListener(closeMap);
+        
     }
 
     public void closeMap()
@@ -57,20 +57,20 @@ public class DollShopController : MonoBehaviour
 
     void Buy(ItemData item)
     {
-        if (playerGold < item.price)
+        var inv = PlayerInventory.Instance;
+        if (inv.playerGold < item.price)
         {
             Debug.Log("金币不够");
             return;
         }
         else
         {
-            playerGold -= item.price;
+            inv.playerGold -= item.price;
             Debug.Log("购买了：" + item.itemName);
 
             if (item.itemID == 1)
             {
                 PlayerInventory.Instance.seedCount++;
-                PlayerInventory.Instance.UpdateUI();
             }
         }
     }

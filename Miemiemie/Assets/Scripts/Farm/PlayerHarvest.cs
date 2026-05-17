@@ -3,16 +3,20 @@ using UnityEngine;
 
 public class PlayerHarvest : MonoBehaviour
 {
+
     //作物储存
-    public int HarvestCount = 0; //作物数量
+    
     [SerializeField] private TextMeshProUGUI HarvestText;  //UI显示
+    
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        
         // 判断是否是 Harvest
         if (other.CompareTag("Harvest"))
         {
-            HarvestCount += 1;
+            PlayerInventory.Instance.HarvestCount += 1;
             UpdateUI();
             barn();
             Destroy(other.gameObject);
@@ -20,7 +24,7 @@ public class PlayerHarvest : MonoBehaviour
     }
     void UpdateUI()
     {
-        HarvestText.text = "Harvest:" + HarvestCount;
+        HarvestText.text = "Harvest:" + PlayerInventory.Instance.HarvestCount;
     }
 
     /*void Harvest(GameObject target)
@@ -35,10 +39,10 @@ public class PlayerHarvest : MonoBehaviour
     //判断是否超过仓库最大容量20
     void barn()
     {
-        if (HarvestCount > 20)
+        if (PlayerInventory.Instance.HarvestCount > 20)
         {
-            HarvestCount = 20;
-            HarvestText.text = "Harvest:" + HarvestCount + "   Warning! The barn is full.";
+            PlayerInventory.Instance.HarvestCount = 20;
+            HarvestText.text = "Harvest:" + PlayerInventory.Instance.HarvestCount + "   Warning! The barn is full.";
         }
     }
 }

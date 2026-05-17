@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BagUI : MonoBehaviour
 {
@@ -10,12 +9,12 @@ public class BagUI : MonoBehaviour
     [Header("背包面板")]
     public SlidePanel bagPanel;
 
-    [Header("UI引用")]
-    public Transform contentParent;
-    public GameObject bagItemPrefab;
+    [Header("UI文本")]
+    public TextMeshProUGUI resourceText;
 
-    [Header("种子数据")]
-    public ItemData seedItem;   // 在 Inspector 里拖一个种子 ItemData
+    [Header("地图内的按钮")]
+    [SerializeField] private Button OpenButton;
+    [SerializeField] private Button BackButton;
 
     private void Awake()
     {
@@ -26,15 +25,20 @@ public class BagUI : MonoBehaviour
         }
         Instance = this;
     }
-
-    private void OnEnable()
+    void OnEnable()
     {
-        RefreshBag();
+        // 绑定按钮事件
+        OpenButton.onClick.AddListener(OpenBag);
+        BackButton.onClick.AddListener(CloseBag);
+        Debug.Log($"111");
     }
+   
 
     public void OpenBag()
     {
         bagPanel.Open();
+        RefreshBag();
+        Debug.Log($"222");
     }
 
     public void CloseBag()
@@ -44,21 +48,12 @@ public class BagUI : MonoBehaviour
 
     public void RefreshBag()
     {
-        foreach (Transform t in contentParent)
-            Destroy(t.gameObject);
+        var inv = PlayerInventory.Instance;
+      
 
-        int count = PlayerInventory.Instance.seedCount;
-
-        for (int i = 0; i < count; i++)
-        {
-            var go = Instantiate(bagItemPrefab, contentParent);
-            SetupBagItem(go, seedItem);
-        }
-    }
-
-    private void SetupBagItem(GameObject go, ItemData item)
-    {
-        go.transform.Find("Image").GetComponent<Image>().sprite = item.icon;
-        go.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
+        resourceText.text =
+            $"Seed: {inv.seedCount}\n" +
+            $"Gold: {inv.playerGold}\n" +
+            $"Fertilizer: {inv.HarvestCount}";
     }
 }
