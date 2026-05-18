@@ -13,6 +13,10 @@ public class PlayerMove : MonoBehaviour
     // 用于定身
     private bool isStunned = false;
 
+    //动画
+    private Animator anim;                    
+    private SpriteRenderer spriteRenderer;   
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,6 +28,9 @@ public class PlayerMove : MonoBehaviour
         // 俯视角2D设置
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
+
+        anim = GetComponent<Animator>();                    
+        spriteRenderer = GetComponent<SpriteRenderer>();    
     }
 
     void Update()
@@ -40,6 +47,16 @@ public class PlayerMove : MonoBehaviour
 
         // 归一化防止斜向移动过快
         movement = movement.normalized;
+
+        // ===== 动画与翻转 =====
+        bool isMoving = movement.magnitude > 0.01f;
+        anim?.SetBool("IsMoving", isMoving);
+
+        if (movement.x > 0.01f)
+            spriteRenderer.flipX = false;   // 向右
+        else if (movement.x < -0.01f)
+            spriteRenderer.flipX = true;    // 向左
+                                            // 上下移动时不改变 flipX，保持上次左右朝向
     }
 
     void FixedUpdate()

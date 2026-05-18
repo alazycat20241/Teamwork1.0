@@ -84,7 +84,7 @@ MonoBehaviour:
       exitDescription: 
       exitPosition: {x: 0, y: 0}
     rightExit:
-      targetRoomId: 1
+      targetRoomId: 10
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
