@@ -917,13 +917,13 @@ MonoBehaviour:
     type: 3}
   battleRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
     type: 3}
-  eventRoomPrefab: {fileID: 2579786647367717209, guid: ffac585084e7e5b468bc2d3e0f1e1ea4,
+  eventRoomPrefab: {fileID: 2275245133725615750, guid: fb0a707eca132e944b4f6578944f419a,
     type: 3}
   shopRoomPrefab: {fileID: 2579786647367717209, guid: ffac585084e7e5b468bc2d3e0f1e1ea4,
     type: 3}
   bossRoomPrefab: {fileID: 3339322651253022650, guid: 2ae2d09aa4d87504a84f3d4295ba8378,
     type: 3}
-  playerPrefab: {fileID: 2268229249578201385, guid: fb3e3ef660fbcc74eb1e0d6f4f0ea0a6,
+  playerPrefab: {fileID: 4016356464010253478, guid: fb3e3ef660fbcc74eb1e0d6f4f0ea0a6,
     type: 3}
 --- !u!4 &1213637820
 Transform:

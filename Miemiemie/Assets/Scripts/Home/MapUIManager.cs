@@ -27,7 +27,7 @@ public class MapUIManager : MonoBehaviour
     [SerializeField] private Button backButton;                // 返回按钮
 
     private SlidePanel currentOpenPanel;                       // 当前打开的商店面板
-    private PlayerMove currentPlayer;                          // 缓存的玩家引用，用于定身/解冻
+    //private PlayerMove currentPlayer;                          // 缓存的玩家引用，用于定身/解冻
 
     void Awake()
     {
@@ -62,11 +62,10 @@ public class MapUIManager : MonoBehaviour
     public void OpenMap(PlayerMove player)
     {
         // 缓存玩家引用
-        currentPlayer = player;
-
+        //currentPlayer = player;
         // 定住玩家，防止移动导致面板关闭
-        FreezePlayer();
-
+        //FreezePlayer();
+        Time.timeScale = 0f;
         // 打开地图面板
         mapPanel.Open();
     }
@@ -109,7 +108,7 @@ public class MapUIManager : MonoBehaviour
 
         // 关闭所有面板
         CloseAll();
-
+        Time.timeScale = 1f; 
         // 加载战斗场景
         UnityEngine.SceneManagement.SceneManager.LoadScene("Battle");
     }
@@ -122,18 +121,7 @@ public class MapUIManager : MonoBehaviour
     /// </summary>
     public void CloseMap()
     {
-        if (currentOpenPanel != null)
-        {
-            currentOpenPanel.Close(() =>
-            {
-                currentOpenPanel = null;
-                CheckUnfreeze();  // 地图动画结束后检测
-            });
-            return;
-        }
-
-        // 没有商店开着，直接关地图
-        mapPanel.Close(() =>CheckUnfreeze());  // 动画结束后检测
+        mapPanel.Close(() => CheckResume());
     }
 
 
@@ -146,7 +134,7 @@ public class MapUIManager : MonoBehaviour
     void SwitchPanel(SlidePanel newPanel)
     {
         // 地图关闭，打开新面板
-        mapPanel.Close();
+        //mapPanel.Close();
         newPanel.Open();
         currentOpenPanel = newPanel;
     }
@@ -168,34 +156,35 @@ public class MapUIManager : MonoBehaviour
         mapPanel.Close();
     }
 
-    /// <summary>
     /// 定住玩家
+    //void FreezePlayer()
+    //{
+    //    if (currentPlayer != null)
+    //    {
+    //        currentPlayer.Freeze();
+    //    }
+    //}
+
+    /// <summary>
+    /// 判断是否应该恢复游戏时间
     /// </summary>
-    void FreezePlayer()
+    void CheckResume()
     {
-        if (currentPlayer != null)
+        bool mapClosed = !mapPanel.gameObject.activeSelf;
+        bool shopClosed = currentOpenPanel == null || !currentOpenPanel.gameObject.activeSelf;
+
+        if (mapClosed && shopClosed)
         {
-            currentPlayer.Freeze();
+            Time.timeScale = 1f;
         }
     }
 
-    /// <summary>
-    /// 检查是否所有面板都已关闭
-    /// 如果是，则解除玩家定身
-    /// </summary>
-    void CheckUnfreeze()
+    public void CloseCurrentShop()
     {
-        // 地图是否已关闭
-        bool mapClosed = !mapPanel.gameObject.activeSelf;
-
-        // 商店是否已关闭（没有打开的面板）
-        bool shopClosed = currentOpenPanel == null || !currentOpenPanel.gameObject.activeSelf;
-
-        // 都关了才解冻
-        if (mapClosed && shopClosed && currentPlayer != null)
+        if (currentOpenPanel != null)
         {
-            currentPlayer.Resume();
-            currentPlayer = null;  // 清空引用
+            currentOpenPanel.Close();
+            currentOpenPanel = null;
         }
     }
 }

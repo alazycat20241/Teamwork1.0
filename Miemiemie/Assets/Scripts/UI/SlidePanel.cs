@@ -6,6 +6,7 @@ using UnityEngine;
 /// 通用面板滑入滑出组件
 /// 挂到任意面板上即可实现从下方（或右方）滑入/滑出动画
 /// 使用方法：panel.Open() 打开，panel.Close() 关闭
+/// 支持两种时间模式：受游戏时间缩放影响 / 独立于游戏时间（用于暂停菜单等）
 /// </summary>
 public class SlidePanel : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class SlidePanel : MonoBehaviour
     [SerializeField] private float slideDuration = 0.3f;      // 滑动动画时长（秒）
     [SerializeField] private float slideDistance = 800f;      // 滑动距离（屏幕下方的距离，根据分辨率调整）
     [SerializeField] private bool slideFromBottom = true;     // true=从下方滑入，false=从右方滑入
+    [SerializeField] private bool ignoreTimeScale = false;    // true=不受Time.timeScale影响（用于暂停菜单），false=受游戏时间缩放影响
 
     private RectTransform rectTransform;                       // 面板的RectTransform，用于控制位置
     private CanvasGroup canvasGroup;                           // 控制面板的透明度、交互和射线遮挡
@@ -49,15 +51,7 @@ public class SlidePanel : MonoBehaviour
     private void SetToClosedState()
     {
         // 根据滑动方向确定关闭位置
-        Vector2 closedPos;
-        if (slideFromBottom)
-        {
-            closedPos = new Vector2(0, -slideDistance);   // 屏幕下方外
-        }
-        else
-        {
-            closedPos = new Vector2(slideDistance, 0);    // 屏幕右方外
-        }
+        Vector2 closedPos = GetClosedPosition();
 
         // 设置位置、透明度、交互状态
         rectTransform.anchoredPosition = closedPos;
@@ -174,7 +168,13 @@ public class SlidePanel : MonoBehaviour
 
         while (elapsed < slideDuration)
         {
-            elapsed += Time.deltaTime;
+            // ========== 关键区别：根据 ignoreTimeScale 选择时间增量 ==========
+            // 如果 ignoreTimeScale = true：使用 unscaledDeltaTime（不受 Time.timeScale 影响）
+            // 如果 ignoreTimeScale = false：使用 deltaTime（受 Time.timeScale 影响）
+            float delta = ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime;
+            elapsed += delta;
+
+            // 计算动画进度（0→1）
             float t = elapsed / slideDuration;
 
             // 使用SmoothStep缓动曲线，让动画有"减速"效果，更自然
@@ -182,7 +182,9 @@ public class SlidePanel : MonoBehaviour
 
             // 同时插值位置和透明度
             rectTransform.anchoredPosition = Vector2.Lerp(from, to, t);
-            canvasGroup.alpha = isOpening ? t : (1f - t);  // 打开时0→1，关闭时1→0
+
+            // 透明度：打开时从0到1，关闭时从1到0
+            canvasGroup.alpha = isOpening ? t : (1f - t);
 
             yield return null;
         }
@@ -208,6 +210,16 @@ public class SlidePanel : MonoBehaviour
             // 触发打开完成事件
             OnOpenComplete?.Invoke();
             OnOpenComplete = null;
+        }
+    }
+
+    void OnDestroy()
+    {
+        // 如果有正在播放的动画，停止它
+        if (currentAnimation != null)
+        {
+            StopCoroutine(currentAnimation);
+            currentAnimation = null;
         }
     }
 }

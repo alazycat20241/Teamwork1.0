@@ -4,8 +4,8 @@ using UnityEngine;
 public class Health : MonoBehaviour,IDamageable
 {
     [Header("血量设置")]
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float currentHealth;
+    public float maxHealth = 100f;
+    public float currentHealth;
 
     [Header("无敌设置")]
     [SerializeField] private float invincibilityDuration = 0.5f; // 受伤后无敌时间
@@ -66,6 +66,12 @@ public class Health : MonoBehaviour,IDamageable
         if (gameObject.CompareTag("Player"))
         {
             FixedRoomManager.Instance.ReturnToHome(false);
+        }
+        // ========== 如果是敌人，清理激光特效 ==========
+        EnemyLaser laser = GetComponent<EnemyLaser>();
+        if (laser != null)
+        {
+            laser.CleanupLaser();
         }
         gameObject.SetActive(false);
     }

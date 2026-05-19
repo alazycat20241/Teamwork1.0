@@ -6,7 +6,6 @@ public class EnemyTurret : MonoBehaviour
     [SerializeField] private float attackRange = 8f;        // 攻击范围（玩家进入才打）
     [SerializeField] private float attackCooldown = 2f;     // 攻击间隔（秒）
     [SerializeField] private GameObject sporeCloudPrefab;   // 孢子云预制体（范围伤害）
-    [SerializeField] private float throwDamage = 10f;       // 每次伤害
 
     [Header("死亡爆炸")]
     [SerializeField] private GameObject deathExplosionPrefab; // 死亡爆炸预制体

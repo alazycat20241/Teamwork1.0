@@ -99,6 +99,7 @@ public class FixedRoomManager : MonoBehaviour
                 playerInstance.transform.position = roomScript.playerSpawnPoint.position;
 
                 // 重置玩家状态（可选）
+                ResetPlayerState();
             }
         }
 
@@ -141,7 +142,22 @@ public class FixedRoomManager : MonoBehaviour
     {
         return playerInstance;
     }
+    private void ResetPlayerState()
+    {
+        if (playerInstance == null) return;
 
+        Health playerHealth = playerInstance.GetComponent<Health>();
+        if (playerHealth != null)
+        {
+            playerHealth.currentHealth = playerHealth.maxHealth;
+        }
+
+        Rigidbody2D rb = playerInstance.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
     private GameObject GetRoomPrefab(RoomConfig roomConfig)
     {
         if (roomConfig.customRoomPrefab != null)

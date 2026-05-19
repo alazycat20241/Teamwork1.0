@@ -29,7 +29,7 @@ public abstract class RoomBase : MonoBehaviour
         }
     }
 
-    private void SetupExitData()
+    public void SetupExitData()
     {
         if (roomConfig.leftExit != null && !string.IsNullOrEmpty(roomConfig.leftExit.targetRoomId))
         {

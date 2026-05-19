@@ -53,9 +53,9 @@ public class PlayerMove : MonoBehaviour
         anim?.SetBool("IsMoving", isMoving);
 
         if (movement.x > 0.01f)
-            spriteRenderer.flipX = false;   // 向右
+            spriteRenderer.flipX = true;   // 向右
         else if (movement.x < -0.01f)
-            spriteRenderer.flipX = true;    // 向左
+            spriteRenderer.flipX = false;    // 向左
                                             // 上下移动时不改变 flipX，保持上次左右朝向
     }
 

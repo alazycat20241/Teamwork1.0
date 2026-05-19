@@ -32,6 +32,7 @@ public class RoomConfig
 
     [Header("事件配置(仅事件房间)")]
     public EventSetting eventSetting;
+    public EventData customEventData;  // 拖入具体事件
 }
 
 // 出口配置

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class DollShopController : MonoBehaviour
+public class FarmShopController : MonoBehaviour
 {
     
     public List<ItemData> itemsForSale = new();
@@ -23,8 +23,7 @@ public class DollShopController : MonoBehaviour
 
     public void closeMap()
     {
-        //FarmPanel.Close();
-        MapUIManager.Instance.CloseMap(); 
+        MapUIManager.Instance.CloseCurrentShop();
     }
     void OnEnable()
     {

@@ -1,4 +1,4 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
@@ -6,13 +6,13 @@ public class BagUI : MonoBehaviour
 {
     public static BagUI Instance { get; private set; }
 
-    [Header("背包面板")]
+    [Header("鑳屽寘闈㈡澘")]
     public SlidePanel bagPanel;
 
-    [Header("UI文本")]
+    [Header("UI鏂囨湰")]
     public TextMeshProUGUI resourceText;
 
-    [Header("地图内的按钮")]
+    [Header("鍦板浘鍐呯殑鎸夐挳")]
     [SerializeField] private Button OpenButton;
     [SerializeField] private Button BackButton;
 
@@ -27,10 +27,9 @@ public class BagUI : MonoBehaviour
     }
     void OnEnable()
     {
-        // 绑定按钮事件
+        // 缁戝畾鎸夐挳浜嬩欢
         OpenButton.onClick.AddListener(OpenBag);
         BackButton.onClick.AddListener(CloseBag);
-        Debug.Log($"111");
     }
    
 
@@ -38,7 +37,6 @@ public class BagUI : MonoBehaviour
     {
         bagPanel.Open();
         RefreshBag();
-        Debug.Log($"222");
     }
 
     public void CloseBag()

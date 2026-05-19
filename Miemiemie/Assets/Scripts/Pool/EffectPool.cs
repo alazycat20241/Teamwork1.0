@@ -12,7 +12,14 @@ public class EffectPool : MonoBehaviour
 
     void Awake()
     {
+        // 单例安全检查
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+
         pool = new ObjectPool<GameObject>(
             createFunc: () => Instantiate(effectPrefab),
             actionOnGet: (obj) => obj.SetActive(true),
@@ -37,10 +44,12 @@ public class EffectPool : MonoBehaviour
     }
 
     /// <summary>
-    /// 手动获取特效（不自动回收）
+    /// 手动获取特效
     /// </summary>
     public GameObject Get()
     {
+        if (pool == null) return null;
+
         GameObject obj = null;
         try
         {
@@ -62,6 +71,15 @@ public class EffectPool : MonoBehaviour
     /// </summary>
     public void Release(GameObject effect)
     {
+        if (effect == null || pool == null) return;
+
+        // 停止特效上的协程（如果有）
+        MonoBehaviour behaviour = effect.GetComponent<MonoBehaviour>();
+        if (behaviour != null)
+        {
+            behaviour.StopAllCoroutines();
+        }
+
         pool.Release(effect);
     }
 
@@ -76,10 +94,17 @@ public class EffectPool : MonoBehaviour
 
     void OnDestroy()
     {
+        // 清理池子
         try
         {
             pool?.Clear();
         }
         catch (MissingReferenceException) { }
+
+        // 单例清理
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 }
