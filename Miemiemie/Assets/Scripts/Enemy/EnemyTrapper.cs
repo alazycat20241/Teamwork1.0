@@ -10,7 +10,7 @@ public class EnemyTrapper : MonoBehaviour
     [Header("陷阱")]
     [SerializeField] private GameObject trapPrefab;         // 陷阱预制体
     [SerializeField] private float trapInterval = 7f;       // 种陷阱间隔
-    [SerializeField] private float trapDamage = 10f;        // 陷阱伤害
+    //[SerializeField] private float trapDamage = 10f;        // 陷阱伤害
 
     private Transform player;
     private Rigidbody2D rb;

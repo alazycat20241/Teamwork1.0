@@ -72,6 +72,9 @@ public class ActionPointManager : MonoBehaviour
         // 默认回满
         currentActionPoints = maxActionPoints;
         OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
+
+        // 自动存档到1号槽位
+        SaveManager.Instance.SaveToSlot(0);
     }
 
     /// <summary>

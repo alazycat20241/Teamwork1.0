@@ -9,8 +9,8 @@ public class EnemyTurret : MonoBehaviour
 
     [Header("死亡爆炸")]
     [SerializeField] private GameObject deathExplosionPrefab; // 死亡爆炸预制体
-    [SerializeField] private float explosionRadius = 2f;      // 爆炸半径
-    [SerializeField] private float explosionDamage = 10f;     // 爆炸伤害
+    //[SerializeField] private float explosionRadius = 2f;      // 爆炸半径
+    //[SerializeField] private float explosionDamage = 10f;     // 爆炸伤害
 
     private Transform player;       // 玩家引用
     private float attackTimer;      // 攻击冷却计时器
