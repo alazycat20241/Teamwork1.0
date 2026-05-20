@@ -102,4 +102,15 @@ public class ActionPointManager : MonoBehaviour
     {
         return currentDay;
     }
+
+    ///从存档恢复数据
+    public void LoadData(int savedActionPoints, int savedDay, int savedMaxPoints)
+    {
+        currentActionPoints = savedActionPoints;
+        currentDay = savedDay;
+        maxActionPoints = savedMaxPoints;
+
+        OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
+        OnDayChanged?.Invoke(currentDay);
+    }
 }
