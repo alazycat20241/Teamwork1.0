@@ -202,6 +202,14 @@ public class FixedRoomManager : MonoBehaviour
             Destroy(currentRoomInstance);
         }
 
-        SceneManager.LoadScene("Home");
+        // 过渡加载
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadScene("Home");
+        }
+        else
+        {
+            SceneManager.LoadScene("Home");  // 降级方案
+        }
     }
 }

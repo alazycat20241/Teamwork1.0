@@ -30,7 +30,12 @@ public class MenuUIManager : MonoBehaviour
     public void OpenMenu()
     {
         menuPanel.Open();
-        //openMenuButton.SetActive(false); // 隐藏按钮1，避免重复点击
+    }
+
+    // ========== 按钮1：打开菜单 ==========
+    public void CloseMenu()
+    {
+        menuPanel.Close();
     }
 
     // ========== 菜单面板按钮 ==========
@@ -66,7 +71,14 @@ public class MenuUIManager : MonoBehaviour
     {
         menuPanel.Close(() =>
         {
-            SceneManager.LoadScene("Menu"); // 改成你的菜单场景名
+            if (SceneTransition.Instance != null)
+            {
+                SceneTransition.Instance.LoadScene("Menu");
+            }
+            else
+            {
+                SceneManager.LoadScene("Menu");  // 降级方案
+            }
         });
     }
 
@@ -81,11 +93,5 @@ public class MenuUIManager : MonoBehaviour
         {
             menuPanel.Open();
         });
-    }
-
-    // ========== 菜单面板关闭时（点面板外关闭等），恢复按钮1 ==========
-    public void OnMenuPanelClosed()
-    {
-        //openMenuButton.SetActive(true);
     }
 }

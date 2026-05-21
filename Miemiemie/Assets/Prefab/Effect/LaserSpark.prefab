@@ -4849,7 +4849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3248602658292826029}
   m_Layer: 6
-  m_Name: LaserVFX
+  m_Name: LaserSpark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -182,11 +182,7 @@ public class EnemyLaser : MonoBehaviour
                 // 如果还没有火花实例，从对象池获取一个
                 if (currentSpark == null && EffectPool.Instance != null)
                 {
-                    currentSpark = EffectPool.Instance.Get();
-                    if (currentSpark == null)
-                    {
-                        Debug.LogWarning("EnemyLaser: 无法从对象池获取火花特效");
-                    }
+                    currentSpark = EffectPool.Instance.Get("LaserSpark");  // 改1
                 }
 
                 // 更新火花位置和朝向
@@ -204,7 +200,7 @@ public class EnemyLaser : MonoBehaviour
                 // 回收火花特效（如果有）
                 if (currentSpark != null && EffectPool.Instance != null)
                 {
-                    EffectPool.Instance.Release(currentSpark);
+                    EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改2
                     currentSpark = null;
                 }
                 endPoint = (Vector2)transform.position + direction * maxLength;
@@ -252,7 +248,7 @@ public class EnemyLaser : MonoBehaviour
         // 激光结束：回收火花
         if (currentSpark != null && EffectPool.Instance != null)
         {
-            EffectPool.Instance.Release(currentSpark);
+            EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改3
             currentSpark = null;
         }
 
@@ -282,7 +278,7 @@ public class EnemyLaser : MonoBehaviour
         // 回收火花
         if (currentSpark != null && EffectPool.Instance != null)
         {
-            EffectPool.Instance.Release(currentSpark);
+            EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改4
             currentSpark = null;
         }
 

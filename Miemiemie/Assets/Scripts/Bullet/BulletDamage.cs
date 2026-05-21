@@ -15,10 +15,11 @@ public class BulletDamage : MonoBehaviour
             if (health != null)
             {
                 health.TakeDamage(damage);
+                EffectPool.Instance?.PlayAt("BulletHit", transform.position);
                 // 命中后回收子弹
                 if (TryGetComponent<BulletBehav>(out var bullet))
                 {
-                    bullet.pool.RealseItem(bullet);
+                    bullet.ReleaseToPool();  //改用封装方法，不用 pool.RealseItem
                 }
             }
         }

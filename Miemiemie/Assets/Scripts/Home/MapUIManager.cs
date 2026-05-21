@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -108,9 +109,16 @@ public class MapUIManager : MonoBehaviour
 
         // 关闭所有面板
         CloseAll();
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         // 加载战斗场景
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Battle");
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadScene("Battle");
+        }
+        else
+        {
+            SceneManager.LoadScene("Battle");  // 降级方案
+        }
     }
 
     // ==================== 关闭面板 ====================

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 
 public class Health : MonoBehaviour,IDamageable
 {
@@ -12,6 +13,16 @@ public class Health : MonoBehaviour,IDamageable
     private float invincibilityTimer = 0f;
     private bool isInvincible = false;
 
+    [Header("受击闪烁")]
+    [SerializeField] private bool enableHitFlash = true;        // 是否启用闪烁
+    [SerializeField] private Color enemyFlashColor = Color.white; // 敌人闪烁颜色
+    [SerializeField] private float flashDuration = 0.1f;        // 闪烁持续时间
+
+    // 闪烁相关组件
+    private SpriteRenderer spriteRenderer;
+    private MaterialPropertyBlock propertyBlock;
+    private Coroutine flashCoroutine;
+
     public event Action OnDeath;      // 死亡事件
     public event Action<float> OnDamaged; // 受伤事件（可播放动画、音效）
 
@@ -22,6 +33,14 @@ public class Health : MonoBehaviour,IDamageable
     void Awake()
     {
         currentHealth = maxHealth;
+
+        // 初始化闪烁组件
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null && enableHitFlash)
+        {
+            propertyBlock = new MaterialPropertyBlock();
+            spriteRenderer.GetPropertyBlock(propertyBlock);
+        }
     }
 
     void Update()
@@ -43,6 +62,13 @@ public class Health : MonoBehaviour,IDamageable
 
         currentHealth -= damage;
         OnDamaged?.Invoke(damage);
+
+        if (enableHitFlash && gameObject.CompareTag("Enemy"))
+        {
+            if (flashCoroutine != null)
+                StopCoroutine(flashCoroutine);
+            flashCoroutine = StartCoroutine(HitFlash());
+        }
 
         if (currentHealth <= 0f)
         {
@@ -67,6 +93,11 @@ public class Health : MonoBehaviour,IDamageable
         {
             FixedRoomManager.Instance.ReturnToHome(false);
         }
+        // 敌人死亡时播放特效
+        if (gameObject.CompareTag("Enemy") && EffectPool.Instance != null)
+        {
+            EffectPool.Instance.PlayAt("EnemyDeath", transform.position);
+        }
         // ========== 如果是敌人，清理激光特效 ==========
         EnemyLaser laser = GetComponent<EnemyLaser>();
         if (laser != null)
@@ -74,5 +105,21 @@ public class Health : MonoBehaviour,IDamageable
             laser.CleanupLaser();
         }
         gameObject.SetActive(false);
+    }
+
+    // 闪烁协程
+    private IEnumerator HitFlash()
+    {
+        // 设置闪烁颜色和强度
+        propertyBlock.SetColor("_FlashColor", enemyFlashColor);
+        propertyBlock.SetFloat("_FlashAmount", 1f);
+        spriteRenderer.SetPropertyBlock(propertyBlock);
+
+        // 等待闪烁时间
+        yield return new WaitForSeconds(flashDuration);
+
+        // 恢复原样
+        propertyBlock.SetFloat("_FlashAmount", 0f);
+        spriteRenderer.SetPropertyBlock(propertyBlock);
     }
 }

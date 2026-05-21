@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 3
+      targetRoomId: 2
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -78,7 +78,7 @@ MonoBehaviour:
     roomType: 1
     customRoomPrefab: {fileID: 1970818365789911129, guid: a591298431a1cc2409edaa392035323b,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 1000}
     isVisited: 0
     leftExit:
       targetRoomId: 0
