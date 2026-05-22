@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -8,9 +9,6 @@ public class MenuUIManager : MonoBehaviour
     [Header("面板引用")]
     public SlidePanel menuPanel;        // 菜单面板
     public SaveLoadPanel saveLoadPanel; // 存档面板
-
-    [Header("打开菜单的按钮（游戏界面那个按钮1）")]
-    public GameObject openMenuButton;   // 按钮1（游戏界面中的）
 
     void Awake()
     {
@@ -29,6 +27,7 @@ public class MenuUIManager : MonoBehaviour
     // ========== 按钮1：打开菜单 ==========
     public void OpenMenu()
     {
+        Debug.Log("OpenMenu被调用");
         menuPanel.Open();
     }
 
