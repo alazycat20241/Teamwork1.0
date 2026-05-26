@@ -26,6 +26,11 @@ public class FixedRoomManager : MonoBehaviour
     private GameObject playerInstance;
     private Dictionary<string, bool> clearedRooms = new Dictionary<string, bool>();
 
+    /// <summary>
+    /// 进入房间记号（供道具使用
+    /// </summary>
+    public static event System.Action OnRoomEntered;
+
     void Awake()
     {
         if (Instance == null)
@@ -102,6 +107,9 @@ public class FixedRoomManager : MonoBehaviour
                 ResetPlayerState();
             }
         }
+
+        //进入新房间
+        OnRoomEntered?.Invoke();
 
         yield return null;
     }

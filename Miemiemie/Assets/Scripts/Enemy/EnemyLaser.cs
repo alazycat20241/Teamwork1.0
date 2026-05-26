@@ -66,7 +66,7 @@ public class EnemyLaser : MonoBehaviour, IMovable
 
     void Update()
     {
-        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+        if (isPaused||isKnockedBack) return;  // ★ 击退时跳过移动逻辑
 
         // 安全检查：玩家不存在时不做任何操作
         if (player == null) return;
@@ -315,5 +315,18 @@ public class EnemyLaser : MonoBehaviour, IMovable
     {
         isKnockedBack = false;
         rb.velocity = Vector2.zero;  // 击退结束
+    }
+
+    private bool isPaused = false;
+
+    public void PauseMovement()
+    {
+        isPaused = true;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void ResumeMovement()
+    {
+        isPaused = false;
     }
 }

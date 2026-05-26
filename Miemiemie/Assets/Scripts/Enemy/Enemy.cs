@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour,IMovable
 
     void Update()
     {
-        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+        if (isPaused||isKnockedBack) return;  // ★ 击退时跳过移动逻辑
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
@@ -176,5 +176,18 @@ public class Enemy : MonoBehaviour,IMovable
     {
         isKnockedBack = false;
         rb.velocity = Vector2.zero;  // 击退结束
+    }
+
+    private bool isPaused = false;
+
+    public void PauseMovement()
+    {
+        isPaused = true;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void ResumeMovement()
+    {
+        isPaused = false;
     }
 }

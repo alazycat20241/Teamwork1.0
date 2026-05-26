@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
+    public static PlayerShoot Instance { get; private set; }
+
     [Header("子弹配置")]
+    [SerializeField] private BulletObject normalBulletConfig;  //基础攻击（按键1）
     [SerializeField] private BulletObject fireBallConfig;      // 灼烧火球（按键2）
     [SerializeField] private BulletObject windBulletConfig;    // 风弹（按键3）
     [SerializeField] private BulletObject mudBulletConfig;     // 泥弹（按键4）
@@ -14,16 +17,25 @@ public class PlayerShoot : MonoBehaviour
     private BulletObject currentBullet;    // 当前子弹配置
     private float fireTimer;
 
+    [Header("射程")]
+    [SerializeField] private float shootRange = 10f;           // ★ 射程范围
+    [SerializeField] private LayerMask enemyLayer;             // ★ 敌人层（用于检测射程内是否有敌人）
+
     void Awake()
     {
-        // 默认使用火球
-        SwitchBullet(fireBallConfig);
+        Instance=this;
+        // 默认使用1
+        SwitchBullet(normalBulletConfig);
     }
 
     void Update()
     {
         // ========== 切换子弹（按2/3/4） ==========
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha1))        // ★ 新增
+        {
+            SwitchBullet(normalBulletConfig);
+        } 
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwitchBullet(fireBallConfig);
         }
@@ -41,8 +53,11 @@ public class PlayerShoot : MonoBehaviour
 
         if (Input.GetMouseButton(1) && fireTimer >= fireRate)
         {
-            fireTimer = 0f;
-            ShootTowardsMouse();
+            if (EnemyInRange())
+            {
+                fireTimer = 0f;
+                ShootTowardsMouse();
+            }
         }
     }
 
@@ -53,10 +68,6 @@ public class PlayerShoot : MonoBehaviour
     {
         currentBullet = newBullet;
         currentPool = PoolManager.Instance.GetPool(currentBullet);
-
-        // 可选：在控制台显示当前子弹
-        Debug.Log($"切换子弹: {currentBullet.name}");
-
     }
 
     /// <summary>
@@ -79,6 +90,33 @@ public class PlayerShoot : MonoBehaviour
         bullet.transform.position = transform.position;
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        Debug.Log($"子弹: {currentBullet.name}, damage={bullet.damage}, targetLayer={bullet.targetLayer.value}, hitEffect={bullet.hitEffectKey}");
+        BaseBullet bb = bullet.GetComponent<BaseBullet>();
+        if (bb != null) bb.SetExtraDamage(PlayerStats.Instance.attackBonus);
+    }
+
+    /// <summary>
+    /// 检测射程范围内是否有敌人
+    /// </summary>
+    bool EnemyInRange()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, shootRange, enemyLayer);
+        return hit != null;
+    }
+
+    /// <summary>
+    /// 加射程
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddRange(float amount)
+    {
+        shootRange += amount;
+    }
+    /// <summary>
+    /// 在 Scene 视图绘制射程范围
+    /// </summary>
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, shootRange);
     }
 }

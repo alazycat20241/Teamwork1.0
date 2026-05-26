@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7989381904782094332}
   - component: {fileID: 4332088690633027552}
   - component: {fileID: 2666683012347620033}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,3 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e5223800b7c264d91c160adc3d7dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8

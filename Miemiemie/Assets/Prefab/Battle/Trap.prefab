@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 994086149164636876}
   - component: {fileID: 1677113999743536306}
   - component: {fileID: 8750750059285940122}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,4 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   currentHealth: 0
-  invincibilityDuration: 0
+  enableHitFlash: 1
+  enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1

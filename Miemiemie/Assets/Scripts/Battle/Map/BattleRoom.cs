@@ -9,8 +9,18 @@ public class BattleRoom : RoomBase
     private List<GameObject> aliveEnemies = new List<GameObject>();
     private bool battleStarted = false;
 
+    // 当前战斗房间实例（供道具访问）
+    public static BattleRoom Current { get; private set; }
+
+    // 战斗结束事件（用于道具判断）
+    public static event System.Action OnBattleEnd;
+
+    //战斗开始
+    public static event System.Action OnBattleStart;
+
     public override void SetupRoom(RoomConfig config)
     {
+        Current = this;  // ★ 设置当前房间
         base.SetupRoom(config);
 
         if (FixedRoomManager.Instance.IsRoomCleared(config.roomId))
@@ -41,12 +51,39 @@ public class BattleRoom : RoomBase
         }
 
         battleStarted = true;
+        OnBattleStart?.Invoke();
 
         if (aliveEnemies.Count == 0)
         {
             OnBattleWon();
         }
     }
+
+    /// <summary>
+    /// 额外生成敌人（道具调用）
+    /// </summary>
+    public void SpawnExtraEnemy(EnemySpawnInfo info)
+    {
+        if (info.enemyPrefab == null) return;
+
+        GameObject enemy = Instantiate(info.enemyPrefab,
+                                      info.spawnPosition,
+                                      Quaternion.identity,
+                                      enemiesContainer);
+
+        Health health = enemy.GetComponent<Health>();
+        if (health != null)
+        {
+            health.OnDeath += () => OnEnemyDeath(enemy);
+            aliveEnemies.Add(enemy);
+        }
+    }
+
+    /// <summary>
+    /// 获取当前房间配置（道具调用）
+    /// </summary>
+    public RoomConfig GetRoomConfig() => roomConfig;
+
 
     private void OnEnemyDeath(GameObject enemy)
     {
@@ -62,7 +99,7 @@ public class BattleRoom : RoomBase
     {
         battleStarted = false;
 
-
+        OnBattleEnd?.Invoke();
         OnRoomCompleted();
     }
 }

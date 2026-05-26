@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Try : MonoBehaviour
+public class WaterRealse : MonoBehaviour
 {
     [SerializeField] private float chargeTime = 2f;    // 蓄力时间
 

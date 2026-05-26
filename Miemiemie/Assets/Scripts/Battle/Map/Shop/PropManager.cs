@@ -1,0 +1,524 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// 道具管理器（单例）
+/// 管理所有道具数据和效果
+/// </summary>
+public class PropManager : MonoBehaviour
+{
+    public static PropManager Instance { get; private set; }
+
+    [Header("所有道具")]
+    [SerializeField] private List<PropData> allProps = new List<PropData>();  // 12个拖进来
+
+    // ==================== 计数 ====================
+    private int kuMuCounter = 0;          // 道具01：枯木逢春剩余次数
+    private bool huShenFuActive = false;  // 道具02：护身符是否激活
+    private bool xueTaiActive = false;    // 道具07：血苔绷带是否激活
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
+    }
+
+    /// <summary>
+    /// 获取所有道具列表
+    /// </summary>
+    public List<PropData> GetAllProps() => allProps;
+
+    /// <summary>
+    /// 根据ID应用道具效果
+    /// </summary>
+    public void ApplyPropEffect(int propID)
+    {
+        switch (propID)
+        {
+            case 1: KuMuFengChun(); break;      // 枯木逢春
+            case 2: SuiLieHuShenFu(); break;     // 碎裂的护身符
+            case 3: YanShuYaChi(); break;        // 鼹鼠牙齿(查看金币
+            case 4: YingHuoChongNang(); break;   // 萤火虫囊
+            case 5: FuLanHaoJiao(); break;       // 腐烂号角
+            case 6: TuiPiKe(); break;            // 蜕皮壳
+            case 7: XueTaiBengDai(); break;      // 血苔绷带
+            case 8: KuYeDouPeng(); break;        // 枯叶斗篷
+            case 9: FengHouMi(); break;          // 蜂后蜜
+            case 10: ShiHuaZhongZi(); break;     // 石化种子
+            case 11: LangRenZhiJian(); break;    // 狼人指尖
+            case 12: YueShiSuiPian(); break;     // 月蚀碎片
+        }
+    }
+
+
+    // PropManager.cs 里对应方法的实现
+
+    // ==================== 道具01：枯木逢春 ====================
+    // 每次战斗结束时恢复5HP（0.5心），生效3次后枯萎消失
+
+    private void KuMuFengChun()
+    {
+        kuMuCounter = 3;
+        BattleRoom.OnBattleEnd += OnBattleEnd_Heal;
+    }
+
+    private void OnBattleEnd_Heal()
+    {
+        if (kuMuCounter <= 0) return;
+
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+        {
+            health.currentHealth = Mathf.Min(health.currentHealth + 5, health.maxHealth);
+            kuMuCounter--;
+        }
+
+        if (kuMuCounter <= 0)
+        {
+            BattleRoom.OnBattleEnd -= OnBattleEnd_Heal;
+        }
+    }
+
+    // ==================== 道具02：碎裂的护身符 ====================
+    // 受到致命伤害时保留5HP（0.5心）不死，随后护身符破碎消失（一次性）
+
+    private void SuiLieHuShenFu()
+    {
+        huShenFuActive = true;
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+            health.OnDamaged += CheckFatal;
+    }
+
+    private void CheckFatal(float damage)
+    {
+        if (!huShenFuActive) return;
+
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health == null) return;
+
+        // 这次伤害会导致死亡
+        if (health.currentHealth - damage <= 0)
+        {
+            huShenFuActive = false;
+            health.currentHealth = 5;
+            health.OnDamaged -= CheckFatal;
+        }
+    }
+
+    // ==================== 道具03：鼹鼠牙齿 ====================
+    // 每次战斗额外掉落2金币，永久有效
+
+    private void YanShuYaChi()
+    {
+        BattleRoom.OnBattleEnd += OnBattleEnd_ExtraGold;
+    }
+
+    private void OnBattleEnd_ExtraGold()
+    {
+        //PlayerInventory.Instance?.AddGold(2);
+    }
+
+
+
+    // ==================== 道具04：萤火虫囊 ====================
+    // 射程+1，永久有效
+
+    private void YingHuoChongNang()
+    {
+        if (PlayerShoot.Instance != null)
+            PlayerShoot.Instance.AddRange(1);
+    }
+
+    // ==================== 道具05：腐烂号角 ====================
+    // 每场战斗开始时，所有敌人停止移动3秒，永久有效
+
+    /// <summary>
+    /// 应用道具效果：订阅战斗开始事件
+    /// </summary>
+    private void FuLanHaoJiao()
+    {
+        BattleRoom.OnBattleStart += OnBattleStart_StopEnemies;
+    }
+
+    /// <summary>
+    /// 战斗开始时：遍历所有敌人，暂停移动3秒后恢复
+    /// </summary>
+    private void OnBattleStart_StopEnemies()
+    {
+        // 找到场景里所有带Enemy标签的物体
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            // 获取可移动接口
+            IMovable movable = enemy.GetComponent<IMovable>();
+            if (movable != null)
+            {
+                // 暂停移动
+                movable.PauseMovement();
+
+                // 3秒后恢复移动
+                StartCoroutine(ResumeEnemyAfterDelay(movable, 3f));
+            }
+        }
+    }
+
+    /// <summary>
+    /// 延迟指定秒数后恢复敌人移动
+    /// </summary>
+    /// <param name="movable">敌人移动接口</param>
+    /// <param name="delay">延迟秒数</param>
+    IEnumerator ResumeEnemyAfterDelay(IMovable movable, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (movable != null)
+            movable.ResumeMovement();
+    }
+
+
+
+    // ==================== 道具06：蜕皮壳 ====================
+    // 获得1次庇护（阻挡任意一次攻击），生效后破损
+    // 立刻在自身3格范围内生成毒气圈，维持2秒，1秒2伤（对自身无伤，只对敌）
+
+    private bool tuiPiKeActive = false;
+    private bool tuiPiKeBroken = false;
+
+    private void TuiPiKe()
+    {
+        tuiPiKeActive = true;
+        tuiPiKeBroken = false;
+
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+            health.OnDamaged += CheckTuiPiKe;
+    }
+
+    private void CheckTuiPiKe(float damage)
+    {
+        if (!tuiPiKeActive || tuiPiKeBroken) return;
+
+        // 阻挡这次伤害
+        tuiPiKeBroken = true;
+        tuiPiKeActive = false;
+
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+        {
+            health.currentHealth += damage;  // 回退伤害
+            health.OnDamaged -= CheckTuiPiKe;
+        }
+
+        // 生成毒气圈
+        var player = FixedRoomManager.Instance.GetPlayer();
+        if (player != null)
+        {
+            // 在玩家位置生成毒气，半径3格，持续2秒，每秒2伤
+            StartCoroutine(SpawnPoisonCloud(player.transform.position, 3f, 2f, 4f));
+        }
+    }
+
+    /// <summary>
+    /// 生成毒气圈
+    /// </summary>
+    /// <param name="center">中心位置</param>
+    /// <param name="radius">半径（格）</param>
+    /// <param name="duration">持续时间（秒）</param>
+    /// <param name="totalDamage">总伤害</param>
+    IEnumerator SpawnPoisonCloud(Vector3 center, float radius, float duration, float totalDamage)
+    {
+        float elapsed = 0f;
+        float damagePerTick = totalDamage / (duration * 2f);  // 每秒2跳
+
+        while (elapsed < duration)
+        {
+            // 检测范围内敌人
+            Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius);
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("Enemy"))
+                {
+                    Health enemyHealth = hit.GetComponent<Health>();
+                    enemyHealth?.TakeDamage(damagePerTick);
+                }
+            }
+            elapsed += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+
+    // ==================== 道具07：血苔绷带 ====================
+    // 血量＞5HP（0.5心）时，每次进入新房间扣除5HP
+    // 伤害+0.5，永久有效
+
+    private void XueTaiBengDai()
+    {
+        xueTaiActive = true;
+        FixedRoomManager.OnRoomEntered += OnRoomEntered_XueTai;
+        PlayerStats.Instance.attackBonus += 0.5f;
+    }
+
+    private void OnRoomEntered_XueTai()
+    {
+        if (!xueTaiActive) return;
+
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null && health.currentHealth > 5)
+        {
+            health.currentHealth -= 5;
+        }
+    }
+
+
+    // ==================== 道具08：枯叶斗篷 ====================
+    // 站立不动3秒后进入伪装，敌人无法发现你（攻击或移动解除），永久有效
+
+    private bool douPengActive = false;
+    private float standStillTimer = 0f;
+    private bool isCamouflaged = false;
+    private Vector3 lastPosition;
+
+    private void KuYeDouPeng()
+    {
+        douPengActive = true;
+        lastPosition = FixedRoomManager.Instance.GetPlayer().transform.position;
+    }
+
+    // 需要在 Update 里检测，加一个公共方法给 PlayerController 调用
+    public void UpdateDouPeng(Vector3 currentPos, bool isMoving, bool isShooting)
+    {
+        if (!douPengActive) return;
+
+        // 移动或攻击 → 解除伪装
+        if (isMoving || isShooting)
+        {
+            if (isCamouflaged)
+            {
+                isCamouflaged = false;
+                SetPlayerVisible(true);
+            }
+            standStillTimer = 0f;
+            return;
+        }
+
+        // 站立不动计时
+        standStillTimer += Time.deltaTime;
+        if (standStillTimer >= 3f && !isCamouflaged)
+        {
+            isCamouflaged = true;
+            SetPlayerVisible(false);
+        }
+    }
+
+    private void SetPlayerVisible(bool visible)
+    {
+        var player = FixedRoomManager.Instance.GetPlayer();
+        if (player == null) return;
+
+        // 改Tag让敌人检测不到
+        player.tag = visible ? "Player" : "CamouflagedPlayer";
+
+        // 半透明效果
+        SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.color = visible ? Color.white : new Color(1, 1, 1, 0.3f);
+    }
+
+
+    // ==================== 道具09：蜂后蜜 ====================
+    // 攻击力+0.5，但每次战斗开始时有50%概率额外生成2个敌人，永久有效
+
+    private void FengHouMi()
+    {
+        PlayerStats.Instance.attackBonus += 0.5f;
+        BattleRoom.OnBattleStart += OnBattleStart_SpawnExtraEnemies;
+    }
+
+    private void OnBattleStart_SpawnExtraEnemies()
+    {
+        // 50%概率
+        if (Random.value > 0.5f) return;
+
+        BattleRoom room = BattleRoom.Current;
+        if (room == null) return;
+
+        var config = room.GetRoomConfig();
+        if (config?.battleSetting?.enemies == null || config.battleSetting.enemies.Count == 0) return;
+
+        // 随机生成2个敌人
+        for (int i = 0; i < 2; i++)
+        {
+            var info = config.battleSetting.enemies[Random.Range(0, config.battleSetting.enemies.Count)];
+            room.SpawnExtraEnemy(info);
+        }
+    }
+
+
+    // ==================== 道具10：石化种子 ====================
+    // 每次攻击有10%概率对敌人造成石化（静止不动2秒，无法攻击移动，无法受到伤害），永久有效
+
+    private void ShiHuaZhongZi()
+    {
+        // 在 BaseBullet 击中的地方加判定
+        // 这里给 PlayerStats 加个标记，子弹命中时检查
+        PlayerStats.Instance.stoneChance = 0.1f;
+        PlayerStats.Instance.stoneDuration = 2f;
+    }
+
+    // 在 BaseBullet.OnTriggerEnter2D 里调用：
+    // if (Random.value < PlayerStats.Instance.stoneChance)
+    //     PropManager.Instance.ApplyStone(enemy, PlayerStats.Instance.stoneDuration);
+
+    public void ApplyStone(GameObject enemy, float duration)
+    {
+        StartCoroutine(StoneCoroutine(enemy, duration));
+    }
+
+    IEnumerator StoneCoroutine(GameObject enemy, float duration)
+    {
+        if (enemy == null) yield break;
+
+        // 暂停移动
+        IMovable movable = enemy.GetComponent<IMovable>();
+        movable?.PauseMovement();
+
+        // 禁用攻击（如果有攻击组件）
+        MonoBehaviour[] scripts = enemy.GetComponents<MonoBehaviour>();
+        foreach (var script in scripts)
+        {
+            if (script != null && script != this)
+                script.enabled = false;
+        }
+
+        // 灰色石化效果
+        SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
+        Color originalColor = sr != null ? sr.color : Color.white;
+        if (sr != null) sr.color = Color.gray;
+
+        yield return new WaitForSeconds(duration);
+
+        // 恢复
+        movable?.ResumeMovement();
+        foreach (var script in scripts)
+        {
+            if (script != null)
+                script.enabled = true;
+        }
+        if (sr != null) sr.color = originalColor;
+    }
+
+
+    // ==================== 道具11：狼人指尖 ====================
+    // 射程-0.5，攻击+0.5，每次攻击敌人有20%概率造成恐慌1.5秒
+    // 恐慌：停止攻击，尽可能远离主角
+
+    private void LangRenZhiJian()
+    {
+        if (PlayerShoot.Instance != null)
+            PlayerShoot.Instance.AddRange(-0.5f);
+
+        PlayerStats.Instance.attackBonus += 0.5f;
+        PlayerStats.Instance.panicChance = 0.2f;
+        PlayerStats.Instance.panicDuration = 1.5f;
+    }
+
+    // 在 BaseBullet 命中时调用
+    public void ApplyPanic(GameObject enemy, float duration)
+    {
+        StartCoroutine(PanicCoroutine(enemy, duration));
+    }
+
+    IEnumerator PanicCoroutine(GameObject enemy, float duration)
+    {
+        if (enemy == null) yield break;
+
+        // 获取玩家位置用于远离
+        Transform player = FixedRoomManager.Instance.GetPlayer()?.transform;
+        if (player == null) yield break;
+
+        // 禁用攻击脚本
+        MonoBehaviour[] scripts = enemy.GetComponents<MonoBehaviour>();
+        List<MonoBehaviour> disabledScripts = new List<MonoBehaviour>();
+        foreach (var script in scripts)
+        {
+            if (script != null && script != this && script.GetType().Name.Contains("Attack"))
+            {
+                script.enabled = false;
+                disabledScripts.Add(script);
+            }
+        }
+
+        // 远离玩家
+        IMovable movable = enemy.GetComponent<IMovable>();
+        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            if (enemy == null) yield break;
+
+            Vector2 fleeDir = (enemy.transform.position - player.position).normalized;
+            rb.velocity = fleeDir * 5f;  // 恐慌逃跑速度
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 恢复
+        foreach (var script in disabledScripts)
+        {
+            if (script != null) script.enabled = true;
+        }
+    }
+
+
+    // ==================== 道具12：月蚀碎片 ====================
+    // 本场战斗内血量上限+1心（+10HP），一次性
+
+  
+    /// 记录月蚀碎片加的血量，用于战斗结束后还原
+    private int yueShiBonus = 0;
+
+
+    /// 应用道具：本场战斗血量上限+10，战斗结束后扣回
+    private void YueShiSuiPian()
+    {
+        // 获取玩家血量组件
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+        {
+            // 加血量上限和当前血量
+            health.maxHealth += 10;
+            health.currentHealth += 10;
+            yueShiBonus = 10;
+        }
+
+        // 订阅战斗结束事件，结束后还原
+        BattleRoom.OnBattleEnd += OnBattleEnd_YueShi;
+    }
+
+    /// <summary>
+    /// 战斗结束：扣除月蚀碎片加的血量上限
+    /// </summary>
+    private void OnBattleEnd_YueShi()
+    {
+        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+        if (health != null)
+        {
+            // 还原血量上限
+            health.maxHealth -= yueShiBonus;
+
+            // 当前血量不超过新上限
+            health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
+
+            // 重置记录
+            yueShiBonus = 0;
+        }
+
+        // 取消订阅，只生效一次
+        BattleRoom.OnBattleEnd -= OnBattleEnd_YueShi;
+    }
+}

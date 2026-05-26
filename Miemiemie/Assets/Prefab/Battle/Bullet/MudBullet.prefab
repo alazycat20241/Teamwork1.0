@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6780466022547132666}
   - component: {fileID: 5941194769651000052}
   - component: {fileID: 6635192287911558019}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: MudBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
