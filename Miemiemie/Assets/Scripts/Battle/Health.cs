@@ -8,10 +8,10 @@ public class Health : MonoBehaviour,IDamageable
     public float maxHealth = 100f;
     public float currentHealth;
 
-    [Header("无敌设置")]
-    [SerializeField] private float invincibilityDuration = 0.5f; // 受伤后无敌时间
-    private float invincibilityTimer = 0f;
-    private bool isInvincible = false;
+    //[Header("无敌设置")]
+    //[SerializeField] private float invincibilityDuration = 0.5f; // 受伤后无敌时间
+    //private float invincibilityTimer = 0f;
+    //private bool isInvincible = false;
 
     [Header("受击闪烁")]
     [SerializeField] private bool enableHitFlash = true;        // 是否启用闪烁
@@ -40,19 +40,6 @@ public class Health : MonoBehaviour,IDamageable
         {
             propertyBlock = new MaterialPropertyBlock();
             spriteRenderer.GetPropertyBlock(propertyBlock);
-        }
-    }
-
-    void Update()
-    {
-        // 无敌倒计时
-        if (isInvincible)
-        {
-            invincibilityTimer -= Time.deltaTime;
-            if (invincibilityTimer <= 0f)
-            {
-                isInvincible = false;
-            }
         }
     }
 

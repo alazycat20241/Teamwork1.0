@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour,IMovable
 {
     // 定义所有状态
     private enum State
@@ -36,6 +36,8 @@ public class Enemy : MonoBehaviour
     private BulletPool bulletPool;
     private float fireTimer;
 
+    private bool isKnockedBack = false;  // ★ 击退标记
+
     void Awake()
     {
         // 初始化子弹对象池
@@ -57,6 +59,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         // 首次进入追击范围，激活仇恨（永远不脱战）
@@ -155,5 +159,22 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, chaseRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    public float GetMoveSpeed() => moveSpeed;
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+    public void StartKnockback()
+    {
+        isKnockedBack = true;  // 暂停移动
+    }
+
+    public void EndKnockback()
+    {
+        isKnockedBack = false;
+        rb.velocity = Vector2.zero;  // 击退结束
     }
 }

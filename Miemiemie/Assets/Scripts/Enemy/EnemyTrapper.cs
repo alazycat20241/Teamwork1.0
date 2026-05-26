@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyTrapper : MonoBehaviour
+public class EnemyTrapper : MonoBehaviour, IMovable
 {
     [Header("索敌参数")]
     [SerializeField] private float detectRange = 8f;        // 发现玩家范围
@@ -20,7 +20,7 @@ public class EnemyTrapper : MonoBehaviour
     private float patrolTimer;           // 巡逻方向切换计时
     private Vector2 patrolDirection;     // 当前巡逻方向
 
-
+    private bool isKnockedBack = false;  // ★ 击退标记
     void Start()
     {
         GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
@@ -39,6 +39,8 @@ public class EnemyTrapper : MonoBehaviour
 
     void Update()
     {
+        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+
         float dist = Vector2.Distance(transform.position, player.position);
 
         // 定时种陷阱
@@ -97,5 +99,23 @@ public class EnemyTrapper : MonoBehaviour
     {
         Instantiate(trapPrefab, transform.position, Quaternion.identity);
         // 建议用对象池管理陷阱，这里简化
+    }
+
+    public float GetMoveSpeed() => moveSpeed;
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    public void StartKnockback()
+    {
+        isKnockedBack = true;  // 暂停移动
+    }
+
+    public void EndKnockback()
+    {
+        isKnockedBack = false;
+        rb.velocity = Vector2.zero;  // 击退结束
     }
 }

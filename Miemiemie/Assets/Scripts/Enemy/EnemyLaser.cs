@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyLaser : MonoBehaviour
+public class EnemyLaser : MonoBehaviour, IMovable
 {
     [Header("索敌参数")]
     [SerializeField] private float chaseRange = 10f;        // 发现玩家范围
@@ -34,6 +34,8 @@ public class EnemyLaser : MonoBehaviour
     // 特效相关（使用单例，不再需要拖拽）
     private GameObject currentSpark; // 当前墙上的火花实例
 
+    private bool isKnockedBack = false;  // ★ 击退标记
+
     void Start()
     {
         // 获取玩家引用（从房间管理器）
@@ -64,6 +66,8 @@ public class EnemyLaser : MonoBehaviour
 
     void Update()
     {
+        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+
         // 安全检查：玩家不存在时不做任何操作
         if (player == null) return;
 
@@ -231,13 +235,16 @@ public class EnemyLaser : MonoBehaviour
                 {
                     health.TakeDamage(laserDamagePerSecond * laserDuration);
                 }
-
-                // 定身玩家
-                PlayerMove playerMovement = player.GetComponent<PlayerMove>();
-                if (playerMovement != null)
+                // ★ 检查玩家是否还活跃
+                if (player.gameObject.activeInHierarchy)
                 {
-                    playerMovement.Stun(stunDuration);
+                    PlayerMove playerMovement = player.GetComponent<PlayerMove>();
+                    if (playerMovement != null)
+                    {
+                        playerMovement.Stun(stunDuration);
+                    }
                 }
+                // 定身玩家
             }
 
             yield return null; // 等待下一帧
@@ -290,5 +297,23 @@ public class EnemyLaser : MonoBehaviour
 
         // 停止协程
         StopAllCoroutines();
+    }
+
+    public float GetMoveSpeed() => moveSpeed;
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    public void StartKnockback()
+    {
+        isKnockedBack = true;  // 暂停移动
+    }
+
+    public void EndKnockback()
+    {
+        isKnockedBack = false;
+        rb.velocity = Vector2.zero;  // 击退结束
     }
 }

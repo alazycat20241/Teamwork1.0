@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class WindBullet : MonoBehaviour
 {
     [Header("击退设置")]
-    [SerializeField] private float knockbackDistance = 1f;  // 击退距离
-    [SerializeField] private float knockbackSpeed = 10f;    // 击退速度
+    [SerializeField] private float knockbackDistance = 1f;    // 击退距离（1格）
+    [SerializeField] private float knockbackDuration = 0.15f; // 击退持续时间（越短越有力）
 
-    private BulletBehav bulletBehav;
-    private bool hasHit = false;
+    private BulletBehav bulletBehav;    // 子弹行为组件
+    private bool hasHit = false;        // 是否已命中（防止重复触发）
 
     void Awake()
     {
@@ -16,7 +17,7 @@ public class WindBullet : MonoBehaviour
 
     void OnEnable()
     {
-        hasHit = false;
+        hasHit = false;  // 每次激活重置
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -27,47 +28,60 @@ public class WindBullet : MonoBehaviour
         {
             hasHit = true;
 
-            // 直接伤害
+            // ★ 先存方向，再处理
+            Vector2 knockbackDir = (other.transform.position - transform.position).normalized;
+
             Health health = other.GetComponent<Health>();
             if (health != null)
             {
                 health.TakeDamage(bulletBehav.damage);
             }
 
-            // 击退
-            StartCoroutine(Knockback(other.gameObject));
+            // ★ 协程挂到敌人身上
+            KnockbackOnTarget(other.gameObject, knockbackDir);
 
-            // 特效
             EffectPool.Instance?.PlayAt("WindHit", transform.position);
 
-            // 回收
-            bulletBehav.ReleaseToPool();
+            bulletBehav.ReleaseToPool();  // 回收子弹
         }
     }
 
-    /// <summary>
-    /// 击退协程：把目标推出一格距离
-    /// </summary>
-    System.Collections.IEnumerator Knockback(GameObject target)
+    void KnockbackOnTarget(GameObject target, Vector2 direction)
     {
+        // ★ 如果目标已死亡/未激活，不击退
+        if (target == null || !target.activeInHierarchy) return;
+
         Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
-        if (targetRb == null) yield break;
+        if (targetRb == null) return;
 
-        // 计算击退方向（子弹飞行方向）
-        Vector2 knockbackDir = transform.right;
+        IMovable movable = target.GetComponent<IMovable>();
+        if (movable != null)
+        {
+            // 在敌人身上跑协程
+            MonoBehaviour mb = movable as MonoBehaviour;
 
-        // 禁用目标的移动输入，让击退生效
+            if (mb == null || !mb.isActiveAndEnabled) return;  // ★ 确保脚本活跃
+
+            mb.StartCoroutine(KnockbackRoutine(targetRb, direction, movable));
+        }
+    }
+
+    IEnumerator KnockbackRoutine(Rigidbody2D targetRb, Vector2 direction, IMovable movable)
+    {
+        movable.StartKnockback();
+
         float elapsed = 0f;
-        float duration = knockbackDistance / knockbackSpeed;
+        float startSpeed = knockbackDistance / knockbackDuration;  // ★ 用配置计算速度
 
-        while (elapsed < duration)
+        while (elapsed < knockbackDuration)
         {
             elapsed += Time.deltaTime;
-            targetRb.velocity = knockbackDir * knockbackSpeed;
+            float speed = Mathf.Lerp(startSpeed, 0f, elapsed / 0.15f);
+            targetRb.velocity = direction * speed;
             yield return null;
         }
 
-        // 击退结束，停止
         targetRb.velocity = Vector2.zero;
+        movable.EndKnockback();
     }
 }

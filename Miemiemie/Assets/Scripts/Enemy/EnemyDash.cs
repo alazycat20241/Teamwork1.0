@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyDash : MonoBehaviour
+public class EnemyDash : MonoBehaviour, IMovable
 {
     [Header("状态参数")]
     [SerializeField] private float chaseRange = 8f;        // 发现玩家范围
@@ -13,8 +13,8 @@ public class EnemyDash : MonoBehaviour
     [SerializeField] private float contactDamage = 10f;     // 碰撞伤害（半颗心=10）
 
     [Header("移动")]
-    [SerializeField] private float patrolSpeed = 1f;
-    [SerializeField] private float chaseSpeed = 3f;
+    //[SerializeField] private float patrolSpeed = 1f;
+    [SerializeField] private float moveSpeed = 3f;
 
     private enum State { Patrol, Chase, Pause, Dash, Stun }
     private State currentState = State.Patrol;
@@ -27,6 +27,7 @@ public class EnemyDash : MonoBehaviour
     private float patrolTimer;           //
     private Vector2 patrolDirection;     //
 
+    private bool isKnockedBack = false;  // ★ 击退标记
     void Start()
     {
         GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
@@ -44,6 +45,8 @@ public class EnemyDash : MonoBehaviour
 
     void Update()
     {
+        if (isKnockedBack) return;  // ★ 击退时跳过移动逻辑
+
         float dist = Vector2.Distance(transform.position, player.position);
 
         // 首次发现玩家，激活仇恨（永远不脱战）
@@ -62,7 +65,7 @@ public class EnemyDash : MonoBehaviour
                 patrolDirection = Random.insideUnitCircle.normalized;
                 patrolTimer = Random.Range(1f, 3f);
             }
-            rb.velocity = patrolDirection * patrolSpeed;
+            rb.velocity = patrolDirection * moveSpeed;
             return;
         }
 
@@ -145,7 +148,7 @@ public class EnemyDash : MonoBehaviour
     void Chase()
     {
         Vector2 dir = (player.position - transform.position).normalized;
-        rb.velocity = dir * chaseSpeed;
+        rb.velocity = dir * moveSpeed;
     }
 
     void Dash()
@@ -167,5 +170,23 @@ public class EnemyDash : MonoBehaviour
             if (health != null)
                 health.TakeDamage(contactDamage);
         }
+    }
+
+    public float GetMoveSpeed() => moveSpeed;
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    public void StartKnockback()
+    {
+        isKnockedBack = true;  // 暂停移动
+    }
+
+    public void EndKnockback()
+    {
+        isKnockedBack = false;
+        rb.velocity = Vector2.zero;  // 击退结束
     }
 }

@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4142776985481783601}
+  - component: {fileID: -6378402345764451641}
   - component: {fileID: 3119496551379680802}
   - component: {fileID: 2769935469999123452}
   - component: {fileID: 2473958258047717931}
   - component: {fileID: 4074039478550543156}
-  - component: {fileID: 517451130390938763}
   m_Layer: 6
   m_Name: WindBullet
   m_TagString: Untagged
@@ -31,11 +31,25 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 36.308548, y: 0.8619072, z: -0.053799376}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-6378402345764451641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6786855835002139212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2684aa447a3fd7459077125ae40ddc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackDistance: 2
+  knockbackDuration: 0.1
 --- !u!212 &3119496551379680802
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -174,15 +188,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &517451130390938763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6786855835002139212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e5223800b7c264d91c160adc3d7dde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
