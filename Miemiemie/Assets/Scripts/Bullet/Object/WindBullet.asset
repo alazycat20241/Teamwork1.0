@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 279cb24181cbe4e45aa85ff9355c621f, type: 3}
-  m_Name: EnemyBulletConfig
+  m_Name: WindBullet
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 3
   LifeCycle: 5
-  LinearVelocity: 5
-  LinearAcceleration: 10
-  AngularVelocity: 0
-  AngularAcceleration: 0
-  MaxVelocity: 100
+  LinearVelocity: 20
+  LinearAcceleration: 0
+  AngularVelocity: 20
+  AngularAcceleration: 10
+  MaxVelocity: 2.1474836e+9
   InitRotation: 0
-  SenderAngularVelocity: 0
+  SenderAngularVelocity: 30
   SenderMaxAngularVelocity: 2.1474836e+9
   SenderAngularAcceleration: 0
-  LineCount: 0
+  LineCount: 20
   LineAngle: 30
-  SenderInterval: 0.01
-  prefabs: {fileID: 3156359572188326139, guid: 0371e7be130d4df41839b4342d2791fe, type: 3}
+  SenderInterval: 0.12
+  prefabs: {fileID: 6786855835002139212, guid: 1acc4acbc59d1b640aeb432641df7657, type: 3}

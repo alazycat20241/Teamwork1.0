@@ -586,6 +586,9 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   invincibilityDuration: 0.5
+  enableHitFlash: 1
+  enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
 --- !u!114 &8811935060188009833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,7 +601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cfb8009d8aa3e24f8291211d560a7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletObject: {fileID: 11400000, guid: 586fc0836ff857b45aafe4a2710b8186, type: 2}
+  fireBallConfig: {fileID: 11400000, guid: 1d258c10971a27543996d86601b57d52, type: 2}
+  windBulletConfig: {fileID: 11400000, guid: c0069d31e5bf2f64493ae7b5c51fe73f, type: 2}
+  mudBulletConfig: {fileID: 11400000, guid: 54f5609e7b8cc994c9c6cf06aad6654b, type: 2}
   fireRate: 0.15
 --- !u!1 &4328477632479279918
 GameObject:

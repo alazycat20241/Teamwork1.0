@@ -58,28 +58,22 @@ public class Health : MonoBehaviour,IDamageable
 
     public void TakeDamage(float damage)
     {
-        if (isInvincible || IsDead) return;
+        if (IsDead) return;
 
-        currentHealth -= damage;
-        OnDamaged?.Invoke(damage);
-
-        if (enableHitFlash && gameObject.CompareTag("Enemy"))
+        if (enableHitFlash)
         {
             if (flashCoroutine != null)
                 StopCoroutine(flashCoroutine);
             flashCoroutine = StartCoroutine(HitFlash());
         }
 
+        currentHealth -= damage;
+        OnDamaged?.Invoke(damage);
+
         if (currentHealth <= 0f)
         {
             currentHealth = 0f;
             Die();
-        }
-        else
-        {
-            // 开启无敌
-            isInvincible = true;
-            invincibilityTimer = invincibilityDuration;
         }
     }
 

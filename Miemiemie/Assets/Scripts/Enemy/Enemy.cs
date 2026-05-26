@@ -121,11 +121,11 @@ public class Enemy : MonoBehaviour
         rb.velocity = dir * moveSpeed;
     }
 
-    // 攻击：停住，用之前的孢子或子弹系统（怪1）
+    // 攻击：停住，用子弹系统（怪1）
     void Attack()
     {
         rb.velocity = Vector2.zero;
-        // 这里调用孢子爆发或子弹发射
+        // 这里调用子弹发射
         fireTimer += Time.deltaTime;
         if (fireTimer >= fireInterval)
         {

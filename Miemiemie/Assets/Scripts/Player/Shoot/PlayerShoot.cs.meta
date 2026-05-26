@@ -3,7 +3,10 @@ guid: 2cfb8009d8aa3e24f8291211d560a7e1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - fireBallConfig: {fileID: 11400000, guid: 1d258c10971a27543996d86601b57d52, type: 2}
+  - windBulletConfig: {fileID: 11400000, guid: c0069d31e5bf2f64493ae7b5c51fe73f, type: 2}
+  - mudBulletConfig: {fileID: 11400000, guid: 54f5609e7b8cc994c9c6cf06aad6654b, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
