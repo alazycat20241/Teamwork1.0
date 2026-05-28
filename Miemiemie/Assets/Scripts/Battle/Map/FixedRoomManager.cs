@@ -154,11 +154,11 @@ public class FixedRoomManager : MonoBehaviour
     {
         if (playerInstance == null) return;
 
-        Health playerHealth = playerInstance.GetComponent<Health>();
-        if (playerHealth != null)
-        {
-            playerHealth.currentHealth = playerHealth.maxHealth;
-        }
+        //Health playerHealth = playerInstance.GetComponent<Health>();
+        //if (playerHealth != null)
+        //{
+        //    playerHealth.currentHealth = playerHealth.maxHealth;
+        //}
 
         Rigidbody2D rb = playerInstance.GetComponent<Rigidbody2D>();
         if (rb != null)

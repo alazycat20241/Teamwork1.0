@@ -54,11 +54,18 @@ public class Health : MonoBehaviour,IDamageable
             flashCoroutine = StartCoroutine(HitFlash());
         }
 
-        currentHealth -= damage;
         OnDamaged?.Invoke(damage);
+        currentHealth -= damage;
 
         if (currentHealth <= 0f)
         {
+            // 检查护身符
+            if (PropManager.Instance != null && PropManager.Instance.TryUseHuShenFu())
+            {
+                currentHealth = 5;  // 锁血
+                return;             // 不死
+
+            }
             currentHealth = 0f;
             Die();
         }

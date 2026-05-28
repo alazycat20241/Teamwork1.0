@@ -8,6 +8,7 @@ public interface IMovable
     //击退
     void StartKnockback();   // 
     void EndKnockback();     //
+
     /// 暂停移动
     void PauseMovement();
 

@@ -162,11 +162,11 @@ public class EnemyDash : MonoBehaviour, IMovable
     /// <summary>
     /// 碰撞到玩家造成伤害
     /// </summary>
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && currentState == State.Dash)
+        if (collision.gameObject.CompareTag("FireCol") && currentState == State.Dash)
         {
-            Health health = collision.gameObject.GetComponent<Health>();
+            Health health = collision.transform.parent.GetComponent<Health>();
             if (health != null)
                 health.TakeDamage(contactDamage);
         }

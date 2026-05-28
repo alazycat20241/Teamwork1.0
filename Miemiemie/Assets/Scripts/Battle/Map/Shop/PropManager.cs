@@ -80,31 +80,18 @@ public class PropManager : MonoBehaviour
         }
     }
 
-    // ==================== 道具02：碎裂的护身符 ====================
+    // ==================== 道具02：碎裂的护身符 ====================ok
     // 受到致命伤害时保留5HP（0.5心）不死，随后护身符破碎消失（一次性）
-
     private void SuiLieHuShenFu()
     {
-        huShenFuActive = true;
-        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
-        if (health != null)
-            health.OnDamaged += CheckFatal;
+        huShenFuActive = true;// 1. 标记护身符已激活
     }
 
-    private void CheckFatal(float damage)
+    public bool TryUseHuShenFu()
     {
-        if (!huShenFuActive) return;
-
-        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
-        if (health == null) return;
-
-        // 这次伤害会导致死亡
-        if (health.currentHealth - damage <= 0)
-        {
-            huShenFuActive = false;
-            health.currentHealth = 5;
-            health.OnDamaged -= CheckFatal;
-        }
+        if (!huShenFuActive) return false;
+        huShenFuActive = false;
+        return true;
     }
 
     // ==================== 道具03：鼹鼠牙齿 ====================
@@ -250,7 +237,7 @@ public class PropManager : MonoBehaviour
     }
 
 
-    // ==================== 道具07：血苔绷带 ====================
+    // ==================== 道具07：血苔绷带 ====================//扣血没问题攻击没检测
     // 血量＞5HP（0.5心）时，每次进入新房间扣除5HP
     // 伤害+0.5，永久有效
 
@@ -475,7 +462,7 @@ public class PropManager : MonoBehaviour
     }
 
 
-    // ==================== 道具12：月蚀碎片 ====================
+    // ==================== 道具12：月蚀碎片 ====================ok
     // 本场战斗内血量上限+1心（+10HP），一次性
 
   

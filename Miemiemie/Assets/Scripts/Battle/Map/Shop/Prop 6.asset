@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e71fca7d9c92134892de0866f8f9301, type: 3}
   m_Name: Prop 6
   m_EditorClassIdentifier: 
-  propName: 
-  icon: {fileID: 0}
-  description: 
+  propName: "\u8715\u76AE\u58F3 "
+  icon: {fileID: 21300000, guid: c7f45a944b15c8349a111f4da09a65fb, type: 3}
+  description: "\u25CF\u63CF\u8FF0\uFF1A\u4E00\u5F20\u5B8C\u6574\u7684\u86C7\u8715\uFF0C\u8584\u5982\u8749\u7FFC\uFF0C\u6708\u5149\u4E0B\u6CDB\u94F6\u8272\u5149\u6CFD\u3002\n\u25CF\u6548\u679C\uFF1A\u83B7\u5F971\u6B21\u5E87\u62A4(\u53EF\u4EE5\u963B\u6321\u4EFB\u610F\u4E00\u6B21\u653B\u51FB),\u751F\u6548\u540E\u7834\u635F,\u7ACB\u523B\u5728\u81EA\u8EAB3\u683C\u8303\u56F4\u5185\u751F\u6210\u6BD2\u6C14\u5708,\u7EF4\u63012\u79D2,1\u79D22\u4F24.(\u5BF9\u81EA\u8EAB\u65E0\u4F24,\u53EA\u5BF9\u654C)\n"
   propID: 6
   isPermanent: 0
   maxUseCount: -1
