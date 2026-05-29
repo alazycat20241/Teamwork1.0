@@ -558,6 +558,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e5532248466d4443b56c1c9ca6e34b9, type: 2}
   - {fileID: 11400000, guid: 4a006efdbf12cd34c962be8249684663, type: 2}
   - {fileID: 11400000, guid: 6633f0f4de8f6054bb6e0d4d09f0eeb5, type: 2}
+  gasSporePrefab: {fileID: 5816837485043646417, guid: 186c6721be0029f4ca76a0a1db330779,
+    type: 3}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

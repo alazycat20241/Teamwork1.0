@@ -7,11 +7,7 @@ public class Health : MonoBehaviour,IDamageable
     [Header("血量设置")]
     public float maxHealth = 100f;
     public float currentHealth;
-
-    //[Header("无敌设置")]
-    //[SerializeField] private float invincibilityDuration = 0.5f; // 受伤后无敌时间
-    //private float invincibilityTimer = 0f;
-    //private bool isInvincible = false;
+    public bool isStoned = false;  // ★ 石化中，不受伤害
 
     [Header("受击闪烁")]
     [SerializeField] private bool enableHitFlash = true;        // 是否启用闪烁
@@ -46,6 +42,9 @@ public class Health : MonoBehaviour,IDamageable
     public void TakeDamage(float damage)
     {
         if (IsDead) return;
+
+        // 石化中的敌人不受伤害
+        if (isStoned && CompareTag("Enemy")) return;
 
         if (enableHitFlash)
         {

@@ -423,15 +423,16 @@ GameObject:
   m_Component:
   - component: {fileID: 8001644300940411305}
   - component: {fileID: 3516889927554530202}
-  - component: {fileID: 5609613829274702421}
   - component: {fileID: 8631176927400064896}
-  - component: {fileID: 4685365106314687660}
-  - component: {fileID: 8352938248199812614}
-  - component: {fileID: 6180658078193521926}
   - component: {fileID: 2581581493665629642}
   - component: {fileID: 3842885713965316155}
   - component: {fileID: 8571476736652885224}
   - component: {fileID: 8811935060188009833}
+  - component: {fileID: 5409651624743797976}
+  - component: {fileID: 5609613829274702421}
+  - component: {fileID: 4685365106314687660}
+  - component: {fileID: 8352938248199812614}
+  - component: {fileID: 6180658078193521926}
   m_Layer: 3
   m_Name: BattlePlayer
   m_TagString: Player
@@ -515,6 +516,104 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8631176927400064896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2571ccd423770a040a8ffc95da697def, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackBonus: 0
+  rangeBonus: 0
+  speedBonus: 0
+  panicChance: 0
+  panicDuration: 0
+  stoneChance: 0
+  stoneDuration: 0
+--- !u!114 &2581581493665629642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87805228b40cf8648bf28abcdeb4af0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+--- !u!114 &3842885713965316155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec0a79417c7d16b4288399fc7bd52059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeTime: 2
+--- !u!114 &8571476736652885224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  enableHitFlash: 1
+  enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
+--- !u!114 &8811935060188009833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cfb8009d8aa3e24f8291211d560a7e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalBulletConfig: {fileID: 11400000, guid: 586fc0836ff857b45aafe4a2710b8186, type: 2}
+  fireBallConfig: {fileID: 11400000, guid: 1d258c10971a27543996d86601b57d52, type: 2}
+  windBulletConfig: {fileID: 11400000, guid: c0069d31e5bf2f64493ae7b5c51fe73f, type: 2}
+  mudBulletConfig: {fileID: 11400000, guid: 54f5609e7b8cc994c9c6cf06aad6654b, type: 2}
+  fireRate: 0.15
+  shootRange: 5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &5409651624743797976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016356464010253478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2138e3ee2cd73454b8a46516b180ef43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gasRadius: 3
+  gasDuration: 2
+  gasDamage: 4
 --- !u!114 &5609613829274702421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,21 +640,6 @@ MonoBehaviour:
     m_Extent: {x: 1.4980538, y: 1.3036401, z: 0}
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
---- !u!114 &8631176927400064896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2571ccd423770a040a8ffc95da697def, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackBonus: 0
-  rangeBonus: 0
-  speedBonus: 0
 --- !u!95 &4685365106314687660
 Animator:
   serializedVersion: 5
@@ -639,70 +723,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &2581581493665629642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87805228b40cf8648bf28abcdeb4af0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
---- !u!114 &3842885713965316155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0a79417c7d16b4288399fc7bd52059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chargeTime: 2
---- !u!114 &8571476736652885224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
-  enableHitFlash: 1
-  enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.1
---- !u!114 &8811935060188009833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cfb8009d8aa3e24f8291211d560a7e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalBulletConfig: {fileID: 11400000, guid: 586fc0836ff857b45aafe4a2710b8186, type: 2}
-  fireBallConfig: {fileID: 11400000, guid: 1d258c10971a27543996d86601b57d52, type: 2}
-  windBulletConfig: {fileID: 11400000, guid: c0069d31e5bf2f64493ae7b5c51fe73f, type: 2}
-  mudBulletConfig: {fileID: 11400000, guid: 54f5609e7b8cc994c9c6cf06aad6654b, type: 2}
-  fireRate: 0.15
-  shootRange: 5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &4328477632479279918
 GameObject:
   m_ObjectHideFlags: 0

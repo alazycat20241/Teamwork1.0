@@ -61,6 +61,20 @@ public class Enemy : MonoBehaviour,IMovable
     {
         if (isPaused||isKnockedBack) return;  // ★ 击退时跳过移动逻辑
 
+        // 玩家伪装中 → 解除仇恨，回到巡逻
+        if (player == null || !player.CompareTag("Player"))
+        {
+            hasAggro = false;
+            patrolTimer -= Time.deltaTime;
+            if (patrolTimer <= 0)
+            {
+                patrolDirection = Random.insideUnitCircle.normalized;
+                patrolTimer = Random.Range(1f, 3f);
+            }
+            rb.velocity = patrolDirection * moveSpeed * 0.3f;
+            return;
+        }
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         // 首次进入追击范围，激活仇恨（永远不脱战）
@@ -183,7 +197,7 @@ public class Enemy : MonoBehaviour,IMovable
     public void PauseMovement()
     {
         isPaused = true;
-        rb.velocity = Vector2.zero;
+        if(rb!=null)rb.velocity = Vector2.zero;
     }
 
     public void ResumeMovement()

@@ -41,6 +41,22 @@ public class EnemyTrapper : MonoBehaviour, IMovable
     {
         if (isPaused||isKnockedBack) return;  // ★ 击退时跳过移动逻辑
 
+        if (player == null) return;
+
+        // 玩家伪装中 → 解除仇恨，巡逻
+        if (!player.CompareTag("Player"))
+        {
+            hasAggro = false;
+            patrolTimer -= Time.deltaTime;
+            if (patrolTimer <= 0)
+            {
+                patrolDirection = Random.insideUnitCircle.normalized;
+                patrolTimer = Random.Range(1f, 3f);
+            }
+            rb.velocity = patrolDirection * moveSpeed * 0.3f;
+            return;
+        }
+
         float dist = Vector2.Distance(transform.position, player.position);
 
         // 定时种陷阱

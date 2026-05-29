@@ -18,6 +18,8 @@ public class BossRoom : RoomBase
 
         // 生成Boss
         SpawnBoss();
+        // 触发战斗开始事件
+        BattleRoom.TriggerBattleStart();  // ★ 战斗开始
     }
 
     private void SpawnBoss()
@@ -49,7 +51,8 @@ public class BossRoom : RoomBase
         if (bossDefeated) return;  // 防止重复触发
         bossDefeated = true;
 
-        Debug.Log("Boss被击败！返回家园");
+        // 触发战斗结束效果
+        BattleRoom.TriggerBattleEnd();
 
         // 给奖励（可选）
         //int reward = roomConfig.battleSetting.rewardGold;

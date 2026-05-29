@@ -30,7 +30,10 @@ public class EnemyTurret : MonoBehaviour
     }
 
     void Update()
-    {
+    { // 玩家Tag不对（伪装中）→ 不攻击
+        if (player == null || !player.CompareTag("Player"))
+            return;
+
         float dist = Vector2.Distance(transform.position, player.position);
 
         // 玩家不在攻击范围内就不打

@@ -70,6 +70,13 @@ public class EnemyLaser : MonoBehaviour, IMovable
 
         // 安全检查：玩家不存在时不做任何操作
         if (player == null) return;
+        // 玩家伪装中 → 解除仇恨，静止
+        if (!player.CompareTag("Player"))
+        {
+            hasAggro = false;
+            rb.velocity = Vector2.zero;
+            return;
+        }
 
         float dist = Vector2.Distance(transform.position, player.position);
 

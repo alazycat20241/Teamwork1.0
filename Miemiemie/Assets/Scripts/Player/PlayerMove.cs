@@ -56,7 +56,11 @@ public class PlayerMove : MonoBehaviour
             spriteRenderer.flipX = true;   // 向右
         else if (movement.x < -0.01f)
             spriteRenderer.flipX = false;    // 向左
-                                            // 上下移动时不改变 flipX，保持上次左右朝向
+                                             // 上下移动时不改变 flipX，保持上次左右朝向
+
+        bool isShooting = Input.GetMouseButton(1);
+
+        PropManager.Instance.UpdateDouPeng(isMoving, isShooting);
     }
 
     void FixedUpdate()

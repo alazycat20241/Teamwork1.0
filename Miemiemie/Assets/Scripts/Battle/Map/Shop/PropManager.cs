@@ -54,7 +54,7 @@ public class PropManager : MonoBehaviour
 
     // PropManager.cs 里对应方法的实现
 
-    // ==================== 道具01：枯木逢春 ====================
+    // ==================== 道具01：枯木逢春 ====================ok
     // 每次战斗结束时恢复5HP（0.5心），生效3次后枯萎消失
 
     private void KuMuFengChun()
@@ -94,7 +94,7 @@ public class PropManager : MonoBehaviour
         return true;
     }
 
-    // ==================== 道具03：鼹鼠牙齿 ====================
+    // ==================== 道具03：鼹鼠牙齿 ====================ok
     // 每次战斗额外掉落2金币，永久有效
 
     private void YanShuYaChi()
@@ -104,12 +104,12 @@ public class PropManager : MonoBehaviour
 
     private void OnBattleEnd_ExtraGold()
     {
-        //PlayerInventory.Instance?.AddGold(2);
+        PlayerInventory.Instance?.AddGold(2);
     }
 
 
 
-    // ==================== 道具04：萤火虫囊 ====================
+    // ==================== 道具04：萤火虫囊 ====================ok
     // 射程+1，永久有效
 
     private void YingHuoChongNang()
@@ -118,25 +118,20 @@ public class PropManager : MonoBehaviour
             PlayerShoot.Instance.AddRange(1);
     }
 
-    // ==================== 道具05：腐烂号角 ====================
+    // ==================== 道具05：腐烂号角 ====================ok
     // 每场战斗开始时，所有敌人停止移动3秒，永久有效
 
-    /// <summary>
     /// 应用道具效果：订阅战斗开始事件
-    /// </summary>
     private void FuLanHaoJiao()
     {
         BattleRoom.OnBattleStart += OnBattleStart_StopEnemies;
     }
 
-    /// <summary>
     /// 战斗开始时：遍历所有敌人，暂停移动3秒后恢复
-    /// </summary>
     private void OnBattleStart_StopEnemies()
     {
         // 找到场景里所有带Enemy标签的物体
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
         foreach (GameObject enemy in enemies)
         {
             // 获取可移动接口
@@ -166,13 +161,18 @@ public class PropManager : MonoBehaviour
 
 
 
-    // ==================== 道具06：蜕皮壳 ====================
+    // ==================== 道具06：蜕皮壳 ====================ok
     // 获得1次庇护（阻挡任意一次攻击），生效后破损
     // 立刻在自身3格范围内生成毒气圈，维持2秒，1秒2伤（对自身无伤，只对敌）
 
-    private bool tuiPiKeActive = false;
-    private bool tuiPiKeBroken = false;
+    private bool tuiPiKeActive = false;     // 护盾是否激活
+    private bool tuiPiKeBroken = false;     // 护盾是否已破损
+    [Header("毒气孢子")]
+    [SerializeField] private GameObject gasSporePrefab;  // 毒气孢子预制体
 
+    /// <summary>
+    /// 应用道具：激活护盾，订阅受伤事件
+    /// </summary>
     private void TuiPiKe()
     {
         tuiPiKeActive = true;
@@ -183,6 +183,9 @@ public class PropManager : MonoBehaviour
             health.OnDamaged += CheckTuiPiKe;
     }
 
+    /// <summary>
+    /// 受伤时检查护盾
+    /// </summary>
     private void CheckTuiPiKe(float damage)
     {
         if (!tuiPiKeActive || tuiPiKeBroken) return;
@@ -198,46 +201,62 @@ public class PropManager : MonoBehaviour
             health.OnDamaged -= CheckTuiPiKe;
         }
 
-        // 生成毒气圈
+        // 释放毒气
         var player = FixedRoomManager.Instance.GetPlayer();
         if (player != null)
         {
-            // 在玩家位置生成毒气，半径3格，持续2秒，每秒2伤
-            StartCoroutine(SpawnPoisonCloud(player.transform.position, 3f, 2f, 4f));
+            Vector3 gasCenter = player.transform.position;
+
+            // 释放孢子视觉效果
+            if (gasSporePrefab != null)
+            {
+                int burstCount = 20;
+                for (int i = 0; i < burstCount; i++)
+                {
+                    GameObject spore = Instantiate(gasSporePrefab, gasCenter, Quaternion.identity);
+                    SporeBehav behav = spore.GetComponent<SporeBehav>();
+                    if (behav != null)
+                    {
+                        behav.moveSpeed = Random.Range(1f, 3f);
+                        behav.lifetime = Random.Range(1f, 2f);
+                    }
+                    spore.transform.localScale = Vector3.one * Random.Range(0.08f, 0.2f);
+                }
+            }
+
+            // 毒气伤害协程
+            StartCoroutine(GasDamageCoroutine(gasCenter));
         }
     }
 
     /// <summary>
-    /// 生成毒气圈
+    /// 毒气伤害：以释放点为中心，半径3格，持续2秒，每0.5秒1伤
     /// </summary>
-    /// <param name="center">中心位置</param>
-    /// <param name="radius">半径（格）</param>
-    /// <param name="duration">持续时间（秒）</param>
-    /// <param name="totalDamage">总伤害</param>
-    IEnumerator SpawnPoisonCloud(Vector3 center, float radius, float duration, float totalDamage)
+    IEnumerator GasDamageCoroutine(Vector3 center)
     {
         float elapsed = 0f;
-        float damagePerTick = totalDamage / (duration * 2f);  // 每秒2跳
+        float duration = 2f;
+        float interval = 0.5f;
+        float radius = 3f;
 
         while (elapsed < duration)
         {
-            // 检测范围内敌人
             Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius);
             foreach (var hit in hits)
             {
                 if (hit.CompareTag("Enemy"))
                 {
-                    Health enemyHealth = hit.GetComponent<Health>();
-                    enemyHealth?.TakeDamage(damagePerTick);
+                    hit.GetComponent<Health>()?.TakeDamage(1);
                 }
             }
-            elapsed += 0.5f;
-            yield return new WaitForSeconds(0.5f);
+
+            elapsed += interval;
+            yield return new WaitForSeconds(interval);
         }
     }
 
 
-    // ==================== 道具07：血苔绷带 ====================//扣血没问题攻击没检测
+    // ==================== 道具07：血苔绷带 ====================//ok
     // 血量＞5HP（0.5心）时，每次进入新房间扣除5HP
     // 伤害+0.5，永久有效
 
@@ -260,8 +279,8 @@ public class PropManager : MonoBehaviour
     }
 
 
-    // ==================== 道具08：枯叶斗篷 ====================
-    // 站立不动3秒后进入伪装，敌人无法发现你（攻击或移动解除），永久有效
+    // ==================== 道具08：枯叶斗篷 ====================ok
+    // 站立不动3秒后进入伪装，敌人无法发现你（仇恨解除，正常巡逻且不触发仇恨），永久有效
 
     private bool douPengActive = false;
     private float standStillTimer = 0f;
@@ -275,7 +294,7 @@ public class PropManager : MonoBehaviour
     }
 
     // 需要在 Update 里检测，加一个公共方法给 PlayerController 调用
-    public void UpdateDouPeng(Vector3 currentPos, bool isMoving, bool isShooting)
+    public void UpdateDouPeng(bool isMoving, bool isShooting)
     {
         if (!douPengActive) return;
 
@@ -315,7 +334,7 @@ public class PropManager : MonoBehaviour
     }
 
 
-    // ==================== 道具09：蜂后蜜 ====================
+    // ==================== 道具09：蜂后蜜 ====================ok
     // 攻击力+0.5，但每次战斗开始时有50%概率额外生成2个敌人，永久有效
 
     private void FengHouMi()
@@ -344,56 +363,58 @@ public class PropManager : MonoBehaviour
     }
 
 
-    // ==================== 道具10：石化种子 ====================
+    // ==================== 道具10：石化种子 ====================okk
     // 每次攻击有10%概率对敌人造成石化（静止不动2秒，无法攻击移动，无法受到伤害），永久有效
 
+    /// <summary>
+    /// 应用道具：设置石化概率和持续时间
+    /// </summary>
     private void ShiHuaZhongZi()
     {
-        // 在 BaseBullet 击中的地方加判定
-        // 这里给 PlayerStats 加个标记，子弹命中时检查
-        PlayerStats.Instance.stoneChance = 0.1f;
-        PlayerStats.Instance.stoneDuration = 2f;
+        PlayerStats.Instance.stoneChance = 0.1f;       // 10%概率触发
+        PlayerStats.Instance.stoneDuration = 2f;        // 石化持续2秒
     }
 
-    // 在 BaseBullet.OnTriggerEnter2D 里调用：
-    // if (Random.value < PlayerStats.Instance.stoneChance)
-    //     PropManager.Instance.ApplyStone(enemy, PlayerStats.Instance.stoneDuration);
-
+    /// <summary>
+    /// 对敌人施加石化（由BaseBullet命中时调用）
+    /// </summary>
+    /// <param name="enemy">被石化的敌人</param>
+    /// <param name="duration">石化持续时间</param>
     public void ApplyStone(GameObject enemy, float duration)
     {
         StartCoroutine(StoneCoroutine(enemy, duration));
     }
 
+    /// <summary>
+    /// 石化协程：敌人停止移动、变灰、无法受伤，持续指定秒数后恢复
+    /// </summary>
     IEnumerator StoneCoroutine(GameObject enemy, float duration)
     {
         if (enemy == null) yield break;
 
-        // 暂停移动
+        // 获取敌人组件
+        Health health = enemy.GetComponent<Health>();
         IMovable movable = enemy.GetComponent<IMovable>();
+        SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
+
+        // === 进入石化 ===
+
+        // 标记石化状态，Health里会跳过伤害
+        if (health != null) health.isStoned = true;
+        // 暂停移动
         movable?.PauseMovement();
 
-        // 禁用攻击（如果有攻击组件）
-        MonoBehaviour[] scripts = enemy.GetComponents<MonoBehaviour>();
-        foreach (var script in scripts)
-        {
-            if (script != null && script != this)
-                script.enabled = false;
-        }
-
-        // 灰色石化效果
-        SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
+        // 变灰
         Color originalColor = sr != null ? sr.color : Color.white;
         if (sr != null) sr.color = Color.gray;
 
+        // 等待石化时间
         yield return new WaitForSeconds(duration);
 
-        // 恢复
+        // === 解除石化 ===
+
+        if (health != null) health.isStoned = false;
         movable?.ResumeMovement();
-        foreach (var script in scripts)
-        {
-            if (script != null)
-                script.enabled = true;
-        }
         if (sr != null) sr.color = originalColor;
     }
 
@@ -448,7 +469,7 @@ public class PropManager : MonoBehaviour
             if (enemy == null) yield break;
 
             Vector2 fleeDir = (enemy.transform.position - player.position).normalized;
-            rb.velocity = fleeDir * 5f;  // 恐慌逃跑速度
+            rb.velocity = fleeDir * 2f;  // 恐慌逃跑速度
 
             elapsed += Time.deltaTime;
             yield return null;

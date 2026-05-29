@@ -102,4 +102,17 @@ public class BattleRoom : RoomBase
         OnBattleEnd?.Invoke();
         OnRoomCompleted();
     }
+
+    /// <summary>
+    /// 外部触发战斗结束和开始（BossRoom用）
+    /// </summary>
+    public static void TriggerBattleEnd()
+    {
+        OnBattleEnd?.Invoke();
+    }
+
+    public static void TriggerBattleStart()
+    {
+        OnBattleStart?.Invoke();
+    }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,9 +7,10 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory Instance;
 
-    public int seedCount = 10;   // ³õÊ¼ÖÖ×ÓÊı
+    public int seedCount = 10;   // åˆå§‹ç§å­æ•°
+    //é‡‘å¸æ•°
     public int playerGold = 100;
-    public int HarvestCount = 0; //×÷ÎïÊıÁ¿
+    public int HarvestCount = 0; //ä½œç‰©æ•°é‡
     
 
     void Awake()
@@ -34,5 +35,17 @@ public class PlayerInventory : MonoBehaviour
         seedCount += amount;
     }
 
-   
+    /// <summary>
+    /// åŠ é‡‘å¸
+    /// </summary>
+    public void AddGold(int amount)
+    {
+        playerGold += amount;
+        Debug.Log($"é‡‘å¸+{amount}ï¼Œå½“å‰é‡‘å¸: {playerGold}");
+    }
+
+    /// <summary>
+    /// è·å–å½“å‰é‡‘å¸
+    /// </summary>
+    public int GetGold() => playerGold;
 }
