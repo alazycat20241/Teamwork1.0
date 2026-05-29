@@ -40,8 +40,8 @@ public class ShopRoom : RoomBase
         }
 
         // 随机选出两个道具并展示
-        // GenerateShopProps();
-        TestSetProps(10, 11);  // 固定出现道具1和道具5
+        GenerateShopProps();
+        //TestSetProps(10, 11);  // 固定出现道具1和道具5
         ShowProps();
     }
 
