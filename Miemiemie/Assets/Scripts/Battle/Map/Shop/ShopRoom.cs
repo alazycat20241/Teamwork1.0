@@ -41,7 +41,7 @@ public class ShopRoom : RoomBase
 
         // 随机选出两个道具并展示
         GenerateShopProps();
-        //TestSetProps(10, 11);  // 固定出现道具1和道具5
+        //TestSetProps(1, 2);  // 固定出现道具1和道具5
         ShowProps();
     }
 
@@ -125,5 +125,17 @@ public class ShopRoom : RoomBase
             if (p.propID == id2) shopProps[1] = p;
         }
         ShowProps();
+    }
+
+    /// 根据拖拽的物体判断是哪个道具，返回道具ID
+    /// </summary>
+    /// <param name="draggedObj">被拖拽的道具物体</param>
+    /// <returns>道具ID（1-12）</returns>
+    public int GetDraggedPropID(GameObject draggedObj)
+    {
+        // 判断拖的是左边还是右边的道具
+        int propIndex = draggedObj == propObjects[0] ? 0 : 1;
+        // 返回对应道具的ID
+        return shopProps[propIndex].propID;
     }
 }

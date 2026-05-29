@@ -63,7 +63,6 @@ public class Health : MonoBehaviour,IDamageable
             {
                 currentHealth = 5;  // 锁血
                 return;             // 不死
-
             }
             currentHealth = 0f;
             Die();

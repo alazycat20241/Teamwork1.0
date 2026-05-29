@@ -51,6 +51,30 @@ public class PropManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 道具用完事件
+    /// </summary>
+    public event System.Action<int> OnPropUsedUp;
+
+    /// <summary>
+    /// 通知道具已用完，将对应槽位图标变灰
+    /// </summary>
+    /// <param name="propID">用完的道具ID</param>
+    public void NotifyPropUsed(int propID)
+    {
+        // 找到场景里所有道具栏槽位
+        DropHandler[] slots = FindObjectsOfType<DropHandler>();
+        foreach (var slot in slots)
+        {
+            // 匹配道具ID
+            if (slot.propID == propID)
+            {
+                // 变灰
+                slot.GrayOut();
+                return;
+            }
+        }
+    }
 
     // PropManager.cs 里对应方法的实现
 
@@ -77,6 +101,7 @@ public class PropManager : MonoBehaviour
         if (kuMuCounter <= 0)
         {
             BattleRoom.OnBattleEnd -= OnBattleEnd_Heal;
+            NotifyPropUsed(1);  // ★
         }
     }
 
@@ -91,6 +116,7 @@ public class PropManager : MonoBehaviour
     {
         if (!huShenFuActive) return false;
         huShenFuActive = false;
+        NotifyPropUsed(2);  // ★
         return true;
     }
 
@@ -200,6 +226,8 @@ public class PropManager : MonoBehaviour
             health.currentHealth += damage;  // 回退伤害
             health.OnDamaged -= CheckTuiPiKe;
         }
+
+        NotifyPropUsed(6);  // ★
 
         // 释放毒气
         var player = FixedRoomManager.Instance.GetPlayer();
@@ -518,6 +546,8 @@ public class PropManager : MonoBehaviour
         {
             // 还原血量上限
             health.maxHealth -= yueShiBonus;
+
+            NotifyPropUsed(12);  // ★
 
             // 当前血量不超过新上限
             health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);
