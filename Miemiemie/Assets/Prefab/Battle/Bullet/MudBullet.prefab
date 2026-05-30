@@ -121,11 +121,14 @@ MonoBehaviour:
   AngularVelocity: 0
   AngularAcceleration: 0
   MaxVelocity: 2.1474836e+9
-  damage: 10
+  damage: 4
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
   hitEffectKey: SoilHit
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &5941194769651000052
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

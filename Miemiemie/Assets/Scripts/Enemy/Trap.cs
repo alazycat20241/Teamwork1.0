@@ -3,12 +3,7 @@
 public class Trap : MonoBehaviour
 {
     [SerializeField] private float damage = 10f;            // 对玩家伤害
-    [SerializeField] private float lifetime = 30f;          // 最长存活时间
-
-    void Start()
-    {
-        Destroy(gameObject, lifetime);  // 超时自动消失
-    }
+    //[SerializeField] private float lifetime = 30f;          // 最长存活时间
 
     /// <summary>
     /// 玩家踩到陷阱

@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 10
+      targetRoomId: 1
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
     roomType: 1
     customRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 1}
     isVisited: 0
     leftExit:
       targetRoomId: 2
@@ -78,7 +78,7 @@ MonoBehaviour:
     roomType: 1
     customRoomPrefab: {fileID: 1970818365789911129, guid: a591298431a1cc2409edaa392035323b,
       type: 3}
-    mapPosition: {x: 0, y: 1000}
+    mapPosition: {x: 0, y: 1}
     isVisited: 0
     leftExit:
       targetRoomId: 4
@@ -116,7 +116,7 @@ MonoBehaviour:
     roomType: 4
     customRoomPrefab: {fileID: 3339322651253022650, guid: 2ae2d09aa4d87504a84f3d4295ba8378,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 10}
     isVisited: 0
     leftExit:
       targetRoomId: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     roomType: 3
     customRoomPrefab: {fileID: 1594976255296622660, guid: 09bc590a239609a4da3eef958f75301b,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 1}
     isVisited: 1
     leftExit:
       targetRoomId: 0
@@ -202,10 +202,10 @@ MonoBehaviour:
     customEventData: {fileID: 11400000, guid: 43d5ce08b195bb841a23579d2cf9d13a, type: 2}
   - roomId: 4
     roomName: Shop
-    roomType: 1
+    roomType: 3
     customRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 3}
     isVisited: 1
     leftExit:
       targetRoomId: 10
@@ -235,7 +235,7 @@ MonoBehaviour:
     roomType: 3
     customRoomPrefab: {fileID: 1594976255296622660, guid: 09bc590a239609a4da3eef958f75301b,
       type: 3}
-    mapPosition: {x: 0, y: 0}
+    mapPosition: {x: 0, y: 3}
     isVisited: 1
     leftExit:
       targetRoomId: 10

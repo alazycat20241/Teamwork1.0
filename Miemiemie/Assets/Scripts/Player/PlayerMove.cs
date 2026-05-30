@@ -60,7 +60,7 @@ public class PlayerMove : MonoBehaviour
 
         bool isShooting = Input.GetMouseButton(1);
 
-        PropManager.Instance.UpdateDouPeng(isMoving, isShooting);
+        if(PropManager.Instance != null) PropManager.Instance.UpdateDouPeng(isMoving, isShooting);
     }
 
     void FixedUpdate()

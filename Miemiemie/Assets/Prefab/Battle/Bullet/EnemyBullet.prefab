@@ -107,11 +107,14 @@ MonoBehaviour:
   AngularVelocity: 0
   AngularAcceleration: 0
   MaxVelocity: 2.1474836e+9
-  damage: 10
+  damage: 5
   targetLayer:
     serializedVersion: 2
     m_Bits: 8
   hitEffectKey: BulletHit
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &7989381904782094332
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -186,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e5223800b7c264d91c160adc3d7dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 5
   targetLayer:
     serializedVersion: 2
     m_Bits: 8

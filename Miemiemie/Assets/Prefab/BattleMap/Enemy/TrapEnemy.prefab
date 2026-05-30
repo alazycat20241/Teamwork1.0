@@ -206,9 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 13
   currentHealth: 0
-  invincibilityDuration: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
@@ -259,8 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129647d28e1a19f49ada3455115ce4f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectRange: 4
-  fleeDistance: 2
+  detectRange: 3
+  fleeDistance: 1
   moveSpeed: 3
   trapPrefab: {fileID: 3926539320680030854, guid: fc8b84c3dd5a2244182332d179debb9b,
     type: 3}

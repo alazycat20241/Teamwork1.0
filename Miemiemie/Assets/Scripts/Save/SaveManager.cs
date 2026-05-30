@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -91,6 +92,16 @@ public class SaveManager : MonoBehaviour
                 data.currentDay,
                 data.maxActionPoints
             );
+        }
+
+        // 过渡加载
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadScene("Home");
+        }
+        else
+        {
+            SceneManager.LoadScene("Home");  // 降级方案
         }
 
         return true;

@@ -52,11 +52,6 @@ public class PropManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 道具用完事件
-    /// </summary>
-    public event System.Action<int> OnPropUsedUp;
-
-    /// <summary>
     /// 通知道具已用完，将对应槽位图标变灰
     /// </summary>
     /// <param name="propID">用完的道具ID</param>

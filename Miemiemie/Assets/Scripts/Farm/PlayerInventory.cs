@@ -48,4 +48,13 @@ public class PlayerInventory : MonoBehaviour
     /// 获取当前金币
     /// </summary>
     public int GetGold() => playerGold;
+
+
+    ///新开始游戏时重置一切
+    public void ResetData()
+    {
+        seedCount = 10;
+        playerGold = 0;
+        HarvestCount = 0;
+    }
 }

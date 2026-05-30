@@ -26,6 +26,9 @@ public class BaseBullet : MonoBehaviour
         // 已命中或无组件则跳过
         if (hasHit || bulletBehav == null) return;
 
+        // ★ 碰到 Wall 让 BulletBehav 处理，这里不管
+        //if (((1 << other.gameObject.layer) & bulletBehav.wallLayer) != 0) return;
+
         // 检查是否在目标层
         if (((1 << other.gameObject.layer) & targetLayer) != 0)
         {

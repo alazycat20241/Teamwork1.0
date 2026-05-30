@@ -120,12 +120,15 @@ MonoBehaviour:
   LinearAcceleration: 10
   AngularVelocity: 0
   AngularAcceleration: 0
-  MaxVelocity: 2.1474836e+9
-  damage: 10
+  MaxVelocity: 2.147484e+9
+  damage: 2
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
   hitEffectKey: WindHit
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &2473958258047717931
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

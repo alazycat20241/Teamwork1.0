@@ -49,13 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6b11dd83653ff4bbbc7e1662ca7703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseRange: 4
-  attackRange: 4
+  chaseRange: 3
+  attackRange: 3
   pauseDuration: 0.5
-  dashDistance: 4
-  dashSpeed: 25
-  stunDuration: 1
-  contactDamage: 10
+  dashDistance: 3
+  dashSpeed: 10
+  stunDuration: 1.5
+  contactDamage: 5
   moveSpeed: 3
 --- !u!212 &8380857222560605654
 SpriteRenderer:
@@ -149,9 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 25
   currentHealth: 0
-  invincibilityDuration: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1

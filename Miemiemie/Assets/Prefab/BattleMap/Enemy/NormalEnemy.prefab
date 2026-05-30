@@ -180,11 +180,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
-  moveSpeed: 4
-  chaseRange: 4
-  attackRange: 4
+  moveSpeed: 2
+  chaseRange: 3
+  attackRange: 3
   bulletObject: {fileID: 11400000, guid: e84bc87440f3fa74e9629b2140967bd9, type: 2}
-  fireInterval: 0.3
+  fireInterval: 0.33
 --- !u!50 &398363755413590565
 Rigidbody2D:
   serializedVersion: 4
@@ -224,9 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 21
   currentHealth: 0
-  invincibilityDuration: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1

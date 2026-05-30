@@ -23,6 +23,9 @@ public class BulletBehav : MonoBehaviour
     // ========== 内部状态 ==========
     private bool isReleased = false;               // 是否已回收（防止重复回收报错）
 
+    [Header("边界检测")]
+    public LayerMask wallLayer;  // ★ Wall 层，碰到就回收
+
     /// <summary>
     /// 每次从池中激活时重置状态
     /// </summary>
@@ -76,6 +79,20 @@ public class BulletBehav : MonoBehaviour
         {
             isReleased = true;
             pool.RealseItem(this);
+        }
+    }
+
+    /// <summary>
+    /// ★ 碰到 Wall 层就回收（防止子弹飞出房间）
+    /// </summary>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isReleased) return;
+
+        // 碰到墙壁 → 回收
+        if (((1 << other.gameObject.layer) & wallLayer) != 0)
+        {
+            ReleaseToPool();
         }
     }
 }

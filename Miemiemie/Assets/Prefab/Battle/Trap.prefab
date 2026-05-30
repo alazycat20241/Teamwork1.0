@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc43969230cf144081fef8ab0d39b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 5
   lifetime: 30
 --- !u!70 &1677113999743536306
 CapsuleCollider2D:
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   currentHealth: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1

@@ -560,7 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0a79417c7d16b4288399fc7bd52059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeTime: 2
+  chargeTime: 0.1
 --- !u!114 &8571476736652885224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,6 +575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1

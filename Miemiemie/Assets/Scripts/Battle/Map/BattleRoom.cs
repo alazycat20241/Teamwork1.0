@@ -37,10 +37,8 @@ public class BattleRoom : RoomBase
         {
             if (enemyInfo.enemyPrefab == null) continue;
 
-            GameObject enemy = Instantiate(enemyInfo.enemyPrefab,
-                                          enemyInfo.spawnPosition,
-                                          Quaternion.identity,
-                                          enemiesContainer);
+            GameObject enemy = Instantiate(enemyInfo.enemyPrefab, enemiesContainer);
+            enemy.transform.localPosition = enemyInfo.spawnPosition;
 
             Health health = enemy.GetComponent<Health>();
             if (health != null)

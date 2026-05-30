@@ -116,4 +116,11 @@ public class ActionPointManager : MonoBehaviour
         OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
         OnDayChanged?.Invoke(currentDay);
     }
+
+    //重新开始游戏时重置数据
+    public void ResetData()
+    {
+        currentActionPoints = maxActionPoints;  // 或其他初始值
+        currentDay = 1;
+    }
 }

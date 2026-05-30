@@ -1,22 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SporeDamageZone : MonoBehaviour
 {
-    [SerializeField] private float damage = 10f;            // 单次接触伤害
-    [SerializeField] private LayerMask targetLayer;         // 目标层（勾选Enemy）
+    [SerializeField] private LayerMask targetLayer;  // 目标层
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 检查碰撞对象的层是否在目标层中
-        if (((1 << other.gameObject.layer) & targetLayer) != 0)
+        if (((1 << other.gameObject.layer) & targetLayer) == 0) return;
+
+        Health health = other.GetComponent<Health>();
+        if (health != null)
         {
-            Health health = other.GetComponent<Health>();
-            if (health != null)
-            {
-                health.TakeDamage(damage);
-            }
+            SporeDamageManager.Instance?.RegisterTarget(health);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & targetLayer) == 0) return;
+
+        Health health = other.GetComponent<Health>();
+        if (health != null)
+        {
+            SporeDamageManager.Instance?.UnregisterTarget(health);
         }
     }
 }

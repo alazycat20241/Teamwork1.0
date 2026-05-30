@@ -206,9 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 13
   currentHealth: 0
-  invincibilityDuration: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b16b61b0d0bc0e4dadef798986ad4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 8
+  attackRange: 3
   attackCooldown: 2
   sporeCloudPrefab: {fileID: 4998957704390234290, guid: 7e46725299927a54aaf11d0de01b472e,
     type: 3}

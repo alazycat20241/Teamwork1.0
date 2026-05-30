@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a30c883979bbfd4488c3bed107b86274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burnDuration: 3
-  burnDamagePerSecond: 0.1
+  burnDuration: 1
+  burnDamagePerSecond: 2
 --- !u!212 &7634509252601801961
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -121,11 +121,14 @@ MonoBehaviour:
   AngularVelocity: 0
   AngularAcceleration: 0
   MaxVelocity: 2.1474836e+9
-  damage: 10
+  damage: 2
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
   hitEffectKey: BulletHit
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &2873211728053872353
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

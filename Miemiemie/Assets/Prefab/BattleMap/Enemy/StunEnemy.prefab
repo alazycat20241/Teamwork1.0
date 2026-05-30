@@ -343,9 +343,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82171706aa3c5e84398f76cf1db77aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 37
   currentHealth: 0
-  invincibilityDuration: 0
+  isStoned: 0
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
@@ -396,12 +396,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5aace5eee9dac46a5916ca12f164f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseRange: 10
-  attackRange: 6
+  chaseRange: 4
+  attackRange: 4
   moveSpeed: 2
   laserDuration: 1
   laserCooldown: 3
-  laserDamagePerSecond: 15
+  laserDamagePerSecond: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256

@@ -90,7 +90,9 @@ public class FixedRoomManager : MonoBehaviour
 
         // 创建新房间
         GameObject prefab = GetRoomPrefab(newRoom);
-        currentRoomInstance = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+        // 改成
+        Vector3 roomPos = new Vector3(0, newRoom.mapPosition.y * 20f, 0);
+        currentRoomInstance = Instantiate(prefab, roomPos, Quaternion.identity);
 
         // 设置房间
         RoomBase roomScript = currentRoomInstance.GetComponent<RoomBase>();
@@ -101,7 +103,7 @@ public class FixedRoomManager : MonoBehaviour
             // 把玩家移动到新房间的出生点
             if (playerInstance != null && roomScript.playerSpawnPoint != null)
             {
-                playerInstance.transform.position = roomScript.playerSpawnPoint.position;
+                playerInstance.transform.position = roomPos + roomScript.playerSpawnPoint.localPosition;
 
                 // 重置玩家状态（可选）
                 ResetPlayerState();
