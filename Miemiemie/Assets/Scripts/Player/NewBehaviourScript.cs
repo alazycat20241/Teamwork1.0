@@ -1,29 +1,40 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 摄像头跟随玩家
+/// 摄像头固定框住整个房间，不跟随玩家
 /// </summary>
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform target;
-    [SerializeField] private float smoothSpeed = 5f;
-    [SerializeField] private Vector3 offset = new Vector3(0, 0, -10);
+    [SerializeField] private float smoothSpeed = 3f;
+    [SerializeField] private Vector3 offset = new Vector3(0, 5, -10);
+
+    private Vector3 targetPosition;
+    private bool moving = false;
 
     void Start()
     {
-        if (target == null)
-        {
-            GameObject player = FixedRoomManager.Instance?.GetPlayer();
-            if (player != null)
-                target = player.transform;
-        }
+        targetPosition = transform.position;
+    }
+
+    /// <summary>
+    /// 切换到新房间（由 FixedRoomManager 调用）
+    /// </summary>
+    public void MoveToRoom(Vector3 roomPosition)
+    {
+        targetPosition = roomPosition + offset;
+        moving = true;
     }
 
     void LateUpdate()
     {
-        if (target == null) return;
+        if (!moving) return;
 
-        Vector3 targetPos = target.position + offset;
-        transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, smoothSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            transform.position = targetPosition;
+            moving = false;
+        }
     }
 }

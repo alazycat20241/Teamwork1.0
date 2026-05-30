@@ -90,9 +90,12 @@ public class FixedRoomManager : MonoBehaviour
 
         // 创建新房间
         GameObject prefab = GetRoomPrefab(newRoom);
-        // 改成
+        // 移动新房间
         Vector3 roomPos = new Vector3(0, newRoom.mapPosition.y * 20f, 0);
         currentRoomInstance = Instantiate(prefab, roomPos, Quaternion.identity);
+
+        //摄像头跟随房间
+        Camera.main.GetComponent<CameraFollow>()?.MoveToRoom(roomPos);
 
         // 设置房间
         RoomBase roomScript = currentRoomInstance.GetComponent<RoomBase>();
@@ -155,12 +158,6 @@ public class FixedRoomManager : MonoBehaviour
     private void ResetPlayerState()
     {
         if (playerInstance == null) return;
-
-        //Health playerHealth = playerInstance.GetComponent<Health>();
-        //if (playerHealth != null)
-        //{
-        //    playerHealth.currentHealth = playerHealth.maxHealth;
-        //}
 
         Rigidbody2D rb = playerInstance.GetComponent<Rigidbody2D>();
         if (rb != null)

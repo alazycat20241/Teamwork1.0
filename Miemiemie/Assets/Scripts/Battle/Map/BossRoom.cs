@@ -33,10 +33,8 @@ public class BossRoom : RoomBase
         if (bossInfo.enemyPrefab == null) return;
 
         // 生成Boss
-        bossInstance = Instantiate(bossInfo.enemyPrefab,
-                                   bossInfo.spawnPosition,
-                                   Quaternion.identity,
-                                   enemiesContainer);
+        bossInstance = Instantiate(bossInfo.enemyPrefab, enemiesContainer);
+        bossInstance.transform.localPosition = bossInfo.spawnPosition;
 
         // 获取Health组件，监听死亡事件
         Health bossHealth = bossInstance.GetComponent<Health>();
