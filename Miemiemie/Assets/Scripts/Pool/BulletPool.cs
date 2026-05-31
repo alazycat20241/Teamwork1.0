@@ -65,7 +65,6 @@ public class BulletPool
 
         // ★ 注意：damage、targetLayer、hitEffectKey 不在这里初始化
         // 这些值在预制体上手动配置，每次 OnGetItem 也不会被覆盖
-        Debug.Log($"InitBullet: LinearVelocity={bh.LinearVelocity}");  // ★ 加这行
     }
 
     /// <summary>

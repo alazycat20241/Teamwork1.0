@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 1
+      targetRoomId: 10
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
       exitPosition: {x: 0, y: 0}
     battleSetting:
       enemies:
-      - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
+      - enemyPrefab: {fileID: 3219779317744118487, guid: 842a56ab5e6415e4e8e9b22db02b9be3,
           type: 3}
         spawnPosition: {x: 0, y: 0}
         isElite: 0
