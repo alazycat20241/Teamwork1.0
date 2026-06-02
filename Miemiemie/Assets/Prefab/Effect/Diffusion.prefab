@@ -46,12 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36086e60586b74da7b19f9e7ac5c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSecond: 15
-  lingerDuration: 5
-  playerLayer:
+  targetLayer:
     serializedVersion: 2
     m_Bits: 0
-  damageRadius: 3
 --- !u!58 &5528558833703269233
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4942,7 +4939,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

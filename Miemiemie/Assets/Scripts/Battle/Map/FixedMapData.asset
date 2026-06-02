@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 10
+      targetRoomId: 1
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
       eventType: 0
     customEventData: {fileID: 0}
   - roomId: 1
-    roomName: Battle000
+    roomName: BattleRoom1
     roomType: 1
     customRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
       type: 3}
@@ -60,11 +60,11 @@ MonoBehaviour:
       enemies:
       - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
           type: 3}
-        spawnPosition: {x: 5.5, y: 4}
+        spawnPosition: {x: 1.5, y: 3.5}
         isElite: 0
       - enemyPrefab: {fileID: 6077347206989387153, guid: 1a65feff33bd9c741a50e0539d54d920,
           type: 3}
-        spawnPosition: {x: -4.4, y: -1.6}
+        spawnPosition: {x: -2.5, y: -0.5}
         isElite: 0
       rewardGold: 0
     shopSetting:
@@ -74,11 +74,11 @@ MonoBehaviour:
       eventType: 0
     customEventData: {fileID: 0}
   - roomId: 2
-    roomName: Battle
+    roomName: BattleRoom2
     roomType: 1
     customRoomPrefab: {fileID: 1970818365789911129, guid: a591298431a1cc2409edaa392035323b,
       type: 3}
-    mapPosition: {x: 0, y: 1}
+    mapPosition: {x: 0, y: 2}
     isVisited: 0
     leftExit:
       targetRoomId: 4
@@ -94,15 +94,15 @@ MonoBehaviour:
       enemies:
       - enemyPrefab: {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb,
           type: 3}
-        spawnPosition: {x: -2.8, y: 0.95}
+        spawnPosition: {x: -2.5, y: 2.5}
         isElite: 0
       - enemyPrefab: {fileID: 2152430162355477292, guid: 73cfa637bd912b744b9ad02b22f437e3,
           type: 3}
-        spawnPosition: {x: -5.4, y: -0.8}
+        spawnPosition: {x: -3.5, y: 1.5}
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: -5.4, y: 0.95}
+        spawnPosition: {x: -4.5, y: 2.5}
         isElite: 0
       rewardGold: 0
     shopSetting:
