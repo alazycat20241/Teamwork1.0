@@ -9,6 +9,7 @@ public class FireBall : MonoBehaviour
     private BulletBehav bulletBehav;
     private bool hasHit = false;
 
+    [SerializeField] private AudioClip hitSound;  // 在Inspector中拖入对应的音效
     void Awake()
     {
         bulletBehav = GetComponent<BulletBehav>();
@@ -38,6 +39,12 @@ public class FireBall : MonoBehaviour
             BurnEffect burn = other.GetComponent<BurnEffect>();
             if (burn == null) burn = other.gameObject.AddComponent<BurnEffect>();
             burn.StartBurn(burnDuration, burnDamagePerSecond);
+
+            // ★ 播放音效
+            if (hitSound != null)
+            {
+                if (hitSound != null) AudioManager.Instance.PlaySound(hitSound);
+            }
 
             // 特效
             EffectPool.Instance?.PlayAt("BulletHit", transform.position);

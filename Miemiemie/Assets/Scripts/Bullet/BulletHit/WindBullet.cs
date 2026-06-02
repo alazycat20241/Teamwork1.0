@@ -10,6 +10,7 @@ public class WindBullet : MonoBehaviour
     private BulletBehav bulletBehav;    // 子弹行为组件
     private bool hasHit = false;        // 是否已命中（防止重复触发）
 
+    [SerializeField] private AudioClip hitSound;  // 在Inspector中拖入对应的音效
     void Awake()
     {
         bulletBehav = GetComponent<BulletBehav>();
@@ -39,6 +40,12 @@ public class WindBullet : MonoBehaviour
 
             // ★ 协程挂到敌人身上
             KnockbackOnTarget(other.gameObject, knockbackDir);
+
+            // ★ 播放音效
+            if (hitSound != null)
+            {
+                if (hitSound != null) AudioManager.Instance.PlaySound(hitSound);
+            }
 
             EffectPool.Instance?.PlayAt("WindHit", transform.position);
 

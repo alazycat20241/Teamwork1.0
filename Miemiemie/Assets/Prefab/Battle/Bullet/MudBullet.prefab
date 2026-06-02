@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowAmount: 0.25
   slowDuration: 2
+  hitSound: {fileID: 8300000, guid: be8efd74f30d84d4ea870bddff3522af, type: 3}
 --- !u!212 &1572133745162087082
 SpriteRenderer:
   m_ObjectHideFlags: 0

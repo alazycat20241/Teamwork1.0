@@ -45,7 +45,6 @@ public class Boss : MonoBehaviour
         if (playerObj != null) player = playerObj.transform;
 
         health = GetComponent<Health>();
-
         // 初始化对象池
         if (circleBulletConfig != null)
             circleBulletPool = PoolManager.Instance.GetPool(circleBulletConfig);

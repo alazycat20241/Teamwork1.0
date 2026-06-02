@@ -9,6 +9,7 @@ public class MudBullet : MonoBehaviour
     private BulletBehav bulletBehav;
     private bool hasHit = false;
 
+    [SerializeField] private AudioClip hitSound;  // 在Inspector中拖入对应的音效
     void Awake()
     {
         bulletBehav = GetComponent<BulletBehav>();
@@ -38,6 +39,12 @@ public class MudBullet : MonoBehaviour
             SlowEffect slow = other.GetComponent<SlowEffect>();
             if (slow == null) slow = other.gameObject.AddComponent<SlowEffect>();
             slow.ApplySlow(slowAmount, slowDuration);
+
+            // ★ 播放音效
+            if (hitSound != null)
+            {
+                if (hitSound != null) AudioManager.Instance.PlaySound(hitSound);
+            }
 
             // 特效
             EffectPool.Instance?.PlayAt("MudHit", transform.position);

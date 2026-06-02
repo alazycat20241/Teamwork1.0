@@ -10,6 +10,7 @@ public class BaseBullet : MonoBehaviour
     private BulletBehav bulletBehav;
     private bool hasHit = false;
 
+    [SerializeField] private AudioClip hitSound;  // 在Inspector中拖入对应的音效
     void Awake()
     {
         bulletBehav = GetComponent<BulletBehav>();
@@ -48,6 +49,12 @@ public class BaseBullet : MonoBehaviour
                 {
                     Debug.Log($"[恐慌] 触发！目标:{other.name}");
                     PropManager.Instance.ApplyPanic(other.gameObject, PlayerStats.Instance.panicDuration);
+                }
+
+                // ★ 播放音效
+                if (hitSound != null)
+                {
+                    if (hitSound != null) AudioManager.Instance.PlaySound(hitSound);
                 }
 
                 // 播放击中特效

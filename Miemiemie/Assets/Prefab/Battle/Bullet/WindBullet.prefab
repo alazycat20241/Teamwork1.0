@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackDistance: 2
   knockbackDuration: 0.1
+  hitSound: {fileID: 8300000, guid: e780bf0005eea1e40b9e7a9c151be960, type: 3}
 --- !u!212 &3119496551379680802
 SpriteRenderer:
   m_ObjectHideFlags: 0

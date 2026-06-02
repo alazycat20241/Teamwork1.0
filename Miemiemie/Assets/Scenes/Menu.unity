@@ -1589,9 +1589,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalScale: 0.35
-  hoverScale: 0.38
-  pressedScale: 0.32
-  transitionSpeed: 8
+  hoverScale: 0.4
+  pressedScale: 0.33
+  transitionSpeed: 12
 --- !u!224 &891352122 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9007656005134475073, guid: 61c6f86ab07a2554892651c50f932164,
@@ -2114,9 +2114,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalScale: 0.35
-  hoverScale: 0.38
-  pressedScale: 0.32
-  transitionSpeed: 8
+  hoverScale: 0.4
+  pressedScale: 0.33
+  transitionSpeed: 12
 --- !u!1 &1203179929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2261,9 +2261,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalScale: 0.35
-  hoverScale: 0.38
-  pressedScale: 0.32
-  transitionSpeed: 8
+  hoverScale: 0.4
+  pressedScale: 0.33
+  transitionSpeed: 12
 --- !u!114 &1213818361
 MonoBehaviour:
   m_ObjectHideFlags: 0

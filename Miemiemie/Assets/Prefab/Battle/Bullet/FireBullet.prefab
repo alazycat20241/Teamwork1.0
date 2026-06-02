@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnDuration: 1
   burnDamagePerSecond: 2
+  hitSound: {fileID: 8300000, guid: 003150221b77f67448eb41bd8ae51c26, type: 3}
 --- !u!212 &7634509252601801961
 SpriteRenderer:
   m_ObjectHideFlags: 0
