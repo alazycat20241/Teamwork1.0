@@ -26,7 +26,7 @@ MonoBehaviour:
       exitDescription: 
       exitPosition: {x: 0, y: 0}
     rightExit:
-      targetRoomId: 15
+      targetRoomId: 2
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
