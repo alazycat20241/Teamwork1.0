@@ -615,7 +615,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e42b3ec176fdfff418e961f7abc05bf7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -666,6 +666,7 @@ MonoBehaviour:
   panicDuration: 0
   stoneChance: 0
   stoneDuration: 0
+  missChance: 0
 --- !u!114 &2581581493665629642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,8 +711,9 @@ MonoBehaviour:
   currentHealth: 0
   isStoned: 0
   enableHitFlash: 1
-  enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  enemyFlashColor: {r: 0.8867923, g: 0.41829816, b: 0.41829816, a: 1}
   flashDuration: 0.1
+  isNextDamageImmune: 0
 --- !u!114 &8811935060188009833
 MonoBehaviour:
   m_ObjectHideFlags: 0

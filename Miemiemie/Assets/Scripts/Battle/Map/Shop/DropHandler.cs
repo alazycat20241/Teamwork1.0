@@ -30,12 +30,17 @@ public class DropHandler : MonoBehaviour, IDropHandler
         // 记录道具图标
         currentIcon = dragged.GetComponent<Image>();
 
-        // 通知商店房间
+        // 判断当前是商店还是事件房间
         if (ShopRoom.Instance != null)
+        {// 从商店房间获取被拖拽道具的ID，存到槽位里
             ShopRoom.Instance.OnPropDropped(dragged, slotIndex);
-
-        // 从商店房间获取被拖拽道具的ID，存到槽位里
-        propID = ShopRoom.Instance.GetDraggedPropID(dragged);
+            propID = ShopRoom.Instance.GetDraggedPropID(dragged);
+        }
+        else if (EventRoom.Current != null)
+        {
+            EventRoom.Current.OnPropDropped(dragged, slotIndex);
+            propID = EventRoom.Current.GetDraggedPropID(dragged);
+        }
     }
 
     /// <summary>

@@ -11,6 +11,7 @@ public class PlayerStats : MonoBehaviour
     public float panicDuration = 0f;
     public float stoneChance = 0f;
     public float stoneDuration = 0f;
+    public float missChance = 0f;//子弹失误率
 
     void Awake()
     {

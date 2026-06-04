@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d4c18fcc07c8fa4b856b030cc7fa1e1, type: 3}
+  m_Name: Event0 3
+  m_EditorClassIdentifier: 
+  eventName: "\u8150\u5316\u6CC9\u773C "
+  description: "\u4E00\u6C6A\u9ED1\u8272\u6CC9\u6C34\u4ECE\u6811\u6839\u4E0B\u6D8C\u51FA\uFF0C\u6CC9\u5E95\u9690\u7EA6\u53EF\u89C1\u4E00\u679A\u53D1\u5149\u7684\u517D\u7259\u3002"
+  choices:
+  - choiceText: "\u635E\u8D77\u517D\u7259 "
+    requiresItem: 0
+    requiredSoulStones: 0
+    requiredGold: 0
+    requiredBuff: 
+    baseRate: 40
+    useHPPercent: 0
+    useMissingHPPercent: 0
+    useAttackPercent: 0
+    useSpeedPercent: 0
+    useFireMode: 0
+    successText: "\u635E\u51FA\u517D\u7259"
+    successEffects:
+    - effectType: 5
+      value: 20
+      extraId: 
+      durationRooms: 1
+    failText: "\u83CC\u4E1D\u89E6\u624B\u7F20\u4F4F\u624B\u8155"
+    failEffects:
+    - effectType: 2
+      value: 5
+      extraId: 
+      durationRooms: 2
+  - choiceText: "\u5411\u6CC9\u773C\u6295\u5165\u7075\u9B42\u77F3 "
+    requiresItem: 0
+    requiredSoulStones: 0
+    requiredGold: 0
+    requiredBuff: 
+    baseRate: 100
+    useHPPercent: 0
+    useMissingHPPercent: 0
+    useAttackPercent: 0
+    useSpeedPercent: 0
+    useFireMode: 0
+    successText: "\u6CC9\u773C\u6CB8\u817E\u540E\u5E73\u9759\uFF0C\u517D\u7259\u6D6E\u51FA"
+    successEffects:
+    - effectType: 13
+      value: 0
+      extraId: 
+      durationRooms: 0
+    failText: 
+    failEffects:
+    - effectType: 0
+      value: 0
+      extraId: 
+      durationRooms: 0

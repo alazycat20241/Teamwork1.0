@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d4c18fcc07c8fa4b856b030cc7fa1e1, type: 3}
-  m_Name: NewEvent
+  m_Name: Event0 5
   m_EditorClassIdentifier: 
-  eventName: "\u6D4B\u8BD5\u7528"
-  description: okk
+  eventName: "\u661F\u843D\u82D4\u539F "
+  description: " \u4E00\u5757\u9668\u77F3\u7838\u7A7F\u4E86\u6797\u51A0\uFF0C\u9668\u77F3\u8868\u9762\u957F\u6EE1\u4E86\u53D1\u5149\u7684\u84DD\u8272\u82D4\u85D3\uFF0C\u82D4\u85D3\u4E2D\u5D4C\u7740\u65E0\u6570\u7EC6\u5C0F\u7684\u7ED3\u6676\u3002"
   choices:
-  - choiceText: Try1
+  - choiceText: "\u6EF4\u8840\u732E\u796D"
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
@@ -26,34 +26,38 @@ MonoBehaviour:
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: yes.!
+    successText: "\u82D4\u85D3\u6536\u7F29\uFF0C\u5410\u51FA\u4E00\u4E2A\u9053\u5177\u3002 "
     successEffects:
     - effectType: 3
       value: 10
       extraId: 
       durationRooms: 1
-    failText: well...
-    failEffects: []
-  - choiceText: 2
+    failText: "\u82D4\u85D3\u75AF\u72C2\u8513\u5EF6\uFF0C\u7F20\u4F4F\u4F60\u7684\u624B\u81C2\u5438\u8840\u3002"
+    failEffects:
+    - effectType: 2
+      value: 10
+      extraId: 
+      durationRooms: 0
+  - choiceText: "\u7ED5\u5F00"
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
     requiredBuff: 
-    baseRate: 50
+    baseRate: 100
     useHPPercent: 0
     useMissingHPPercent: 0
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: yes.!
+    successText: 
     successEffects:
-    - effectType: 4
-      value: 10
+    - effectType: 0
+      value: 0
       extraId: 
-      durationRooms: 1
-    failText: well...
+      durationRooms: 0
+    failText: 
     failEffects:
-    - effectType: 4
-      value: 10
+    - effectType: 0
+      value: 0
       extraId: 
       durationRooms: 0

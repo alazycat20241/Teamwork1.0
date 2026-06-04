@@ -26,6 +26,8 @@ public class Health : MonoBehaviour,IDamageable
     public float MaxHealth => maxHealth;
     public bool IsDead => currentHealth <= 0f;
 
+    public bool isNextDamageImmune = false;  //下次伤害免疫
+
     void Awake()
     {
         currentHealth = maxHealth;
@@ -42,6 +44,14 @@ public class Health : MonoBehaviour,IDamageable
     public void TakeDamage(float damage)
     {
         if (IsDead) return;
+
+        // ★ 下次受伤免疫
+        if (isNextDamageImmune)
+        {
+            isNextDamageImmune = false;
+            Debug.Log("下次受伤免疫触发，伤害被抵挡");
+            return;
+        }
 
         // 石化中的敌人不受伤害
         if (isStoned && CompareTag("Enemy")) return;
