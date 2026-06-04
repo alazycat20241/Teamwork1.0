@@ -46,9 +46,8 @@ public class EventChoice
 public class EventEffect
 {
     public EffectType effectType;
-    public int value;
+    public float value;
     public string extraId;
-    public int durationRooms;   // 持续几个房间，0=本次战斗，-1=永久
 }
 
 public enum EffectType
@@ -73,5 +72,4 @@ public enum EffectType
     MissRate,           // 失误率 value%
     StartBattle,        // 强制战斗 extraId=配置
     CurseNextRoom,      // 进入下个房间触发 effect
-    LastXRooms,         // 持续X个房间的效果
 }

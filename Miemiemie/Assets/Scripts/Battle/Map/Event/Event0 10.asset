@@ -43,21 +43,25 @@ MonoBehaviour:
     requiredSoulStones: 0
     requiredGold: 0
     requiredBuff: 
-    baseRate: 100
-    useHPPercent: 0
+    baseRate: 20
+    useHPPercent: 1
     useMissingHPPercent: 0
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
     successText: 
     successEffects:
-    - effectType: 0
-      value: 0
+    - effectType: 13
+      value: 1
       extraId: 
       durationRooms: 0
-    failText: 
+    failText: "\u7532\u866B\u7FA4\u653B\u51FB"
     failEffects:
-    - effectType: 0
-      value: 0
+    - effectType: 2
+      value: 10
+      extraId: 
+      durationRooms: 0
+    - effectType: 10
+      value: 5
       extraId: 
       durationRooms: 0

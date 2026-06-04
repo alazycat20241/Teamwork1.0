@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     
     // 翻转状态
-    private bool isFacingRight = true;  // 记录当前朝向
+    private bool isFacingRight = false;  // 记录当前朝向
     private Transform flipTarget;       // 实际翻转的目标Transform
     
     void Start()
@@ -101,7 +101,7 @@ public class PlayerMove : MonoBehaviour
         {
             // 方案2：仅翻转SpriteRenderer（旧方案，不会带动子物体）
             if (spriteRenderer != null)
-                spriteRenderer.flipX = false;
+                spriteRenderer.flipX = true;
         }
     }
     
@@ -123,7 +123,7 @@ public class PlayerMove : MonoBehaviour
         {
             // 方案2：仅翻转SpriteRenderer
             if (spriteRenderer != null)
-                spriteRenderer.flipX = true;
+                spriteRenderer.flipX = false;
         }
     }
     

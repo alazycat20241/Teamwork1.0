@@ -15,30 +15,38 @@ MonoBehaviour:
   eventName: "\u96F7\u51FB\u6728 "
   description: "\u4E00\u68F5\u88AB\u96F7\u5288\u6210\u4E24\u534A\u7684\u53E4\u6811\uFF0C\u65AD\u9762\u7126\u9ED1\uFF0C\u4ECD\u5728\u5192\u70DF\u3002\u6811\u5FC3\u9732\u51FA\u4E00\u622A\u6728\u82AF\uFF0C\u6563\u53D1\u7740\u81ED\u6C27\u7684\u6C14\u5473\uFF0C\u5468\u56F4\u7684\u5730\u9762\u6709\u5FAE\u5F31\u7684\u7535\u6D41\u8DF3\u52A8\u3002"
   choices:
-  - choiceText: "\u6EF4\u8840\u732E\u796D"
+  - choiceText: "\u5F92\u624B\u62D4\u51FA\u6728\u82AF "
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
     requiredBuff: 
-    baseRate: 50
-    useHPPercent: 0
+    baseRate: 30
+    useHPPercent: 1
     useMissingHPPercent: 0
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: "\u82D4\u85D3\u6536\u7F29\uFF0C\u5410\u51FA\u4E00\u4E2A\u9053\u5177\u3002 "
+    successText: 
     successEffects:
-    - effectType: 3
-      value: 10
+    - effectType: 5
+      value: 50
       extraId: 
       durationRooms: 1
-    failText: "\u82D4\u85D3\u75AF\u72C2\u8513\u5EF6\uFF0C\u7F20\u4F4F\u4F60\u7684\u624B\u81C2\u5438\u8840\u3002"
+    - effectType: 13
+      value: 1
+      extraId: 
+      durationRooms: 1
+    failText: "\u88AB\u7535\u51FB\u3002"
     failEffects:
     - effectType: 2
       value: 10
       extraId: 
       durationRooms: 0
-  - choiceText: "\u7ED5\u5F00"
+    - effectType: 6
+      value: 50
+      extraId: 
+      durationRooms: 1
+  - choiceText: "\u79BB\u5F00"
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
@@ -49,15 +57,15 @@ MonoBehaviour:
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: 
+    successText: "\u79BB\u5F00\u65F6\u88AB\u96F7\u5288\u4E2D"
     successEffects:
-    - effectType: 0
-      value: 0
+    - effectType: 2
+      value: 5
+      extraId: 
+      durationRooms: 0
+    - effectType: 10
+      value: 5
       extraId: 
       durationRooms: 0
     failText: 
-    failEffects:
-    - effectType: 0
-      value: 0
-      extraId: 
-      durationRooms: 0
+    failEffects: []

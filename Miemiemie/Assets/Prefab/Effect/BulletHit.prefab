@@ -4901,5 +4901,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87fcdfea85af3da4a8b3a579a382ab51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectKey: 
+  effectKey: BulletHit
   lifetime: 0.5

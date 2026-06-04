@@ -139,7 +139,7 @@ MonoBehaviour:
     eventSetting:
       eventDescription: 
       eventType: 3
-    customEventData: {fileID: 11400000, guid: 43d5ce08b195bb841a23579d2cf9d13a, type: 2}
+    customEventData: {fileID: 11400000, guid: fc21ddfa8fecdcf4ab71613bc4df07cd, type: 2}
   - roomId: 4
     roomName: Shop
     roomType: 3

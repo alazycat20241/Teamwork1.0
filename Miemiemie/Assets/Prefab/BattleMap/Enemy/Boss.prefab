@@ -19,7 +19,7 @@ GameObject:
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6387891190682526156
 Transform:
@@ -133,7 +133,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3219779317744118487}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
+  isNextDamageImmune: 0
 --- !u!114 &3120301070100897884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +213,7 @@ GameObject:
   m_TagString: FireCol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5736635671567824464
 Transform:

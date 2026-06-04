@@ -15,31 +15,31 @@ MonoBehaviour:
   eventName: "\u5F71\u72D0\u7684\u4EA4\u6613 "
   description: "\u4E00\u53EA\u6D51\u8EAB\u6F06\u9ED1\u3001\u62D6\u7740\u4E09\u6761\u5C3E\u5DF4\u7684\u72D0\u72F8\u8E72\u5728\u8DEF\u4E2D\u592E\u3002\n\u5B83\u9762\u524D\u653E\u7740\u4E00\u7247\u5DE8\u5927\u7684\u6811\u53F6\uFF0C\u6811\u53F6\u4E00\u7AEF\u538B\u7740\u4F60\u7684\u5F71\u5B50\uFF0C\u72D0\u72F8\u51B2\u7740\u4F60\u6B6A\u5934\u3002"
   choices:
-  - choiceText: "\u6EF4\u8840\u732E\u796D"
+  - choiceText: "\u653B\u51FB\u72D0\u72F8 "
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
     requiredBuff: 
-    baseRate: 50
+    baseRate: 30
     useHPPercent: 0
     useMissingHPPercent: 0
-    useAttackPercent: 0
+    useAttackPercent: 1
     useSpeedPercent: 0
     useFireMode: 0
-    successText: "\u82D4\u85D3\u6536\u7F29\uFF0C\u5410\u51FA\u4E00\u4E2A\u9053\u5177\u3002 "
+    successText: "\u5F71\u72D0\u5316\u4E3A\u70DF\u96FE\u3002 "
     successEffects:
-    - effectType: 3
+    - effectType: 0
       value: 10
       extraId: 
       durationRooms: 1
-    failText: "\u82D4\u85D3\u75AF\u72C2\u8513\u5EF6\uFF0C\u7F20\u4F4F\u4F60\u7684\u624B\u81C2\u5438\u8840\u3002"
+    failText: "\u5F71\u72D0\u5316\u8EAB\u6210\u4E09\u53EA\u602A\uFF0C\u56F4\u653B\u4F60\u3002"
     failEffects:
-    - effectType: 2
-      value: 10
+    - effectType: 18
+      value: 3
       extraId: 
       durationRooms: 0
-  - choiceText: "\u7ED5\u5F00"
-    requiresItem: 0
+  - choiceText: "\u732E\u4E0A\u730E\u7269"
+    requiresItem: 1
     requiredSoulStones: 0
     requiredGold: 0
     requiredBuff: 
@@ -49,9 +49,9 @@ MonoBehaviour:
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: 
+    successText: "\u5F71\u72D0\u6EE1\u610F\u79BB\u53BB\uFF0C\u5F71\u5B50\u91CA\u653E\u3002"
     successEffects:
-    - effectType: 0
+    - effectType: 14
       value: 0
       extraId: 
       durationRooms: 0
