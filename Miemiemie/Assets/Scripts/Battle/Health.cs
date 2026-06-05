@@ -63,6 +63,12 @@ public class Health : MonoBehaviour,IDamageable
             flashCoroutine = StartCoroutine(HitFlash());
         }
 
+        // ★★★ 添加这一行：玩家受伤时触发暗角 ★★★
+        if (CompareTag("Player") && DamageVignette.Instance != null)
+        {
+            DamageVignette.Instance.TriggerDamageVignette();
+        }
+
         OnDamaged?.Invoke(damage);
         currentHealth -= damage;
 
