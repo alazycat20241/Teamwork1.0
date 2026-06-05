@@ -88,6 +88,7 @@ public class MapUIManager : MonoBehaviour
     {
         if (!ActionPointManager.Instance.UseActionPoints(1)) return;
         SwitchPanel(farmShopPanel);
+        HomeAudioManager.Instance?.PlayShopBGM();
     }
 
     /// <summary>
@@ -130,6 +131,7 @@ public class MapUIManager : MonoBehaviour
     public void CloseMap()
     {
         mapPanel.Close(() => CheckResume());
+        HomeAudioManager.Instance?.PlayMapBGM();
     }
 
 
@@ -162,6 +164,7 @@ public class MapUIManager : MonoBehaviour
 
         // 关闭地图面板
         mapPanel.Close();
+        if(HomeAudioManager.Instance!=null) HomeAudioManager.Instance?.PlayMapBGM();
     }
 
     /// 定住玩家

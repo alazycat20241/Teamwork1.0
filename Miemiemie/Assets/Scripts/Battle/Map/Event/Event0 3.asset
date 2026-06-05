@@ -31,16 +31,14 @@ MonoBehaviour:
     - effectType: 5
       value: 20
       extraId: 
-      durationRooms: 1
     failText: "\u83CC\u4E1D\u89E6\u624B\u7F20\u4F4F\u624B\u8155"
     failEffects:
     - effectType: 2
       value: 5
       extraId: 
-      durationRooms: 2
   - choiceText: "\u5411\u6CC9\u773C\u6295\u5165\u7075\u9B42\u77F3 "
     requiresItem: 0
-    requiredSoulStones: 0
+    requiredSoulStones: 1
     requiredGold: 0
     requiredBuff: 
     baseRate: 100
@@ -52,12 +50,10 @@ MonoBehaviour:
     successText: "\u6CC9\u773C\u6CB8\u817E\u540E\u5E73\u9759\uFF0C\u517D\u7259\u6D6E\u51FA"
     successEffects:
     - effectType: 13
-      value: 0
+      value: 1
       extraId: 
-      durationRooms: 0
     failText: 
     failEffects:
     - effectType: 0
       value: 0
       extraId: 
-      durationRooms: 0
