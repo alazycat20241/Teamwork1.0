@@ -31,6 +31,9 @@ public class EventRoom : RoomBase
     [Header("面板延迟")]
     public float waitTime = 1.5f;   // 面板打开延迟
 
+    [Header("随机事件池")]
+    [SerializeField] private List<EventData> eventPool;  // 所有可能的事件，拖进去
+
     // ==================== 玩家属性 ====================
     private float currentHP;
     private float maxHP;
@@ -81,7 +84,13 @@ public class EventRoom : RoomBase
             return;
         }
 
+        // 优先用 RoomConfig 指定的，否则从池里随机
         eventData = config.customEventData;
+        if (eventData == null && eventPool != null && eventPool.Count > 0)
+        {
+            eventData = eventPool[Random.Range(0, eventPool.Count)];
+        }
+
         if (eventData == null)
         {
             OnRoomCompleted();

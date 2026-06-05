@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d242c17206ef97948aaf4fb58f4c6b89
+guid: 91e8a6fe99cc3404f94d2fb44945fe95
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - ?????
+  - LemiLaBiTi
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

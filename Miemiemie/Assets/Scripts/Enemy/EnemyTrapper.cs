@@ -140,7 +140,8 @@ public class EnemyTrapper : MonoBehaviour, IMovable
     public void PauseMovement()
     {
         isPaused = true;
-        rb.velocity = Vector2.zero;
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (rb != null) rb.velocity = Vector2.zero;
     }
 
     public void ResumeMovement()

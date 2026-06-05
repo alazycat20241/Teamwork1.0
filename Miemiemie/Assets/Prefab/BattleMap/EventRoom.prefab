@@ -492,6 +492,17 @@ MonoBehaviour:
     spawnPosition: {x: 0, y: 0}
     isElite: 0
   waitTime: 1
+  eventPool:
+  - {fileID: 11400000, guid: 43d5ce08b195bb841a23579d2cf9d13a, type: 2}
+  - {fileID: 11400000, guid: 9822faec646cc1b4aa87122927c424ee, type: 2}
+  - {fileID: 11400000, guid: fc21ddfa8fecdcf4ab71613bc4df07cd, type: 2}
+  - {fileID: 11400000, guid: 29e42e300becb394c90427807b1d5551, type: 2}
+  - {fileID: 11400000, guid: 2f7af645e1e7b88409ed9fbc5acc8c61, type: 2}
+  - {fileID: 11400000, guid: 33706097f8b076e44b9db6321dce4a84, type: 2}
+  - {fileID: 11400000, guid: 665c92200abe722439bc99a4f303bea3, type: 2}
+  - {fileID: 11400000, guid: 6f2a4ec94f4e2d6469872d4ab0a6f6dd, type: 2}
+  - {fileID: 11400000, guid: c6749c95ae8a43c4981fba8f04740754, type: 2}
+  - {fileID: 11400000, guid: 12a1f6969a4ca574e9de5c356c2a5746, type: 2}
 --- !u!82 &876683559250256082
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1169,7 +1180,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 40.025284, y: 161.05411, z: 83.86258, w: 83.86244}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1304,7 +1315,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 47.20014, y: 123.13071, z: 97.4785, w: 71.82622}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
