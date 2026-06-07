@@ -14,6 +14,10 @@ public class Health : MonoBehaviour,IDamageable
     [SerializeField] private Color enemyFlashColor = Color.white; // 敌人闪烁颜色
     [SerializeField] private float flashDuration = 0.1f;        // 闪烁持续时间
 
+    // ★★★ 添加音效字段 ★★★
+    [Header("受伤音效")]
+    [SerializeField] private AudioClip hurtSound;          // 拖入受伤音效文件
+
     // 闪烁相关组件
     private SpriteRenderer spriteRenderer;
     private MaterialPropertyBlock propertyBlock;
@@ -63,10 +67,20 @@ public class Health : MonoBehaviour,IDamageable
             flashCoroutine = StartCoroutine(HitFlash());
         }
 
-        // ★★★ 添加这一行：玩家受伤时触发暗角 ★★★
-        if (CompareTag("Player") && DamageVignette.Instance != null)
+        // ★★★ 玩家受伤处理 ★★★
+        if (CompareTag("Player"))
         {
-            DamageVignette.Instance.TriggerDamageVignette();
+            // 播放受伤音效（不会冲突）
+            if (AudioManager.Instance != null)
+            {
+                if(hurtSound!=null)AudioManager.Instance.PlaySound(hurtSound);
+            }
+
+            // 触发暗角效果
+            if (DamageVignette.Instance != null)
+            {
+                DamageVignette.Instance.TriggerDamageVignette();
+            }
         }
 
         OnDamaged?.Invoke(damage);

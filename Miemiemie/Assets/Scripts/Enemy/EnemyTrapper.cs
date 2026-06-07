@@ -148,4 +148,25 @@ public class EnemyTrapper : MonoBehaviour, IMovable
     {
         isPaused = false;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        // 发现范围
+        Gizmos.color = new Color(1f, 1f, 0f, 0.15f);
+        Gizmos.DrawWireSphere(transform.position, detectRange);
+        // 逃离范围
+        Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(transform.position, fleeDistance);
+    }
+
+    void OnDrawGizmos()
+    {
+
+        // 发现范围（外圈）- 绿色
+        Gizmos.color = new Color(1f, 1f, 0f, 0.15f);
+        Gizmos.DrawSphere(transform.position, detectRange);
+        // 逃离范围（内圈）- 黄色
+        Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+        Gizmos.DrawSphere(transform.position, fleeDistance);
+    }
 }

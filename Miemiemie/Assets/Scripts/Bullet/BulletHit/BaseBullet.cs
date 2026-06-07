@@ -54,7 +54,7 @@ public class BaseBullet : MonoBehaviour
                 // ★ 播放音效
                 if (hitSound != null)
                 {
-                    if (hitSound != null) AudioManager.Instance.PlaySound(hitSound);
+                    AudioManager.Instance.PlaySound(hitSound);
                 }
 
                 // 播放击中特效

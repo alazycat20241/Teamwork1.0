@@ -110,6 +110,7 @@ public class PlayerShoot : MonoBehaviour
     public void AddRange(float amount)
     {
         shootRange += amount;
+        shootRange = Mathf.Max(shootRange, 0.5f);  // 最小射程0.5格，不能是0或负数
     }
     /// <summary>
     /// 在 Scene 视图绘制射程范围

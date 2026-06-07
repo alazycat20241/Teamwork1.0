@@ -217,4 +217,20 @@ public class EnemyDash : MonoBehaviour, IMovable
     {
         isPaused = false;
     }
+
+    // ★★★ 在Scene视图中绘制范围 ★★★
+    void OnDrawGizmosSelected()
+    {
+        // 追逐范围（发现玩家范围）
+        Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+    }
+
+    // ★★★ 持续显示范围 ★★★
+    void OnDrawGizmos()
+    {
+        // 追逐范围 - 实心半透明圆
+        Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
+        Gizmos.DrawSphere(transform.position, chaseRange);
+    }
 }

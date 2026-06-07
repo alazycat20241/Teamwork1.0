@@ -337,4 +337,16 @@ public class EnemyLaser : MonoBehaviour, IMovable
     {
         isPaused = false;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+        Gizmos.DrawSphere(transform.position, chaseRange);
+    }
 }

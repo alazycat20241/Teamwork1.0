@@ -151,6 +151,9 @@ public class PropManager : MonoBehaviour
     /// 战斗开始时：遍历所有敌人，暂停移动3秒后恢复
     private void OnBattleStart_StopEnemies()
     {
+        // 检查自身是否已被销毁
+        if (this == null || gameObject == null) return;
+
         // 找到场景里所有带Enemy标签的物体
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
@@ -405,6 +408,10 @@ public class PropManager : MonoBehaviour
     /// <param name="duration">石化持续时间</param>
     public void ApplyStone(GameObject enemy, float duration)
     {
+        // 先检查是否已经在石化中
+        Health health = enemy.GetComponent<Health>();
+        if (health == null || health.isStoned) return; // 已经在石化中，不重复触发
+
         StartCoroutine(StoneCoroutine(enemy, duration));
     }
 

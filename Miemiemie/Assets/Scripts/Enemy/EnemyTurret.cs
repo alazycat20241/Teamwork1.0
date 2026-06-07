@@ -66,4 +66,16 @@ public class EnemyTurret : MonoBehaviour
     {
         Instantiate(deathExplosionPrefab, transform.position, Quaternion.identity);
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+        Gizmos.DrawSphere(transform.position, attackRange);
+    }
 }

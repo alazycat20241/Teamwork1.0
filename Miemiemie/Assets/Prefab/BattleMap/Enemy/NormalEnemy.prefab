@@ -108,8 +108,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.23062645, y: 0.72415, z: -0.0510895}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1143544977280815761}
   m_Father: {fileID: 0}
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 1
   moveSpeed: 2
-  chaseRange: 3
-  attackRange: 3
+  chaseRange: 1.5
+  attackRange: 1.5
   bulletObject: {fileID: 11400000, guid: e84bc87440f3fa74e9629b2140967bd9, type: 2}
   fireInterval: 0.33
 --- !u!50 &398363755413590565
@@ -230,6 +230,8 @@ MonoBehaviour:
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
+  hurtSound: {fileID: 0}
+  isNextDamageImmune: 0
 --- !u!70 &3113791979145152119
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

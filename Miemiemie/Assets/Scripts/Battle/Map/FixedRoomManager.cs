@@ -20,6 +20,9 @@ public class FixedRoomManager : MonoBehaviour
     [Header("玩家")]
     [SerializeField] private GameObject playerPrefab;
 
+    [Header("音效")]
+    [SerializeField] private AudioClip pageFlipSound;
+
     // 运行时数据
     private RoomConfig currentRoom;
     private GameObject currentRoomInstance;
@@ -96,6 +99,9 @@ public class FixedRoomManager : MonoBehaviour
 
         //摄像头跟随房间
         Camera.main.GetComponent<CameraFollow>()?.MoveToRoom(roomPos);
+
+        // ★ 翻页音效
+        AudioManager.Instance.PlaySound(pageFlipSound);
 
         // 设置房间
         RoomBase roomScript = currentRoomInstance.GetComponent<RoomBase>();

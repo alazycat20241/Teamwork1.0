@@ -193,4 +193,4 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 8
-  hitSound: {fileID: 8300000, guid: 1d2b165b8fe9e784f86ff73a352bba30, type: 3}
+  hitSound: {fileID: 0}

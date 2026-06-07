@@ -170,6 +170,7 @@ MonoBehaviour:
   enableHitFlash: 1
   enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
   flashDuration: 0.1
+  hurtSound: {fileID: 0}
   isNextDamageImmune: 0
 --- !u!114 &3120301070100897884
 MonoBehaviour:
@@ -198,6 +199,9 @@ MonoBehaviour:
   summonInterval: 30
   summonCount: 1
   summonRadius: 3
+  moveSpeed: 0
+  summonRangeColor: {r: 0.5, g: 0, b: 1, a: 0.2}
+  showRange: 1
 --- !u!1 &5922995302039310375
 GameObject:
   m_ObjectHideFlags: 0
