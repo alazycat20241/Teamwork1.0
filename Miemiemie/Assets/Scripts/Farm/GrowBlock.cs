@@ -10,7 +10,6 @@ public class GrowBlock : MonoBehaviour
     public enum GrowthStage
     {
         Barren,     // 荒地
-        Ploughed,   // 已犁地
         Planted,    // 已播种
         Growing1,   // 生长阶段1
         Growing2,   // 生长阶段2
@@ -21,7 +20,6 @@ public class GrowBlock : MonoBehaviour
 
     //精灵贴图
     public Sprite barrenSprite;
-    public Sprite ploughedSprite;
     public Sprite plantedSprite;
     public Sprite growing1Sprite;
     public Sprite growing2Sprite;
@@ -109,11 +107,6 @@ public class GrowBlock : MonoBehaviour
     {
         if (currentStage == GrowthStage.Barren)
         {
-            currentStage = GrowthStage.Ploughed;
-            UpdateSprite();
-        }
-        else if (currentStage == GrowthStage.Ploughed)
-        {
             // 检测背包是否有种子
             if (PlayerInventory.Instance != null &&
                 PlayerInventory.Instance.UseSeed())
@@ -168,7 +161,7 @@ public class GrowBlock : MonoBehaviour
                         Quaternion.identity);
         }
 
-        currentStage = GrowthStage.Ploughed;
+        currentStage = GrowthStage.Barren;
         growTimer = 0f;
         UpdateSprite();
     }
@@ -181,7 +174,6 @@ public class GrowBlock : MonoBehaviour
         switch (currentStage)
         {
             case GrowthStage.Barren: sr.sprite = barrenSprite; break;
-            case GrowthStage.Ploughed: sr.sprite = ploughedSprite; break;
             case GrowthStage.Planted: sr.sprite = plantedSprite; break;
             case GrowthStage.Growing1: sr.sprite = growing1Sprite; break;
             case GrowthStage.Growing2: sr.sprite = growing2Sprite; break;

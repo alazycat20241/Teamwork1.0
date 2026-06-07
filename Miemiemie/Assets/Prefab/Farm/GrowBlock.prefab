@@ -134,12 +134,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentStage: 0
   barrenSprite: {fileID: 21300000, guid: 2e44bd42357b75d4890d4a6899ba9dc6, type: 3}
-  ploughedSprite: {fileID: 21300000, guid: 2e44bd42357b75d4890d4a6899ba9dc6, type: 3}
   plantedSprite: {fileID: 21300000, guid: 2e44bd42357b75d4890d4a6899ba9dc6, type: 3}
   growing1Sprite: {fileID: 21300000, guid: 4f09fe21a46a99f428ec6688a884c6b1, type: 3}
   growing2Sprite: {fileID: 21300000, guid: 78099fb7a36bcdb44a3df5bf01955273, type: 3}
   ripeSprite: {fileID: 21300000, guid: 78099fb7a36bcdb44a3df5bf01955273, type: 3}
-  timeToGrowing1: 3
+  timeToGrowing1: 2
   timeToGrowing2: 3
   timeToRipe: 3
   harvestItemPrefab: {fileID: 2632230144370668228, guid: 3ee1c3983909071409e60066e5625361,
@@ -147,7 +146,7 @@ MonoBehaviour:
   harvestSpawnPoint: {fileID: 8830714190635122899}
   outlineSR: {fileID: 7103344650848730220}
   normalColor: {r: 0.32156864, g: 0.26666668, b: 0.20392159, a: 0}
-  hoverColor: {r: 1, g: 0, b: 0, a: 0.57254905}
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!61 &3225963119335964060
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -203,6 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4473055798418795461}
   - component: {fileID: 7103344650848730220}
+  - component: {fileID: 2767472258007464170}
   m_Layer: 0
   m_Name: Outline
   m_TagString: Untagged
@@ -219,8 +219,8 @@ Transform:
   m_GameObject: {fileID: 7225017301164934632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4640960290806360697}
@@ -266,14 +266,31 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2e44bd42357b75d4890d4a6899ba9dc6, type: 3}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  m_Sprite: {fileID: 21300000, guid: eebd43fcc57d6124d99c2fcec859691b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 4.4, y: 4.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2767472258007464170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225017301164934632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122b04307fd23dc4b8887809267ba4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  growBlock: {fileID: 5410879694217997619}
+  spriteBarren: {fileID: 21300000, guid: eebd43fcc57d6124d99c2fcec859691b, type: 3}
+  spriteGrowing1: {fileID: 21300000, guid: 0795408a8d74bd04fbc5d07897daadf9, type: 3}
+  spriteGrowing2: {fileID: 21300000, guid: 6784e49b413e11a4e9f32aa81c36cb2f, type: 3}
+  spriteRipe: {fileID: 21300000, guid: 6784e49b413e11a4e9f32aa81c36cb2f, type: 3}
