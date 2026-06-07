@@ -10,7 +10,6 @@ public class PlayerInventory : MonoBehaviour
     public int seedCount = 10;   // 初始种子数
     //金币数
     public int playerGold = 100;
-    public int HarvestCount = 0; //作物数量
     public int soulStones = 0;//灵魂石数量
     
 
@@ -79,6 +78,6 @@ public class PlayerInventory : MonoBehaviour
     {
         seedCount = 10;
         playerGold = 0;
-        HarvestCount = 0;
+        
     }
 }

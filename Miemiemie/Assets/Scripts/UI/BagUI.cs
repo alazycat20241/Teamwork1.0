@@ -52,6 +52,6 @@ public class BagUI : MonoBehaviour
         resourceText.text =
             $"Seed: {inv.seedCount}\n" +
             $"Gold: {inv.playerGold}\n" +
-            $"Fertilizer: {inv.HarvestCount}";
+            $"Fertilizer: {inv.soulStones}";
     }
 }

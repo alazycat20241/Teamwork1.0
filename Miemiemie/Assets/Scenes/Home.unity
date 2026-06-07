@@ -5592,7 +5592,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seedCount: 10
   playerGold: 100
-  HarvestCount: 0
   soulStones: 0
 --- !u!1001 &1361127476
 PrefabInstance:
@@ -6228,7 +6227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1425753883
 Transform:
   m_ObjectHideFlags: 0
@@ -8601,9 +8600,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '>'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 17ebf5fb6ada6ca4fa76d1df04266fd2, type: 2}
-  m_sharedMaterial: {fileID: -9123058754434168131, guid: 17ebf5fb6ada6ca4fa76d1df04266fd2,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

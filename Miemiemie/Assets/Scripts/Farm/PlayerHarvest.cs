@@ -16,7 +16,7 @@ public class PlayerHarvest : MonoBehaviour
         // 判断是否是 Harvest
         if (other.CompareTag("Harvest"))
         {
-            PlayerInventory.Instance.HarvestCount += 1;
+            PlayerInventory.Instance.soulStones += 1;
             UpdateUI();
             barn();
             Destroy(other.gameObject);
@@ -24,7 +24,7 @@ public class PlayerHarvest : MonoBehaviour
     }
     void UpdateUI()
     {
-        HarvestText.text = "Harvest:" + PlayerInventory.Instance.HarvestCount;
+        HarvestText.text = "soulStones:" + PlayerInventory.Instance.soulStones;
     }
 
     /*void Harvest(GameObject target)
@@ -39,10 +39,10 @@ public class PlayerHarvest : MonoBehaviour
     //判断是否超过仓库最大容量20
     void barn()
     {
-        if (PlayerInventory.Instance.HarvestCount > 20)
+        if (PlayerInventory.Instance.soulStones > 20)
         {
-            PlayerInventory.Instance.HarvestCount = 20;
-            HarvestText.text = "Harvest:" + PlayerInventory.Instance.HarvestCount + "   Warning! The barn is full.";
+            PlayerInventory.Instance.soulStones = 20;
+            HarvestText.text = "soulStones:" + PlayerInventory.Instance.soulStones + "   Warning! The barn is full.";
         }
     }
 }

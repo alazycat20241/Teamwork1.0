@@ -47,7 +47,7 @@ public class SaveManager : MonoBehaviour
         {
             data.seedCount = PlayerInventory.Instance.seedCount;
             data.playerGold = PlayerInventory.Instance.playerGold;
-            data.harvestCount = PlayerInventory.Instance.HarvestCount;
+            data.soulStones = PlayerInventory.Instance.soulStones;
         }
 
         // 收集行动点数据
@@ -81,7 +81,7 @@ public class SaveManager : MonoBehaviour
         {
             PlayerInventory.Instance.seedCount = data.seedCount;
             PlayerInventory.Instance.playerGold = data.playerGold;
-            PlayerInventory.Instance.HarvestCount = data.harvestCount;
+            PlayerInventory.Instance.soulStones = data.soulStones;
         }
 
         // 恢复行动点数据

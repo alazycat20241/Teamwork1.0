@@ -7,7 +7,7 @@ public class SaveData
     // 背包数据
     public int seedCount;
     public int playerGold;
-    public int harvestCount;
+    public int soulStones;
 
     // 行动点数数据
     public int currentActionPoints;
