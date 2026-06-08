@@ -15,7 +15,7 @@ public class ShopRoom : RoomBase
     [Header("道具展示（场景中的两个道具物体）")]
     [SerializeField] private GameObject[] propObjects;          // 道具物体（挂DragHandler）
     [SerializeField] private Image[] propImages;                // 道具图标（Image组件）
-    [SerializeField] private TextMeshProUGUI[] propNames;       // 道具名
+    //[SerializeField] private TextMeshProUGUI[] propNames;       // 道具名
 
     [Header("道具栏（右侧6个槽位）")]
     [SerializeField] private Transform[] inventorySlots;        // 槽位（挂DropHandler）
@@ -72,7 +72,7 @@ public class ShopRoom : RoomBase
             {
                 propObjects[i].SetActive(true);
                 propImages[i].sprite = shopProps[i].icon;
-                propNames[i].text = shopProps[i].propName;
+                //propNames[i].text = shopProps[i].propName;
             }
             else
             {

@@ -4591,7 +4591,7 @@ MonoBehaviour:
     type: 3}
   playerPrefab: {fileID: 4016356464010253478, guid: fb3e3ef660fbcc74eb1e0d6f4f0ea0a6,
     type: 3}
-  pageFlipSound: {fileID: 8300000, guid: 20bb5bfd950b27545adb1eae37b71c43, type: 3}
+  pageFlipSound: {fileID: 8300000, guid: 45029ee8eca52ee4aafa5763ce96f855, type: 3}
 --- !u!4 &1213637820
 Transform:
   m_ObjectHideFlags: 0

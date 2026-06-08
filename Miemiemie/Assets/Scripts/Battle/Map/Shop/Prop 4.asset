@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Prop 4
   m_EditorClassIdentifier: 
   propName: "\u8424\u706B\u866B\u56CA "
-  icon: {fileID: 21300000, guid: c7f45a944b15c8349a111f4da09a65fb, type: 3}
+  icon: {fileID: 21300000, guid: 92ce9dbb948483a47bcc5fdf59e69fc7, type: 3}
   description: "\u25CF\u63CF\u8FF0\uFF1A\u9EBB\u5E03\u7F1D\u5236\u7684\u5C0F\u56CA\u888B\uFF0C\u91CC\u9762\u88C5\u7740\u5341\u51E0\u53EA\u6D3B\u8424\u706B\u866B\uFF0C\u6563\u53D1\u7740\u67D4\u548C\u7684\u9EC4\u7EFF\u8272\u5149\u3002\n\u25CF\u6548\u679C\uFF1A\u5C04\u7A0B+1\u3002\u6C38\u4E45\u6709\u6548\u3002\n"
   propID: 4
   isPermanent: 0
