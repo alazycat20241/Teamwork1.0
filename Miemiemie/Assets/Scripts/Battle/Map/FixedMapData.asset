@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 2
+      targetRoomId: 5
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
