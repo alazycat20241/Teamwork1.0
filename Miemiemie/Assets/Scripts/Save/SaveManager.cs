@@ -12,17 +12,13 @@ public class SaveManager : MonoBehaviour
     void Awake()
     {
         // 单例，场景切换不销毁
-        if (Instance == null)
-        {
-            Instance = this;
-            transform.SetParent(null);        // 移到根层级，避免DontDestroyOnLoad报错
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+
 
         // 创建存档文件夹
         saveFolderPath = Path.Combine(Application.persistentDataPath, "Saves");
