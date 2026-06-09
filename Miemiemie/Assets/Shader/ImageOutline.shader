@@ -1,4 +1,4 @@
-﻿Shader "UI/ImageOutline"
+﻿Shader "UI/ImageOutline12"
 {
     Properties
     {

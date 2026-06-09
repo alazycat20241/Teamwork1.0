@@ -24,6 +24,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     // ==================== 描边参数（面板可调） ====================
     [Header("悬浮描边设置")]
     [Tooltip("描边颜色")]
+    [ColorUsage(true, true)]  // (showAlpha, showEyeDropper, showAlpha, isHDR)
     public Color outlineColor = Color.yellow;
 
     [Tooltip("描边粗细，范围 0 ~ 0.2")]
@@ -136,7 +137,10 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         if (outlineMat != null)
         {
-            outlineMat.SetColor(OutlineColorID, outlineColor);
+            //outlineMat.SetColor(OutlineColorID, outlineColor);
+            // ✅ SetVector 保留原始 float 值，HDR 发光生效
+            outlineMat.SetVector(OutlineColorID, outlineColor);
+
             outlineMat.SetFloat(OutlineWidthID, outlineWidth);
         }
     }
