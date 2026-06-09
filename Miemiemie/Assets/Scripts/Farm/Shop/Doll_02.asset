@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Doll_02
   m_EditorClassIdentifier: 
   itemID: 2
-  itemName: Harvest
-  icon: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  itemName: soulStone
+  icon: {fileID: 21300000, guid: 19644ccceed02244297388d6fbe48c8d, type: 3}
   price: 50
