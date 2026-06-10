@@ -16,6 +16,8 @@ public class EnemyDash : MonoBehaviour, IMovable
     //[SerializeField] private float patrolSpeed = 1f;
     [SerializeField] private float moveSpeed = 3f;
 
+    [SerializeField] private float triggerBuffer = 1f;        // ★ 缓冲带
+
     private enum State { Patrol, Chase, Pause, Dash, Stun }
     private State currentState = State.Patrol;
 
@@ -57,7 +59,7 @@ public class EnemyDash : MonoBehaviour, IMovable
                 patrolDirection = Random.insideUnitCircle.normalized;
                 patrolTimer = Random.Range(1f, 3f);
             }
-            rb.velocity = patrolDirection * moveSpeed * 0.3f;
+            rb.velocity = patrolDirection * moveSpeed;
             return;
         }
 
@@ -114,10 +116,15 @@ public class EnemyDash : MonoBehaviour, IMovable
                 break;
 
             case State.Stun:
-                // 硬直结束 → 继续追
-                if (stateTimer <= 0)
+                // ★ 硬直结束后，需要玩家离开攻击范围+缓冲带才重新追逐
+                if (stateTimer <= 0 && dist > attackRange + triggerBuffer)
                 {
                     currentState = State.Chase;
+                }
+                else if (stateTimer <= 0)
+                {
+                    // 玩家还在范围内，保持不动等玩家走远
+                    rb.velocity = Vector2.zero;
                 }
                 break;
         }

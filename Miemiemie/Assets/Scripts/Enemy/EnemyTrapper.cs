@@ -21,6 +21,8 @@ public class EnemyTrapper : MonoBehaviour, IMovable
     private Vector2 patrolDirection;     // 当前巡逻方向
 
     private bool isKnockedBack = false;  // ★ 击退标记
+
+    [SerializeField] private float bufferZone = 0.5f;  // ★ 缓冲带宽度
     void Start()
     {
         GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
@@ -73,6 +75,9 @@ public class EnemyTrapper : MonoBehaviour, IMovable
             hasAggro = true;
         }
 
+        // ★ 用大于 fleeDistance 的值判断是否"安全"
+        float safeDistance = fleeDistance + bufferZone;
+
         // 没发现玩家，缓慢巡逻
         if (!hasAggro)
         {
@@ -93,6 +98,11 @@ public class EnemyTrapper : MonoBehaviour, IMovable
             // 太近了 → 远离玩家
             Vector2 fleeDir = (transform.position - player.position).normalized;
             rb.velocity = fleeDir * moveSpeed;
+        }
+        else if (dist < safeDistance)
+        {
+            // ★ 缓冲带内 → 保持当前行为不动
+            rb.velocity = Vector2.zero;
         }
         else
         {

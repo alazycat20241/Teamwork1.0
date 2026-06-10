@@ -104,7 +104,7 @@ MonoBehaviour:
   damage: 4
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
   hitSound: {fileID: 8300000, guid: 841ea92d01d582845bbe05ac3bb1f7f7, type: 3}
 --- !u!114 &1159016510415598434
 MonoBehaviour:
@@ -127,7 +127,7 @@ MonoBehaviour:
   damage: 4
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
   hitEffectKey: NormalHit
   wallLayer:
     serializedVersion: 2

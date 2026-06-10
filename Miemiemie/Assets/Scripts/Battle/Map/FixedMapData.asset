@@ -21,7 +21,7 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 5
+      targetRoomId: 1
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -76,7 +76,8 @@ MonoBehaviour:
   - roomId: 2
     roomName: Event
     roomType: 2
-    customRoomPrefab: {fileID: 0}
+    customRoomPrefab: {fileID: 2275245133725615750, guid: fb0a707eca132e944b4f6578944f419a,
+      type: 3}
     mapPosition: {x: 0, y: 2}
     isVisited: 0
     leftExit:
@@ -172,7 +173,8 @@ MonoBehaviour:
   - roomId: 5
     roomName: Shop
     roomType: 3
-    customRoomPrefab: {fileID: 0}
+    customRoomPrefab: {fileID: 1594976255296622660, guid: 09bc590a239609a4da3eef958f75301b,
+      type: 3}
     mapPosition: {x: 0, y: 5}
     isVisited: 0
     leftExit:
@@ -700,7 +702,8 @@ MonoBehaviour:
   - roomId: 20
     roomName: 02
     roomType: 3
-    customRoomPrefab: {fileID: 0}
+    customRoomPrefab: {fileID: 1146013824196230444, guid: 6e0fcf4514e0ca44499f5f6cb9288d36,
+      type: 3}
     mapPosition: {x: 0, y: 20}
     isVisited: 0
     leftExit:
@@ -756,6 +759,36 @@ MonoBehaviour:
       - enemyPrefab: {fileID: 3219779317744118487, guid: 842a56ab5e6415e4e8e9b22db02b9be3,
           type: 3}
         spawnPosition: {x: 0, y: 0}
+        isElite: 0
+      rewardGold: 0
+    shopSetting:
+      items: []
+    eventSetting:
+      eventDescription: 
+      eventType: 0
+    customEventData: {fileID: 0}
+  - roomId: 100
+    roomName: "\u6D4B\u8BD5\u7528"
+    roomType: 1
+    customRoomPrefab: {fileID: 3339322651253022650, guid: 2ae2d09aa4d87504a84f3d4295ba8378,
+      type: 3}
+    mapPosition: {x: 0, y: 1}
+    isVisited: 0
+    leftExit:
+      targetRoomId: 0
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    rightExit:
+      targetRoomId: 0
+      exitName: 
+      exitDescription: 
+      exitPosition: {x: 0, y: 0}
+    battleSetting:
+      enemies:
+      - enemyPrefab: {fileID: 2152430162355477292, guid: 73cfa637bd912b744b9ad02b22f437e3,
+          type: 3}
+        spawnPosition: {x: 2, y: 2}
         isElite: 0
       rewardGold: 0
     shopSetting:

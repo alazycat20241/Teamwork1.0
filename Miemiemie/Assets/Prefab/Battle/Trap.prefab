@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 994086149164636876}
   - component: {fileID: 1677113999743536306}
   - component: {fileID: 8750750059285940122}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,3 +154,5 @@ MonoBehaviour:
   enableHitFlash: 1
   enemyFlashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1
+  hurtSound: {fileID: 0}
+  isNextDamageImmune: 0
