@@ -45,10 +45,10 @@ public class FarmShopController : MonoBehaviour
     void SetupItem(GameObject go, ItemData item)
     {
         go.transform.Find("Image").GetComponent<Image>().sprite = item.icon;
+        go.transform.Find("Outline").GetComponent<Image>().sprite = item.icon;
         go.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
         go.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = item.price.ToString();
-
-        go.GetComponent<Button>().onClick.AddListener(() =>
+        go.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() =>
         {
             Buy(item);
         });
