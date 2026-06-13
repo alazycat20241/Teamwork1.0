@@ -60,7 +60,7 @@ public class MapUIManager : MonoBehaviour
     /// 打开地图总面板（由玩家碰撞触发）
     /// </summary>
     /// <param name="player">玩家的PlayerMove组件，用于定身</param>
-    public void OpenMap(PlayerMove player)
+    public void OpenMap()
     {
         // 缓存玩家引用
         //currentPlayer = player;

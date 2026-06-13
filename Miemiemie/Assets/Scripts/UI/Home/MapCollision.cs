@@ -36,10 +36,10 @@ public class MapCollision : MonoBehaviour
         if (MapUIManager.Instance == null) return;
 
         // 获取玩家移动组件
-        PlayerMove playerMove = other.GetComponent<PlayerMove>();
+        //PlayerMove playerMove = other.GetComponent<PlayerMove>();
 
         // 打开地图，传入玩家引用用于定身
-        MapUIManager.Instance.OpenMap(playerMove);
+        MapUIManager.Instance.OpenMap();
     }
 
     /// <summary>

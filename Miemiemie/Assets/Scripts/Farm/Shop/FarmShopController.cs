@@ -69,7 +69,7 @@ public class FarmShopController : MonoBehaviour
 
             if (item.itemID == 1)
             {
-                PlayerInventory.Instance.seedCount++;
+                PlayerInventory.Instance.AddSeed(1);
             }
         }
     }

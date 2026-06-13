@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.XR.GoogleVr;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,9 +29,10 @@ public class GrowBlock : MonoBehaviour
     private SpriteRenderer sr;
 
     //生长时间
-    public float timeToGrowing1 = 3f;
-    public float timeToGrowing2 = 3f;
-    public float timeToRipe = 3f;
+    
+    public int timeToGrowing1 = 1;
+    public int timeToGrowing2 = 3;
+    public int timeToRipe = 4;
 
     private float growTimer = 0f;
 
@@ -43,11 +45,14 @@ public class GrowBlock : MonoBehaviour
     public Color normalColor = new Color(1, 1, 1, 0);
     public Color hoverColor = new Color(0, 1, 0, 0.8f);
 
+    //生长时间
+    int PlantDay = 1;
+    int CurrentDay = 1;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-
+        
         if (harvestSpawnPoint == null)
             harvestSpawnPoint = transform;
 
@@ -64,28 +69,17 @@ public class GrowBlock : MonoBehaviour
     void Update()
     {
         HandleMouseInput();
-        AutoGrow();
         HandleHoverHighlight();
-
-
+        CurrentDay = ActionPointManager.Instance.GetCurrentDay();
+        if (PlantDay != CurrentDay)
+        {
+            AutoGrow();
+        }
     }
 
     //输入
     void HandleMouseInput()
     {
-        // E键：犁地 / 播种
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-            if (hit.collider != null &&
-                hit.collider.gameObject == gameObject)
-            {
-                TryPloughOrPlant();
-            }
-        }
 
         // 左键：收获
         if (Input.GetMouseButtonDown(0))
@@ -94,25 +88,30 @@ public class GrowBlock : MonoBehaviour
 
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
-            if (hit.collider != null &&
-                hit.collider.gameObject == gameObject &&
-                currentStage == GrowthStage.Ripe)
-            {
-                Harvest();
+            if (hit.collider != null && hit.collider.gameObject == gameObject) {
+                
+                if (currentStage == GrowthStage.Barren)
+                {
+                    TryPloughOrPlant();
+                }
+                else if (currentStage == GrowthStage.Ripe)
+                {
+                    Harvest();
+                }
             }
         }
     }
     //耕地/犁地
     public void TryPloughOrPlant()
     {
-        if (currentStage == GrowthStage.Barren)
-        {
+            //记录种植时的时间
+            PlantDay = ActionPointManager.Instance.GetCurrentDay();
+
             // 检测背包是否有种子
             if (PlayerInventory.Instance != null &&
                 PlayerInventory.Instance.UseSeed())
             {
                 currentStage = GrowthStage.Planted;
-                growTimer = 0f;
                 UpdateSprite();
             }
             else
@@ -120,7 +119,6 @@ public class GrowBlock : MonoBehaviour
                 // 没有种子
                 Debug.Log("种子不足，无法种植！");
             }
-        }
     }
     //自动生长
     void AutoGrow()
@@ -129,22 +127,20 @@ public class GrowBlock : MonoBehaviour
             currentStage == GrowthStage.Growing1 ||
             currentStage == GrowthStage.Growing2)
         {
-            growTimer += Time.deltaTime;
-
-            if (currentStage == GrowthStage.Planted && growTimer >= timeToGrowing1)
+            if (currentStage == GrowthStage.Planted && PlantDay <= CurrentDay- timeToGrowing1)
             {
                 currentStage = GrowthStage.Growing1;
-                growTimer = 0f;
+                
             }
-            else if (currentStage == GrowthStage.Growing1 && growTimer >= timeToGrowing2)
+            else if (currentStage == GrowthStage.Growing1 && PlantDay <= CurrentDay- timeToGrowing2)
             {
                 currentStage = GrowthStage.Growing2;
-                growTimer = 0f;
+                
             }
-            else if (currentStage == GrowthStage.Growing2 && growTimer >= timeToRipe)
+            else if (currentStage == GrowthStage.Growing2 && PlantDay <= CurrentDay- timeToRipe)
             {
                 currentStage = GrowthStage.Ripe;
-                growTimer = 0f;
+                Debug.Log("11111");
             }
 
             UpdateSprite();

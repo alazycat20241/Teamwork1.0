@@ -11,20 +11,36 @@ public class PlayerInventory : MonoBehaviour
     //金币数
     public int playerGold = 100;
     public int soulStones = 0;//灵魂石数量
-    
+
+
+    [SerializeField] private TextMeshProUGUI StoneText;  //UI显示
+    [SerializeField] private TextMeshProUGUI SeedText;  //UI显示
+    [SerializeField] private TextMeshProUGUI GoldText;  //UI显示
 
     void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        UpdateGold();
+        UpdateStone();
     }
-    
+    public void UpdateStone()
+    {
+        StoneText.text = "" + soulStones;
+        SeedText.text = "" + seedCount;
+    }
+    void UpdateGold()
+    {
+        SeedText.text = "" + seedCount;
+        GoldText.text = "" + playerGold;
+    }
 
     public bool UseSeed()
     {
         if (seedCount > 0)
         {
             seedCount--;
+            UpdateGold();
             return true;
         }
         return false;
@@ -33,6 +49,7 @@ public class PlayerInventory : MonoBehaviour
     public void AddSeed(int amount)
     {
         seedCount += amount;
+        UpdateGold();
     }
 
     /// <summary>
@@ -78,6 +95,6 @@ public class PlayerInventory : MonoBehaviour
     {
         seedCount = 10;
         playerGold = 0;
-        
+        soulStones = 0;
     }
 }
