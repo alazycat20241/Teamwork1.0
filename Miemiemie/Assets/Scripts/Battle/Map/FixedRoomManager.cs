@@ -71,7 +71,7 @@ public class FixedRoomManager : MonoBehaviour
     private void CreatePlayer()
     {
         playerInstance = Instantiate(playerPrefab);
-        DontDestroyOnLoad(playerInstance);
+        //DontDestroyOnLoad(playerInstance);
         playerInstance.tag = "Player"; // 确保标签正确
     }
 

@@ -66,6 +66,8 @@ public class SaveManager : MonoBehaviour
     // 从指定槽位读档
     public bool LoadFromSlot(int index)
     {
+        Time.timeScale = 1f;  // 恢复游戏
+
         string path = GetSlotPath(index);
         if (!File.Exists(path)) return false;
 

@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);  // 跨场景保留，让音乐不断
         }
         else
         {

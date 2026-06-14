@@ -30,6 +30,12 @@ public class HomeAudioManager : MonoBehaviour
         }
 
         bgmSource.loop = true;
+
+        // ★ 注册到全局AudioManager，让Slider控制音量
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.RegisterBGM(bgmSource);
+        }
     }
 
     void Start()
