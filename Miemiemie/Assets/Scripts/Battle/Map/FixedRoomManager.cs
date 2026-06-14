@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FixedRoomManager : MonoBehaviour
 {
@@ -23,11 +24,23 @@ public class FixedRoomManager : MonoBehaviour
     [Header("音效")]
     [SerializeField] private AudioClip pageFlipSound;
 
+    [Header("结算面板")]
+    [SerializeField] private SlidePanel resultPanel;     // 结算UI面板
+    [SerializeField] private Button btnContinue;         // 继续按钮
+
     // 运行时数据
     private RoomConfig currentRoom;
     private GameObject currentRoomInstance;
     private GameObject playerInstance;
     private Dictionary<string, bool> clearedRooms = new Dictionary<string, bool>();
+
+    [SerializeField] private Image progressFillImage;  // ★ Filled模式的Image
+    [SerializeField] private Image iconImage;              // 图标Image
+    [SerializeField] private Image crossImage;             // 叉叉Image（盖在图标上）
+    [SerializeField] private Image crossImageOnFill;       // 盖在filled到达位置的叉叉Image
+
+    private int roomsClearedCount = 0;  // ★ 已通关房间数
+    private int totalRooms = 0;         // ★ 总房间数
 
     /// <summary>
     /// 进入房间记号（供道具使用
@@ -44,16 +57,24 @@ public class FixedRoomManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // ★ 绑定继续按钮
+        if (btnContinue != null)
+        {
+            btnContinue.onClick.AddListener(ReturnToHome);
+        }
     }
 
     void Start()
     {
         // 初始化通关记录
         clearedRooms.Clear();
+
+        totalRooms = 12;  // ★ 总房间数
+
         foreach (var room in currentMap.rooms)
         {
             clearedRooms[room.roomId] = false;
-            Debug.Log($"初始化房间: {room.roomId} = false");
         }
 
         // 创建玩家（只创建一次，永远不销毁）
@@ -141,6 +162,7 @@ public class FixedRoomManager : MonoBehaviour
         if (clearedRooms.ContainsKey(roomId))
         {
             clearedRooms[roomId] = true;
+            roomsClearedCount++;
         }
     }
 
@@ -196,6 +218,13 @@ public class FixedRoomManager : MonoBehaviour
             ActionPointManager.Instance.DefeatedInHunt();
         }
 
+        if (resultPanel != null)
+        {
+            // ★ 更新进度条
+            UpdateProgressFill();
+            resultPanel.Open();
+        }
+
         // ========== 清空所有对象池 ==========
         if (PoolManager.Instance != null)PoolManager.Instance.ClearAllPools();
 
@@ -214,7 +243,10 @@ public class FixedRoomManager : MonoBehaviour
         {
             Destroy(currentRoomInstance);
         }
+    }
 
+    public void ReturnToHome()
+    {
         // 过渡加载
         if (SceneTransition.Instance != null)
         {
@@ -223,6 +255,48 @@ public class FixedRoomManager : MonoBehaviour
         else
         {
             SceneManager.LoadScene("Home");  // 降级方案
+        }
+    }
+    public float deletex;
+    // ★ 更新进度条填充
+    private void UpdateProgressFill()
+    {
+        // 更新进度条
+        if (progressFillImage != null)
+        {
+            if (roomsClearedCount < totalRooms)
+            {
+                progressFillImage.fillAmount = roomsClearedCount * 0.065f;
+            }
+            else
+            {
+                progressFillImage.fillAmount = 1f;
+            }
+        }
+
+        // 移动叉叉到filled位置
+        if (crossImageOnFill != null && progressFillImage != null)
+        {
+            float fillAmount = progressFillImage.fillAmount;
+            // 根据fillAmount设置叉叉的x位置（根据你进度条的实际宽度调整）
+            crossImageOnFill.rectTransform.anchoredPosition = new Vector2(deletex + fillAmount * 1124f, crossImageOnFill.rectTransform.anchoredPosition.y);
+        }
+        if (crossImage != null && progressFillImage != null)
+        {
+            float fillAmount = progressFillImage.fillAmount;
+            crossImage.rectTransform.anchoredPosition = new Vector2(deletex + fillAmount * 1124f, crossImage.rectTransform.anchoredPosition.y);
+        }
+        if (iconImage != null && progressFillImage != null)
+        {
+            float fillAmount = progressFillImage.fillAmount;
+            iconImage.rectTransform.anchoredPosition = new Vector2(deletex + fillAmount * 1124f, iconImage.rectTransform.anchoredPosition.y);
+        }
+
+        // Boss全通，隐藏叉叉
+        if (roomsClearedCount == totalRooms)
+        {
+            if (crossImage != null) crossImage.gameObject.SetActive(false);
+            if (crossImageOnFill != null) crossImageOnFill.gameObject.SetActive(false);
         }
     }
 }
