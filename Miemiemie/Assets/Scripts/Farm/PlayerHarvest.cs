@@ -9,7 +9,7 @@ public class PlayerHarvest : MonoBehaviour
         // ≈–∂œ «∑Ò « Harvest
         if (other.CompareTag("Harvest"))
         {
-            PlayerInventory.Instance.soulStones += 3;
+            PlayerInventory.Instance.soulStones += 2;
             PlayerInventory.Instance.UpdateStone();
             barn();
             Destroy(other.gameObject);
