@@ -454,6 +454,7 @@ GameObject:
   - component: {fileID: 9181320899773273268}
   - component: {fileID: 3637065430605168453}
   - component: {fileID: 1370903927772394939}
+  - component: {fileID: 5451654528508483790}
   m_Layer: 0
   m_Name: BattleRoom_5
   m_TagString: Untagged
@@ -602,6 +603,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5451654528508483790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617755934373645148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03111f012cc93d74eb4e378a6c5db358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioType: 1
 --- !u!1 &751178865526095366
 GameObject:
   m_ObjectHideFlags: 0

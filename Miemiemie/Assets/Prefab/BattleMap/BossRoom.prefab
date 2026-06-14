@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 623309064247302211}
   - component: {fileID: 881410639926267836}
   - component: {fileID: 3280828753554969258}
+  - component: {fileID: -841653705905449713}
   m_Layer: 0
   m_Name: BossRoom
   m_TagString: Untagged
@@ -617,6 +618,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-841653705905449713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3339322651253022650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03111f012cc93d74eb4e378a6c5db358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioType: 1
 --- !u!1 &3605584247621634293
 GameObject:
   m_ObjectHideFlags: 0

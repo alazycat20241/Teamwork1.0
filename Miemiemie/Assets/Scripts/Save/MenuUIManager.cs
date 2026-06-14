@@ -14,26 +14,20 @@ public class MenuUIManager : MonoBehaviour
     public Button btnSave;      // 存档按钮
     public Button btnLoad;      // 读档按钮
 
+    // ★ 缓存的玩家引用
+    private GameObject playerInstance;
     void Awake()
     {
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //    transform.SetParent(null);
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
-
-        if (Instance != null)
+        // 单例设置
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
 
         // 绑定独立按钮事件
         if (btnSave != null)
@@ -56,39 +50,26 @@ public class MenuUIManager : MonoBehaviour
         menuPanel.Close();
     }
 
-    // ========== 菜单面板按钮 ==========
-
-    /// <summary>
-    /// 菜单面板-存档按钮
-    /// </summary>
-    //public void OnSaveButton()
-    //{
-    //    menuPanel.Close(() =>
-    //    {
-    //        saveLoadPanel.SetMode(true);
-    //        saveLoadPanel.Open();
-    //    });
-    //}
-
-    ///// <summary>
-    ///// 菜单面板-读档按钮
-    ///// </summary>
-    //public void OnLoadButton()
-    //{
-    //    menuPanel.Close(() =>
-    //    {
-    //        saveLoadPanel.SetMode(false);
-    //        saveLoadPanel.Open();
-    //    });
-    //}
-
     /// <summary>
     /// 菜单面板-返回菜单场景
     /// </summary>
     public void OnReturnToMenuScene()
     {
+        // 获取玩家引用
+        if (FixedRoomManager.Instance != null)
+        {
+            playerInstance = FixedRoomManager.Instance.GetPlayer();
+        }
+
         menuPanel.Close(() =>
         {
+            // 销毁玩家
+            if (playerInstance != null)
+            {
+                Destroy(playerInstance);
+                playerInstance = null;
+            }
+
             if (SceneTransition.Instance != null)
             {
                 SceneTransition.Instance.LoadScene("Menu");

@@ -434,6 +434,7 @@ GameObject:
   - component: {fileID: 4738695920450589536}
   - component: {fileID: 2304109472101729466}
   - component: {fileID: 2950154602378255447}
+  - component: {fileID: 5300640435125202910}
   m_Layer: 0
   m_Name: EventRoom01
   m_TagString: Untagged
@@ -612,6 +613,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5300640435125202910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130323683742698100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03111f012cc93d74eb4e378a6c5db358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioType: 1
 --- !u!1 &3788795747791422187
 GameObject:
   m_ObjectHideFlags: 0

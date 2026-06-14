@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 8565099551695728840}
   - component: {fileID: 1259439956278095596}
   - component: {fileID: 6903957921319558613}
+  - component: {fileID: -8367784789168045030}
   m_Layer: 0
   m_Name: ShopRoom02
   m_TagString: Untagged
@@ -515,6 +516,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-8367784789168045030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594976255296622660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03111f012cc93d74eb4e378a6c5db358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioType: 1
 --- !u!1 &1618777592040054666
 GameObject:
   m_ObjectHideFlags: 0
