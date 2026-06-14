@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [ExecuteAlways]
 public class ChildStageSprite : MonoBehaviour
 {
-    [Header("¸¸ÎïÌå GrowBlock")]
+    [Header("çˆ¶ç‰©ä½“ GrowBlock")]
     public GrowBlock growBlock;
 
-    [Header("¸÷½×¶Î¶ÔÓ¦ Sprite")]
+    [Header("å„é˜¶æ®µå¯¹åº” Sprite")]
     public Sprite spriteBarren;
     public Sprite spriteGrowing1;
     public Sprite spriteGrowing2;
@@ -28,7 +28,7 @@ public class ChildStageSprite : MonoBehaviour
         if (growBlock == null || sr == null)
             return;
 
-        // Ö»ÓĞ½×¶Î±ä»¯Ê±²Å¸üĞÂ£¨ĞÔÄÜÓÑºÃ£©
+        // åªæœ‰é˜¶æ®µå˜åŒ–æ—¶æ‰æ›´æ–°ï¼ˆæ€§èƒ½å‹å¥½ï¼‰
         if (growBlock.currentStage != lastStage)
         {
             lastStage = growBlock.currentStage;
@@ -45,16 +45,12 @@ public class ChildStageSprite : MonoBehaviour
                 break;
 
             case GrowBlock.GrowthStage.Planted:
-                // Èç¹ûÃ»ÓĞ×¨ÃÅÍ¼Æ¬£¬¿ÉÒÔ¸´ÓÃ barren
+                // å¦‚æœæ²¡æœ‰ä¸“é—¨å›¾ç‰‡ï¼Œå¯ä»¥å¤ç”¨ barren
                 sr.sprite = spriteBarren;
                 break;
 
             case GrowBlock.GrowthStage.Growing1:
                 sr.sprite = spriteGrowing1;
-                break;
-
-            case GrowBlock.GrowthStage.Growing2:
-                sr.sprite = spriteGrowing2;
                 break;
 
             case GrowBlock.GrowthStage.Ripe:

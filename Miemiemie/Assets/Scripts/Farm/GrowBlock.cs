@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.XR.GoogleVr;
@@ -7,45 +7,40 @@ using UnityEngine;
 
 public class GrowBlock : MonoBehaviour
 {
-    //×´Ì¬»ú
+    //çŠ¶æ€æœº
     public enum GrowthStage
     {
-        Barren,     // »ÄµØ
-        Planted,    // ÒÑ²¥ÖÖ
-        Growing1,   // Éú³¤½×¶Î1
-        Growing2,   // Éú³¤½×¶Î2
-        Ripe        // ³ÉÊì
+        Barren,     // è’åœ°
+        Planted,    // å·²æ’­ç§
+        Growing1,   // ç”Ÿé•¿é˜¶æ®µ1
+        Ripe        // æˆç†Ÿ
     }
 
     public GrowthStage currentStage = GrowthStage.Barren;
 
-    //¾«ÁéÌùÍ¼
+    //ç²¾çµè´´å›¾
     public Sprite barrenSprite;
     public Sprite plantedSprite;
     public Sprite growing1Sprite;
-    public Sprite growing2Sprite;
     public Sprite ripeSprite;
 
     private SpriteRenderer sr;
 
-    //Éú³¤Ê±¼ä
-    
-    public int timeToGrowing1 = 1;
-    public int timeToGrowing2 = 3;
-    public int timeToRipe = 4;
+    //ç”Ÿé•¿æ—¶é—´
+    int timeToGrowing1 = 2;
+    int timeToRipe = 4;
 
-    private float growTimer = 0f;
 
-    //ÊÕ»ñ
-    public GameObject harvestItemPrefab; // ³ÉÊìºóµôÂäµÄ×÷Îï
-    public Transform harvestSpawnPoint;  // µôÂäÎ»ÖÃ
+    //æ”¶è·
+    public GameObject harvestItemPrefab; // æˆç†Ÿåæ‰è½çš„ä½œç‰©
+    public Transform harvestSpawnPoint;  // æ‰è½ä½ç½®
 
-    //Ãè±ßĞ§¹û
+    //æè¾¹æ•ˆæœ
     public SpriteRenderer outlineSR;
     public Color normalColor = new Color(1, 1, 1, 0);
     public Color hoverColor = new Color(0, 1, 0, 0.8f);
 
-    //Éú³¤Ê±¼ä
+    //ç”Ÿé•¿æ—¶é—´
     int PlantDay = 1;
     int CurrentDay = 1;
 
@@ -70,18 +65,14 @@ public class GrowBlock : MonoBehaviour
     {
         HandleMouseInput();
         HandleHoverHighlight();
-        CurrentDay = ActionPointManager.Instance.GetCurrentDay();
-        if (PlantDay != CurrentDay)
-        {
-            AutoGrow();
-        }
+        AutoGrow();
     }
 
-    //ÊäÈë
+    //è¾“å…¥
     void HandleMouseInput()
     {
 
-        // ×ó¼ü£ºÊÕ»ñ
+        // å·¦é”®ï¼šæ”¶è·
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -101,53 +92,61 @@ public class GrowBlock : MonoBehaviour
             }
         }
     }
-    //¸ûµØ/ÀçµØ
+    //è€•åœ°/çŠåœ°
     public void TryPloughOrPlant()
     {
-            //¼ÇÂ¼ÖÖÖ²Ê±µÄÊ±¼ä
+            //è®°å½•ç§æ¤æ—¶çš„æ—¶é—´
             PlantDay = ActionPointManager.Instance.GetCurrentDay();
 
-            // ¼ì²â±³°üÊÇ·ñÓĞÖÖ×Ó
+            // æ£€æµ‹èƒŒåŒ…æ˜¯å¦æœ‰ç§å­
             if (PlayerInventory.Instance != null &&
                 PlayerInventory.Instance.UseSeed())
             {
-                currentStage = GrowthStage.Planted;
-                UpdateSprite();
+            currentStage = GrowthStage.Planted;
+            UpdateSprite();
+            if (PlayerInventory.Instance.DollCount > 4)
+                {
+                timeToGrowing1 = 1;
+                timeToRipe = 2;
+                Debug.Log("11");
+            }
+            else if(PlayerInventory.Instance.DollCount>1)
+                {
+                timeToRipe = 3;
+                Debug.Log("11111");
+            }
+                
+
             }
             else
             {
-                // Ã»ÓĞÖÖ×Ó
-                Debug.Log("ÖÖ×Ó²»×ã£¬ÎŞ·¨ÖÖÖ²£¡");
+                // æ²¡æœ‰ç§å­
+                Debug.Log("ç§å­ä¸è¶³ï¼Œæ— æ³•ç§æ¤ï¼");
             }
     }
-    //×Ô¶¯Éú³¤
+    //è‡ªåŠ¨ç”Ÿé•¿
     void AutoGrow()
     {
         if (currentStage == GrowthStage.Planted ||
-            currentStage == GrowthStage.Growing1 ||
-            currentStage == GrowthStage.Growing2)
+            currentStage == GrowthStage.Growing1)
         {
+            CurrentDay = ActionPointManager.Instance.GetCurrentDay();
             if (currentStage == GrowthStage.Planted && PlantDay <= CurrentDay- timeToGrowing1)
             {
                 currentStage = GrowthStage.Growing1;
                 
             }
-            else if (currentStage == GrowthStage.Growing1 && PlantDay <= CurrentDay- timeToGrowing2)
-            {
-                currentStage = GrowthStage.Growing2;
-                
-            }
-            else if (currentStage == GrowthStage.Growing2 && PlantDay <= CurrentDay- timeToRipe)
+            else if (currentStage == GrowthStage.Growing1 && PlantDay <= CurrentDay- timeToRipe)
             {
                 currentStage = GrowthStage.Ripe;
-                Debug.Log("11111");
+                
             }
 
             UpdateSprite();
         }
     }
 
-    //ÊÕ»ñ
+    //æ”¶è·
     void Harvest()
     {
         if (harvestItemPrefab != null)
@@ -158,11 +157,10 @@ public class GrowBlock : MonoBehaviour
         }
 
         currentStage = GrowthStage.Barren;
-        growTimer = 0f;
         UpdateSprite();
     }
 
-    //¾«ÁéÌùÍ¼¸úËæÍÁµØ×´Ì¬¸üĞÂ
+    //ç²¾çµè´´å›¾è·ŸéšåœŸåœ°çŠ¶æ€æ›´æ–°
     void UpdateSprite()
     {
         if (sr == null) return;
@@ -172,12 +170,11 @@ public class GrowBlock : MonoBehaviour
             case GrowthStage.Barren: sr.sprite = barrenSprite; break;
             case GrowthStage.Planted: sr.sprite = plantedSprite; break;
             case GrowthStage.Growing1: sr.sprite = growing1Sprite; break;
-            case GrowthStage.Growing2: sr.sprite = growing2Sprite; break;
             case GrowthStage.Ripe: sr.sprite = ripeSprite; break;
         }
     }
 
-    //Ãè±ßĞ§¹û
+    //æè¾¹æ•ˆæœ
     public void Show()
     {
         outlineSR.color = hoverColor;

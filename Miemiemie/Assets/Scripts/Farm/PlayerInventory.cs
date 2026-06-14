@@ -11,6 +11,7 @@ public class PlayerInventory : MonoBehaviour
     //金币数
     public int playerGold = 100;
     public int soulStones = 0;//灵魂石数量
+    public int DollCount = 1;
 
 
     [SerializeField] private TextMeshProUGUI StoneText;  //UI显示

@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 
 public class PlayerHarvest : MonoBehaviour
@@ -6,10 +6,10 @@ public class PlayerHarvest : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
-        // ÅÐ¶ÏÊÇ·ñÊÇ Harvest
+        // åˆ¤æ–­æ˜¯å¦æ˜¯ Harvest
         if (other.CompareTag("Harvest"))
         {
-            PlayerInventory.Instance.soulStones += 2;
+            PlayerInventory.Instance.soulStones += 3;
             PlayerInventory.Instance.UpdateStone();
             barn();
             Destroy(other.gameObject);
@@ -21,14 +21,14 @@ public class PlayerHarvest : MonoBehaviour
 
     /*void Harvest(GameObject target)
     {
-        // Ôö¼ÓÖÖ×Ó
+        // å¢žåŠ ç§å­
         if (PlayerInventory.Instance != null)
         {
             PlayerInventory.Instance.AddSeed(SeedGainPerHarvest);
         }
     }*/
 
-    //ÅÐ¶ÏÊÇ·ñ³¬¹ý²Ö¿â×î´óÈÝÁ¿20
+    //åˆ¤æ–­æ˜¯å¦è¶…è¿‡ä»“åº“æœ€å¤§å®¹é‡20
     void barn()
     {
         if (PlayerInventory.Instance.soulStones > 20)
