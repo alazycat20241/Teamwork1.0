@@ -9,13 +9,15 @@ public class MenuUIManager : MonoBehaviour
     [Header("面板引用")]
     public SlidePanel menuPanel;        // 菜单面板
     public SaveLoadPanel saveLoadPanel; // 存档面板
+    public SlidePanel AudioSetPanel; // 存档面板
 
     [Header("存档读档按钮")]
     public Button btnSave;      // 存档按钮
     public Button btnLoad;      // 读档按钮
+    public Button btnSet;      // 读档按钮
 
     // ★ 缓存的玩家引用
-    private GameObject playerInstance;
+    //private GameObject playerInstance;
     void Awake()
     {
         // 单例设置
@@ -35,40 +37,50 @@ public class MenuUIManager : MonoBehaviour
 
         if (btnLoad != null)
             btnLoad.onClick.AddListener(OnLoadButtonDirect);
+
+        if (btnSet != null)
+            btnSet.onClick.AddListener(OnSetButtonDirect);
     }
 
-    // ========== 按钮1：打开菜单 ==========
+    // ========== 打开菜单 ==========
     public void OpenMenu()
     {
-        Debug.Log("OpenMenu被调用");
+        Time.timeScale = 0f;  // 暂停游戏
         menuPanel.Open();
     }
 
-    // ========== 按钮1：打开菜单 ==========
+    // ========== 关闭菜单 ==========
     public void CloseMenu()
     {
+        Time.timeScale = 1f;  // 恢复游戏
         menuPanel.Close();
     }
 
+    public void CloseSet()
+    {
+        AudioSetPanel.Close();
+    }
     /// <summary>
     /// 菜单面板-返回菜单场景
     /// </summary>
     public void OnReturnToMenuScene()
     {
+        Time.timeScale = 1f;  // 恢复游戏
+
         // 获取玩家引用
-        if (FixedRoomManager.Instance != null)
-        {
-            playerInstance = FixedRoomManager.Instance.GetPlayer();
-        }
+        //if (FixedRoomManager.Instance != null)
+        //{
+        //    playerInstance = FixedRoomManager.Instance.GetPlayer();
+        //}
 
         menuPanel.Close(() =>
         {
             // 销毁玩家
-            if (playerInstance != null)
-            {
-                Destroy(playerInstance);
-                playerInstance = null;
-            }
+            //if (playerInstance != null)
+            //{
+            //    Destroy(playerInstance);
+            //    playerInstance = null;
+            //}
 
             if (SceneTransition.Instance != null)
             {
@@ -111,4 +123,13 @@ public class MenuUIManager : MonoBehaviour
         saveLoadPanel.SetMode(false);
         saveLoadPanel.Open();
     }
+
+    /// <summary>
+    /// 打开音量设置
+    /// </summary>
+    public void OnSetButtonDirect()
+    {
+        AudioSetPanel.Open();
+    }
+
 }
