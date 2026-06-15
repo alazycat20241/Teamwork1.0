@@ -6,12 +6,8 @@ using Spine.Unity;
 /// <summary>
 /// 冲刺型敌人
 /// 行为流程：
-///   巡逻(左右翻转) → 发现玩家 → 追逐(左右翻转) → 蓄力(360度旋转面朝玩家)
+///   巡逻(左右翻转) → 发现玩家 → 追逐(左右翻转) → 蓄力(面朝玩家左右翻转)
 ///   → 冲刺(360度旋转) → 硬直(Idle呼吸)
-/// 
-/// 朝向规则：
-///   - 巡逻/追逐/硬直：只有左右翻转（Idle 呼吸时不需要360度）
-///   - 蓄力/冲刺：360度旋转，朝玩家/冲刺方向
 /// 
 /// 使用两个独立的 SkeletonDataAsset（蓄力和冲刺骨骼/贴图不同，挂在子物体上）
 /// 空闲/硬直时显示蓄力动画第一帧 + 呼吸缩放效果
@@ -61,18 +57,18 @@ public class EnemyDash : MonoBehaviour, IMovable
     {
         Patrol,   // 巡逻：随机方向移动，左右翻转
         Chase,    // 追逐：朝玩家移动，左右翻转
-        Pause,    // 蓄力：停顿，360度旋转面朝玩家，播放完整蓄力动画
+        Pause,    // 蓄力：停顿，面朝玩家左右翻转，播放完整蓄力动画
         Dash,     // 冲刺：快速冲向玩家，360度旋转，碰撞伤害
-        Stun      // 硬直：无法行动，显示 Idle 呼吸效果（左右翻转）
+        Stun      // 硬直：无法行动，显示 Idle 呼吸效果
     }
 
     /// <summary>当前显示哪个 Spine 动画</summary>
     private enum ActiveSpine
     {
         None,    // 不显示任何 Spine
-        Idle,    // 蓄力动画冻结在第一帧 + Update 里做呼吸缩放（左右翻转）
-        Charge,  // 播放完整蓄力动画（360度旋转面朝玩家）
-        Dash     // 播放完整冲刺动画（360度旋转）
+        Idle,    // 蓄力动画冻结在第一帧 + Update 里做呼吸缩放
+        Charge,  // 播放完整蓄力动画
+        Dash     // 播放完整冲刺动画
     }
 
     // ============================================
@@ -201,12 +197,12 @@ public class EnemyDash : MonoBehaviour, IMovable
                 break;
 
             case State.Pause:
-                // 蓄力期间：原地不动，360度旋转面朝玩家
+                // 蓄力期间：原地不动，持续面朝玩家左右翻转
                 rb.velocity = Vector2.zero;
                 if (player != null)
                 {
                     Vector2 dirToPlayer = (player.position - transform.position).normalized;
-                    RotateAllSkeletons(dirToPlayer);   // ★ 蓄力也用360度旋转
+                    FlipAllSkeletons(dirToPlayer);
                 }
                 break;
 
@@ -246,9 +242,9 @@ public class EnemyDash : MonoBehaviour, IMovable
             // 应用呼吸缩放，同时保持左右朝向
             chargeSkeleton.transform.localScale = new Vector3(flipDirection * breatheScale, breatheScale, 1f);
         }
-        else if (currentActiveSpine != ActiveSpine.Idle)
+        else
         {
-            // 非 Idle 状态恢复默认大小（蓄力/冲刺时不需要呼吸缩放）
+            // 非 Idle 状态恢复默认大小
             if (chargeSkeleton != null)
                 chargeSkeleton.transform.localScale = Vector3.one;
             if (dashSkeleton != null)
@@ -290,7 +286,7 @@ public class EnemyDash : MonoBehaviour, IMovable
         {
             case State.Pause:
                 stateTimer = pauseDuration;              // 蓄力时长
-                SwitchSpine(ActiveSpine.Charge);          // 播放完整蓄力动画（旋转在 SwitchSpine 里处理）
+                SwitchSpine(ActiveSpine.Charge);          // 播放完整蓄力动画（翻转在 SwitchSpine 里处理）
                 break;
 
             case State.Dash:
@@ -342,8 +338,8 @@ public class EnemyDash : MonoBehaviour, IMovable
 
     /// <summary>
     /// 切换当前显示的 Spine 并播放对应动画
-    /// - Idle：蓄力动画冻结在第一帧 + Update 里做呼吸缩放（左右翻转）
-    /// - Charge：播放完整蓄力动画，激活时自动360度旋转面朝玩家
+    /// - Idle：蓄力动画冻结在第一帧 + Update 里做呼吸缩放
+    /// - Charge：播放完整蓄力动画，激活时自动面朝玩家翻转
     /// - Dash：播放完整冲刺动画
     /// - None：全部隐藏
     /// </summary>
@@ -368,7 +364,7 @@ public class EnemyDash : MonoBehaviour, IMovable
                 if (chargeSkeleton != null)
                 {
                     chargeSkeleton.gameObject.SetActive(true);
-                    chargeSkeleton.transform.rotation = Quaternion.identity; // 重置旋转
+                    chargeSkeleton.transform.rotation = Quaternion.identity; // 重置旋转（冲刺可能残留）
 
                     var track = chargeSkeleton.AnimationState.SetAnimation(0, chargeAnimation, false);
                     track.TrackTime = 0f;       // 跳到第 0 秒（第一帧）
@@ -377,22 +373,23 @@ public class EnemyDash : MonoBehaviour, IMovable
                 break;
 
             case ActiveSpine.Charge:
-                // 蓄力：播放完整蓄力动画（不循环），360度旋转面朝玩家
+                // 蓄力：播放完整蓄力动画（不循环），激活后立刻面朝玩家翻转
                 if (chargeSkeleton != null)
                 {
                     chargeSkeleton.gameObject.SetActive(true);
-                    chargeSkeleton.transform.rotation = Quaternion.identity;
+                    chargeSkeleton.transform.rotation = Quaternion.identity; // 重置旋转
 
-                    // ★ 先播放动画
                     chargeSkeleton.AnimationState.SetAnimation(0, chargeAnimation, false);
-
-                    // ★ 再360度旋转面朝玩家（在播放动画之后，确保不被动画重置覆盖）
+                    // ★ 激活后立刻面朝玩家翻转（用角度判断，覆盖上下左右所有方向）
                     if (player != null)
                     {
                         Vector2 dirToPlayer = (player.position - transform.position).normalized;
                         float angle = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
-                        chargeSkeleton.transform.rotation = Quaternion.Euler(0, 0, angle);
+                        // 角度在 -90°~90° 之间 = 右半圆（朝右），否则 = 左半圆（朝左）
+                        float scaleX = (angle > -90f && angle < 90f) ? 1f : -1f;
+                        chargeSkeleton.transform.localScale = new Vector3(scaleX, 1f, 1f);
                     }
+
                 }
                 break;
 
@@ -412,7 +409,7 @@ public class EnemyDash : MonoBehaviour, IMovable
     }
 
     /// <summary>
-    /// 左右翻转所有 Spine 子物体（巡逻/追逐/硬直用）
+    /// 左右翻转所有 Spine 子物体（巡逻/追逐/蓄力用）
     /// 使用角度判断，覆盖所有方向（包括正上正下）：
     ///   角度在 -90°~90°  → 右半圆 → ScaleX = 1（默认朝右）
     ///   角度在 90°~270° → 左半圆 → ScaleX = -1（镜像朝左）
@@ -434,7 +431,7 @@ public class EnemyDash : MonoBehaviour, IMovable
     }
 
     /// <summary>
-    /// 360度旋转所有 Spine 子物体（蓄力/冲刺用）
+    /// 360度旋转所有 Spine 子物体（冲刺用）
     /// 使用 Atan2 计算方向角度，让动画面朝任意方向
     /// </summary>
     /// <param name="direction">移动方向向量</param>
@@ -503,7 +500,7 @@ public class EnemyDash : MonoBehaviour, IMovable
     public void ResumeMovement() { isPaused = false; }
 
     // ============================================
-    // 编辑器可视化：在 Scene 视图绘制范围
+    // 编辑器可视化：在 Scene 视图绘制范围和朝向
     // ============================================
 
     /// <summary>选中 GameObject 时绘制线框圆（方便调试范围）</summary>
