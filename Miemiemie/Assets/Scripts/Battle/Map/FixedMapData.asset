@@ -21,12 +21,12 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 1
+      targetRoomId: 100
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
     rightExit:
-      targetRoomId: 1
+      targetRoomId: 100
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -934,7 +934,7 @@ MonoBehaviour:
   - roomId: 100
     roomName: "\u6D4B\u8BD5\u7528"
     roomType: 1
-    customRoomPrefab: {fileID: 3339322651253022650, guid: 2ae2d09aa4d87504a84f3d4295ba8378,
+    customRoomPrefab: {fileID: 8950171914685394488, guid: 8803c701b04a438429211b375867ea99,
       type: 3}
     mapPosition: {x: 0, y: 1}
     isVisited: 0

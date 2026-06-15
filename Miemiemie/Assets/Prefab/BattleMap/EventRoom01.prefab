@@ -2428,9 +2428,9 @@ MonoBehaviour:
   outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   outlineWidth: 0.05
   propData: {fileID: 0}
-  tooltipPanel: {fileID: 0}
-  nameText: {fileID: 0}
-  descText: {fileID: 0}
+  tooltipPanel: {fileID: 2907574372414937642}
+  nameText: {fileID: 6694338572965110800}
+  descText: {fileID: 8983284306756253074}
 --- !u!1 &7745977385944232001
 GameObject:
   m_ObjectHideFlags: 0

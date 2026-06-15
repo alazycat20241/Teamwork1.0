@@ -1,0 +1,13 @@
+
+skeleton.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+冲刺怪2
+  rotate: false
+  xy: 2, 2
+  size: 441, 254
+  orig: 445, 254
+  offset: 1, 0
+  index: -1

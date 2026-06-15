@@ -595,6 +595,7 @@ public class EventRoom : RoomBase
         currentPropID = propID;
         propObject.SetActive(true);
         propImage.sprite = propData.icon;
+        propObject.GetComponent<DragHandler>().propData = propData;
         Debug.Log($"事件生成道具: {propData.propName}");
     }
 

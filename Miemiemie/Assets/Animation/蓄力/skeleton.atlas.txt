@@ -1,0 +1,48 @@
+
+skeleton.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+爬行冲刺怪中右足
+  rotate: false
+  xy: 2, 2
+  size: 47, 47
+  orig: 280, 164
+  offset: 147, 6
+  index: -1
+爬行冲刺怪中左足
+  rotate: true
+  xy: 51, 10
+  size: 39, 54
+  orig: 280, 164
+  offset: 86, 0
+  index: -1
+爬行冲刺怪右足
+  rotate: false
+  xy: 157, 65
+  size: 76, 79
+  orig: 280, 164
+  offset: 200, 13
+  index: -1
+爬行冲刺怪大嘴
+  rotate: false
+  xy: 2, 51
+  size: 153, 93
+  orig: 280, 164
+  offset: 122, 71
+  index: -1
+爬行冲刺怪左足
+  rotate: false
+  xy: 107, 9
+  size: 43, 40
+  orig: 280, 164
+  offset: 7, 0
+  index: -1
+爬行冲刺怪躯干
+  rotate: false
+  xy: 2, 146
+  size: 231, 99
+  orig: 280, 164
+  offset: 0, 10
+  index: -1
