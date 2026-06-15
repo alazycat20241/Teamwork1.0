@@ -56,7 +56,6 @@ public class EffectPool : MonoBehaviour
     {
         if (!pools.ContainsKey(key))
         {
-            Debug.LogError($"EffectPool: 未找到特效 '{key}'");
             return null;
         }
         return pools[key].Get();

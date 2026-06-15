@@ -65,7 +65,8 @@ public class ActionPointManager : MonoBehaviour
         //SceneTransition.Instance.FadeOut();
 
         // 亮屏
-        SceneTransition.Instance.FadeIn();
+        SceneTransition.Instance.FadeOutIn();
+
         currentDay++;
         OnDayChanged?.Invoke(currentDay);
 

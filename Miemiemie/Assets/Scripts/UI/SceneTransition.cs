@@ -24,6 +24,9 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator Transition(string sceneName)
     {
+        // 黑屏期间阻挡点击
+        fadeImage.raycastTarget = true;
+
         // 淡出（画面变黑）
         yield return StartCoroutine(Fade(1f));
 
@@ -43,6 +46,8 @@ public class SceneTransition : MonoBehaviour
 
         // 淡入（画面恢复）
         yield return StartCoroutine(Fade(0f));
+        // 亮屏后恢复
+        fadeImage.raycastTarget = false;
     }
 
     private IEnumerator Fade(float targetAlpha)
@@ -87,7 +92,13 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator FadeOutInRoutine()
     {
+        // 黑屏期间阻挡点击
+        fadeImage.raycastTarget = true;
+
         yield return StartCoroutine(Fade(1f));
         yield return StartCoroutine(Fade(0f));
+
+        // 亮屏后恢复
+        fadeImage.raycastTarget = false;
     }
 }

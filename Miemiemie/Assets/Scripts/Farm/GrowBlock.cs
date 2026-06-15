@@ -4,6 +4,7 @@ using TMPro;
 using Unity.XR.GoogleVr;
 using UnityEditor;
 using UnityEngine;
+using static SaveData;
 
 public class GrowBlock : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GrowBlock : MonoBehaviour
     }
 
     public GrowthStage currentStage = GrowthStage.Barren;
+
+    // =======田块唯一ID=======
+    public string blockID;   // 在 Inspector 里手动给每块田命名，如 "Farm_01"
 
     //精灵贴图
     public Sprite barrenSprite;
@@ -95,34 +99,30 @@ public class GrowBlock : MonoBehaviour
     //耕地/犁地
     public void TryPloughOrPlant()
     {
-            //记录种植时的时间
-            PlantDay = ActionPointManager.Instance.GetCurrentDay();
+        //记录种植时的时间
+        PlantDay = ActionPointManager.Instance.GetCurrentDay();
 
-            // 检测背包是否有种子
-            if (PlayerInventory.Instance != null &&
-                PlayerInventory.Instance.UseSeed())
-            {
+        // 检测背包是否有种子
+        if (PlayerInventory.Instance != null &&
+            PlayerInventory.Instance.UseSeed())
+        {
             currentStage = GrowthStage.Planted;
             UpdateSprite();
             if (PlayerInventory.Instance.DollCount > 4)
-                {
+            {
                 timeToGrowing1 = 1;
                 timeToRipe = 2;
-                Debug.Log("11");
             }
-            else if(PlayerInventory.Instance.DollCount>1)
-                {
-                timeToRipe = 3;
-                Debug.Log("11111");
-            }
-                
-
-            }
-            else
+            else if (PlayerInventory.Instance.DollCount > 1)
             {
-                // 没有种子
-                Debug.Log("种子不足，无法种植！");
+                timeToRipe = 3;
             }
+        }
+        else
+        {
+            // 没有种子
+            Debug.Log("种子不足，无法种植！");
+        }
     }
     //自动生长
     void AutoGrow()
@@ -199,5 +199,34 @@ public class GrowBlock : MonoBehaviour
             Hide();
         }
     }
-    
+
+    // ======= 新增：生成存档数据 =======
+    public GrowBlockData GetSaveData()
+    {
+        return new GrowBlockData
+        {
+            blockID = this.blockID,
+            growthStage = (int)this.currentStage,
+            plantDay = this.PlantDay
+        };
+    }
+
+    // ======= 新增：从存档数据恢复 =======
+    public void LoadFromSaveData(GrowBlockData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        this.currentStage = (GrowthStage)data.growthStage;
+        this.PlantDay = data.plantDay;
+
+        if (sr == null)
+        {
+            sr = GetComponent<SpriteRenderer>();
+        }
+
+        UpdateSprite();
+    }
 }

@@ -14,26 +14,77 @@ public class PlayerInventory : MonoBehaviour
     public int DollCount = 1;
 
 
-    [SerializeField] private TextMeshProUGUI StoneText;  //UI显示
-    [SerializeField] private TextMeshProUGUI SeedText;  //UI显示
-    [SerializeField] private TextMeshProUGUI GoldText;  //UI显示
+    // 动态查找，不加 [SerializeField]
+    private TextMeshProUGUI StoneText;
+    private TextMeshProUGUI SeedText;
+    private TextMeshProUGUI GoldText;
 
     void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        // ===== 保持单例但允许重赋值 =====
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    private void Start()
+    {
+        FindUIElements();
+        UpdateAllUI();
+    }
+
+    /// <summary>
+    /// 更新灵魂石和种子显示
+    /// </summary>
+    public void UpdateStone()
+    {
+        if (StoneText != null)
+            StoneText.text = soulStones.ToString();
+        if (SeedText != null)
+            SeedText.text = seedCount.ToString();
+    }
+
+    /// <summary>
+    /// 更新金币和种子显示
+    /// </summary>
+    public void UpdateGold()
+    {
+        if (SeedText != null)
+            SeedText.text = seedCount.ToString();
+        if (GoldText != null)
+            GoldText.text = playerGold.ToString();
+    }
+
+    /// <summary>
+    /// 动态查找 UI 引用，场景切换后调用
+    /// </summary>
+    public void FindUIElements()
+    {
+        StoneText = GameObject.Find("StoneText")?.GetComponent<TextMeshProUGUI>();
+        SeedText = GameObject.Find("SeedText")?.GetComponent<TextMeshProUGUI>();
+        GoldText = GameObject.Find("GoldText")?.GetComponent<TextMeshProUGUI>();
+    }
+
+    /// <summary>
+    /// 刷新所有UI（场景切换后调用）
+    /// </summary>
+    public void RefreshAllUI()
+    {
         UpdateGold();
         UpdateStone();
     }
-    public void UpdateStone()
+
+    public void UpdateAllUI()
     {
-        StoneText.text = "" + soulStones;
-        SeedText.text = "" + seedCount;
-    }
-    void UpdateGold()
-    {
-        SeedText.text = "" + seedCount;
-        GoldText.text = "" + playerGold;
+        UpdateGold();
+        UpdateStone();
     }
 
     public bool UseSeed()
@@ -91,11 +142,21 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
+    // ===== 存档/读档辅助方法 =====
+    public int GetDollCount() => DollCount;
+
+    public void SetDollCount(int count)
+    {
+        DollCount = count;
+    }
+
     ///新开始游戏时重置一切
     public void ResetData()
     {
         seedCount = 10;
         playerGold = 0;
         soulStones = 0;
+        DollCount = 1;
+        RefreshAllUI();
     }
 }

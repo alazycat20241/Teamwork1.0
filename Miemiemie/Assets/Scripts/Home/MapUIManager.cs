@@ -114,10 +114,12 @@ public class MapUIManager : MonoBehaviour
         // 加载战斗场景
         if (SceneTransition.Instance != null)
         {
+            SaveManager.Instance.SaveFarmBeforeSceneChange();
             SceneTransition.Instance.LoadScene("Battle");
         }
         else
         {
+            SaveManager.Instance.SaveFarmBeforeSceneChange();
             SceneManager.LoadScene("Battle");  // 降级方案
         }
     }
