@@ -26,6 +26,8 @@ public class RoomConfig
 
     [Header("战斗配置(仅战斗/Boss房间)")]
     public BattleRoomSetting battleSetting;
+    [Header("掉落配置")]
+    public DropItem[] dropItems;  // 该房间胜利后的掉落物
 
     [Header("商店配置(仅商店房间)")]
     public ShopSetting shopSetting;
@@ -83,4 +85,13 @@ public class EventSetting
 {
     public string eventDescription;
     public EventType eventType;
+}
+
+// 掉落物
+[Serializable]
+public class DropItem
+{
+    public GameObject prefab;              // 掉落物预制体
+    [Range(0f, 1f)] public float dropChance = 0.5f;  // 掉落概率
+    public int Amount = 1;
 }

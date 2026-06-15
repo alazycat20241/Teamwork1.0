@@ -60,4 +60,34 @@ public class SceneTransition : MonoBehaviour
 
         fadeImage.color = new Color(0, 0, 0, targetAlpha);
     }
+
+    /// <summary>
+    /// 黑屏（不切换场景）
+    /// </summary>
+    public void FadeOut()
+    {
+        StartCoroutine(Fade(1f));
+    }
+
+    /// <summary>
+    /// 亮屏（不切换场景）
+    /// </summary>
+    public void FadeIn()
+    {
+        StartCoroutine(Fade(0f));
+    }
+
+    /// <summary>
+    /// 黑屏+亮屏（中间无回调）
+    /// </summary>
+    public void FadeOutIn()
+    {
+        StartCoroutine(FadeOutInRoutine());
+    }
+
+    private IEnumerator FadeOutInRoutine()
+    {
+        yield return StartCoroutine(Fade(1f));
+        yield return StartCoroutine(Fade(0f));
+    }
 }

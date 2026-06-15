@@ -95,6 +95,9 @@ public class BattleRoom : RoomBase
     {
         battleStarted = false;
 
+        // 掉落
+        DropLoot();
+
         OnBattleEnd?.Invoke();
         OnRoomCompleted();
     }
@@ -110,5 +113,27 @@ public class BattleRoom : RoomBase
     public static void TriggerBattleStart()
     {
         OnBattleStart?.Invoke();
+    }
+
+    private void DropLoot()
+    {
+        if (roomConfig.dropItems == null) return;
+
+        foreach (DropItem item in roomConfig.dropItems)
+        {
+            if (Random.value <= item.dropChance)
+            {
+                for (int i = 0; i < item.Amount; i++)
+                {
+                    Instantiate(item.prefab, GetRandomDropPosition(), Quaternion.identity);
+                }
+            }
+        }
+    }
+
+    private Vector3 GetRandomDropPosition()
+    {
+        float range = 2f;
+        return transform.position + new Vector3(Random.Range(-range, range), Random.Range(-range, range), 0);
     }
 }

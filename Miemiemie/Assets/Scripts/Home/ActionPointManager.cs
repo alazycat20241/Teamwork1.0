@@ -47,11 +47,6 @@ public class ActionPointManager : MonoBehaviour
             currentActionPoints -= cost;
             OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
 
-            // 点数耗尽自动进入下一天
-            if (currentActionPoints <= 0)
-            {
-                AdvanceDay();
-            }
             return true;
         }
         else
@@ -66,6 +61,11 @@ public class ActionPointManager : MonoBehaviour
     /// </summary>
     public void AdvanceDay()
     {
+        // 黑屏
+        //SceneTransition.Instance.FadeOut();
+
+        // 亮屏
+        SceneTransition.Instance.FadeIn();
         currentDay++;
         OnDayChanged?.Invoke(currentDay);
 
