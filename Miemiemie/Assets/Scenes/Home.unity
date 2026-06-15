@@ -1359,6 +1359,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140472366}
   m_CullTransparentMesh: 1
+--- !u!1 &159455794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 159455795}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &159455795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159455794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1790706877}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &166848412
 GameObject:
   m_ObjectHideFlags: 0
@@ -9215,7 +9246,7 @@ MonoBehaviour:
   seedCount: 10
   playerGold: 100
   soulStones: 10
-  DollCount: 1
+  DollCount: 0
 --- !u!1001 &1361127476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11661,8 +11692,8 @@ MonoBehaviour:
   DCount: 0
   dollPrefab: {fileID: 8502511170551144516, guid: cfc6477fd010aa3489c8c33d7a47aa79,
     type: 3}
-  dollParent: {fileID: 613643236}
-  dollSpawnPoint: {fileID: 115203205}
+  dollParent: {fileID: 159455795}
+  dollSpawnPoint: {fileID: 159455795}
   ischange: 0
 --- !u!4 &1790706877
 Transform:
@@ -11673,10 +11704,11 @@ Transform:
   m_GameObject: {fileID: 1790706875}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 882.72034, y: 68.29901, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 159455795}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1790891453

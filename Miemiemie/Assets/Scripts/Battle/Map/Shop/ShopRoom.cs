@@ -72,7 +72,7 @@ public class ShopRoom : RoomBase
             {
                 propObjects[i].SetActive(true);
                 propImages[i].sprite = shopProps[i].icon;
-                //propNames[i].text = shopProps[i].propName;
+                propObjects[i].GetComponent<DragHandler>().propData = shopProps[i];
             }
             else
             {

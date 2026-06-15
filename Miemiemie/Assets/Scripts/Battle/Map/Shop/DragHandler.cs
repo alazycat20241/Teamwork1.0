@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// 道具拖拽处理（支持 Canvas Screen Space - Camera 模式）
@@ -36,6 +37,12 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private static readonly int OutlineColorID = Shader.PropertyToID("_OutlineColor");
     private static readonly int OutlineWidthID = Shader.PropertyToID("_OutlineWidth");
 
+    [Header("悬浮提示")]
+    public PropData propData;
+    public GameObject tooltipPanel;      // 拖入子物体的提示面板
+    public TextMeshProUGUI nameText;     // 拖入名称文本
+    public TextMeshProUGUI descText;     // 拖入描述文本
+
     // ==================== 初始化 ====================
     void Awake()
     {
@@ -55,22 +62,32 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         DisableOutline();
+        tooltipPanel.SetActive(false);
     }
 
     // ==================== 鼠标悬浮 ====================
     public void OnPointerEnter(PointerEventData eventData)
     {
         EnableOutline();
+        if (propData != null)
+        {
+            nameText.text = propData.propName;
+            descText.text = propData.description;
+            tooltipPanel.SetActive(true);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         DisableOutline();
+        tooltipPanel.SetActive(false);
     }
 
     // ==================== 拖拽 ====================
     public void OnBeginDrag(PointerEventData eventData)
     {
+        tooltipPanel.SetActive(false);
+
         originalParent = transform.parent;
         originalLocalPos = rectTransform.localPosition;
 
