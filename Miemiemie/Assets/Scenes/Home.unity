@@ -21197,6 +21197,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4659866832547289968, guid: 37b7e542394cada46b514a94792d03bd,
+        type: 3}
+      propertyPath: m_text
+      value: "\u6D88\u8017\uFF1A\n   5\u91D1\u5E01\n   5\u7075\u9B42\u77F3\n"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23907,6 +23912,10 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
         - m_Target: {fileID: 8380547543794731725}
           m_TargetAssemblyTypeName: ButtonHover, Assembly-CSharp
           m_MethodName: HideIcon
