@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class TreePanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Button oBtn;
+    public Button cBtn;
+    public SlidePanel slidePanel;
+
+    
+    void Awake()
     {
-        
+        cBtn.onClick.AddListener(Close);
+        oBtn.onClick.AddListener(Open);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void Open()
+    {
+        slidePanel.Open();
+    }
+    public void Close()
+    {
+        slidePanel.Close();
     }
 }
