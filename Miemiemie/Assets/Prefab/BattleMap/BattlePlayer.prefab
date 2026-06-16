@@ -508,7 +508,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8001644300940411305}
   - component: {fileID: 3516889927554530202}
-  - component: {fileID: 8631176927400064896}
   - component: {fileID: 2581581493665629642}
   - component: {fileID: 3842885713965316155}
   - component: {fileID: 8571476736652885224}
@@ -602,26 +601,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8631176927400064896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2571ccd423770a040a8ffc95da697def, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackBonus: 0
-  rangeBonus: 0
-  speedBonus: 0
-  panicChance: 0
-  panicDuration: 0
-  stoneChance: 0
-  stoneDuration: 0
-  missChance: 0
 --- !u!114 &2581581493665629642
 MonoBehaviour:
   m_ObjectHideFlags: 0

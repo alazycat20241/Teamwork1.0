@@ -67,6 +67,9 @@ public class FixedRoomManager : MonoBehaviour
 
     void Start()
     {
+        // ★ 地图开始时清除上次残留的临时效果
+        PlayerStats.Instance?.SnapshotBaseline();
+
         // 初始化通关记录
         clearedRooms.Clear();
 
@@ -94,6 +97,36 @@ public class FixedRoomManager : MonoBehaviour
         playerInstance = Instantiate(playerPrefab);
         //DontDestroyOnLoad(playerInstance);
         playerInstance.tag = "Player"; // 确保标签正确
+
+        // ★ 把 PlayerStats 的永久属性应用到新创建的玩家身上
+        ApplyPlayerStats();
+    }
+
+    /// <summary>
+    /// 将 PlayerStats 中的永久加成应用到玩家组件
+    /// </summary>
+    private void ApplyPlayerStats()
+    {
+        if (PlayerStats.Instance == null || playerInstance == null) return;
+
+        var ps = PlayerStats.Instance;
+
+        // 射程
+        var shoot = playerInstance.GetComponent<PlayerShoot>();
+        if (shoot != null)
+            shoot.AddRange(ps.rangeBonus);
+
+        // 血量上限
+        var health = playerInstance.GetComponent<Health>();
+        if (health != null)
+        {
+            health.maxHealth += ps.maxHealthBonus;
+            health.currentHealth = health.maxHealth;
+        }
+
+        // 攻击力、射速、石化概率、恐慌概率、失误率
+        // 这些在 PlayerShoot / BaseBullet 里每帧或每次射击时直接读 PlayerStats.Instance
+        // 不需要额外应用
     }
 
     // 加载房间
@@ -212,6 +245,9 @@ public class FixedRoomManager : MonoBehaviour
     // 返回家园
     public void ReturnToHome(bool victory)
     {
+        // ★ 还原本张地图所有临时效果
+        PlayerStats.Instance?.RestoreTempEffects();
+
         // 战败处理：通知行动点管理器
         if (!victory && ActionPointManager.Instance != null)
         {
@@ -221,7 +257,7 @@ public class FixedRoomManager : MonoBehaviour
         if (resultPanel != null)
         {
             // ★ 更新进度条
-            UpdateProgressFill();
+            UpdateProgressFill(victory);
             resultPanel.Open();
         }
 
@@ -259,7 +295,7 @@ public class FixedRoomManager : MonoBehaviour
     }
     public float deletex;
     // ★ 更新进度条填充
-    private void UpdateProgressFill()
+    private void UpdateProgressFill(bool victory)
     {
         // 更新进度条
         if (progressFillImage != null)
@@ -293,7 +329,7 @@ public class FixedRoomManager : MonoBehaviour
         }
 
         // Boss全通，隐藏叉叉
-        if (roomsClearedCount == totalRooms)
+        if (victory&&roomsClearedCount == totalRooms)
         {
             if (crossImage != null) crossImage.gameObject.SetActive(false);
             if (crossImageOnFill != null) crossImageOnFill.gameObject.SetActive(false);

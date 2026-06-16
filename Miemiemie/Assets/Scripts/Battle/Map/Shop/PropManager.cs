@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 道具管理器（单例）
 /// 管理所有道具数据和效果
+/// 所有"永久有效"均为本张地图内有效，返回Home时自动还原
 /// </summary>
 public class PropManager : MonoBehaviour
 {
@@ -116,7 +117,7 @@ public class PropManager : MonoBehaviour
     }
 
     // ==================== 道具03：鼹鼠牙齿 ====================ok
-    // 每次战斗额外掉落2金币，永久有效
+    // 每次战斗额外掉落2金币，本张地图有效
 
     private void YanShuYaChi()
     {
@@ -128,10 +129,8 @@ public class PropManager : MonoBehaviour
         PlayerInventory.Instance?.AddGold(2);
     }
 
-
-
     // ==================== 道具04：萤火虫囊 ====================ok
-    // 射程+1，永久有效
+    // 射程+1，本张地图有效
 
     private void YingHuoChongNang()
     {
@@ -140,7 +139,7 @@ public class PropManager : MonoBehaviour
     }
 
     // ==================== 道具05：腐烂号角 ====================ok
-    // 每场战斗开始时，所有敌人停止移动3秒，永久有效
+    // 每场战斗开始时，所有敌人停止移动3秒，本张地图有效
 
     /// 应用道具效果：订阅战斗开始事件
     private void FuLanHaoJiao()
@@ -182,8 +181,6 @@ public class PropManager : MonoBehaviour
         if (movable != null)
             movable.ResumeMovement();
     }
-
-
 
     // ==================== 道具06：蜕皮壳 ====================ok
     // 获得1次庇护（阻挡任意一次攻击），生效后破损
@@ -281,16 +278,15 @@ public class PropManager : MonoBehaviour
         }
     }
 
-
     // ==================== 道具07：血苔绷带 ====================//ok
     // 血量＞5HP（0.5心）时，每次进入新房间扣除5HP
-    // 伤害+0.5，永久有效
+    // 伤害+0.5，本张地图有效
 
     private void XueTaiBengDai()
     {
         xueTaiActive = true;
         FixedRoomManager.OnRoomEntered += OnRoomEntered_XueTai;
-        PlayerStats.Instance.attackBonus += 0.5f;
+        PlayerStats.Instance?.AddTempAttack(0.5f);  // ★ 临时加成，地图结束还原
     }
 
     private void OnRoomEntered_XueTai()
@@ -304,9 +300,8 @@ public class PropManager : MonoBehaviour
         }
     }
 
-
     // ==================== 道具08：枯叶斗篷 ====================ok
-    // 站立不动3秒后进入伪装，敌人无法发现你（仇恨解除，正常巡逻且不触发仇恨），永久有效
+    // 站立不动3秒后进入伪装，敌人无法发现你（仇恨解除，正常巡逻且不触发仇恨），本张地图有效
 
     private bool douPengActive = false;
     private float standStillTimer = 0f;
@@ -359,13 +354,12 @@ public class PropManager : MonoBehaviour
             sr.color = visible ? Color.white : new Color(1, 1, 1, 0.3f);
     }
 
-
     // ==================== 道具09：蜂后蜜 ====================ok
-    // 攻击力+0.5，但每次战斗开始时有50%概率额外生成2个敌人，永久有效
+    // 攻击力+0.5，但每次战斗开始时有50%概率额外生成2个敌人，本张地图有效
 
     private void FengHouMi()
     {
-        PlayerStats.Instance.attackBonus += 0.5f;
+        PlayerStats.Instance?.AddTempAttack(0.5f);  // ★ 临时加成，地图结束还原
         BattleRoom.OnBattleStart += OnBattleStart_SpawnExtraEnemies;
     }
 
@@ -388,9 +382,8 @@ public class PropManager : MonoBehaviour
         }
     }
 
-
     // ==================== 道具10：石化种子 ====================okk
-    // 每次攻击有10%概率对敌人造成石化（静止不动2秒，无法攻击移动，无法受到伤害），永久有效
+    // 每次攻击有10%概率对敌人造成石化（静止不动2秒，无法攻击移动，无法受到伤害），本张地图有效
 
     /// <summary>
     /// 应用道具：设置石化概率和持续时间
@@ -399,6 +392,7 @@ public class PropManager : MonoBehaviour
     {
         PlayerStats.Instance.stoneChance = 0.1f;       // 10%概率触发
         PlayerStats.Instance.stoneDuration = 2f;        // 石化持续2秒
+        // stoneChance 和 stoneDuration 会随 PlayerStats 在地图结束时还原
     }
 
     /// <summary>
@@ -448,17 +442,18 @@ public class PropManager : MonoBehaviour
         if (sr != null) sr.color = originalColor;
     }
 
-
     // ==================== 道具11：狼人指尖 ====================
     // 射程-0.5，攻击+0.5，每次攻击敌人有20%概率造成恐慌1.5秒
     // 恐慌：停止攻击，尽可能远离主角
+    // 本张地图有效
 
     private void LangRenZhiJian()
     {
         if (PlayerShoot.Instance != null)
             PlayerShoot.Instance.AddRange(-0.5f);
 
-        PlayerStats.Instance.attackBonus += 0.5f;
+        PlayerStats.Instance?.AddTempAttack(0.5f);   // ★ 临时加成
+        PlayerStats.Instance?.AddTempRange(-0.5f);   // ★ 临时加成
         PlayerStats.Instance.panicChance = 0.2f;
         PlayerStats.Instance.panicDuration = 1.5f;
     }
@@ -512,14 +507,11 @@ public class PropManager : MonoBehaviour
         }
     }
 
-
     // ==================== 道具12：月蚀碎片 ====================ok
     // 本场战斗内血量上限+1心（+10HP），一次性
 
-  
     /// 记录月蚀碎片加的血量，用于战斗结束后还原
     private int yueShiBonus = 0;
-
 
     /// 应用道具：本场战斗血量上限+10，战斗结束后扣回
     private void YueShiSuiPian()

@@ -17,9 +17,9 @@ public class Boss : MonoBehaviour, IMovable
     [SerializeField] private BulletObject circleBulletConfig;   // 圆形弹幕配置（ScriptableObject）
     [SerializeField] private float circleFireInterval = 1.5f;   // 发射间隔（秒）
 
-    [Header("二阶段：投掷炸弹")]
-    [SerializeField] private BulletObject bombConfig;           // 炸弹子弹配置（ScriptableObject）
-    [SerializeField] private float bombInterval = 2f;           // 投弹间隔（秒）
+    [Header("二阶段：投掷孢子云")]
+    [SerializeField] private GameObject sporeCloudPrefab;       // 爆炸预制体
+    [SerializeField] private float bombInterval = 2f;// 投弹间隔（秒）
 
     [Header("二阶段：召唤小怪")]
     [SerializeField] private List<GameObject> minionPrefabs;    // 小怪预制体列表
@@ -30,7 +30,7 @@ public class Boss : MonoBehaviour, IMovable
     [SerializeField] private float summonRadius = 3f;           // 召唤范围半径
 
     [Header("移动")]
-    [SerializeField] private float moveSpeed = 2f;              // 一阶段移动速度
+    [SerializeField] private float moveSpeed = 0f;              // 移动速度（只是为了接口）
 
     [Header("范围显示")]
     [SerializeField] private Color summonRangeColor = new Color(0.5f, 0f, 1f, 0.2f);  // 召唤范围颜色
@@ -47,7 +47,6 @@ public class Boss : MonoBehaviour, IMovable
 
     // ========== 对象池 ==========
     private BulletPool circleBulletPool;    // 圆形弹幕对象池
-    private BulletPool bombPool;            // 炸弹对象池
 
     // ========== 攻击计时器 ==========
     private float circleFireTimer;  // 圆形弹幕计时器
@@ -78,8 +77,6 @@ public class Boss : MonoBehaviour, IMovable
         // 初始化对象池（从PoolManager获取）
         if (circleBulletConfig != null)
             circleBulletPool = PoolManager.Instance.GetPool(circleBulletConfig);
-        if (bombConfig != null)
-            bombPool = PoolManager.Instance.GetPool(bombConfig);
 
         // 初始化计时器
         circleFireTimer = circleFireInterval;
@@ -120,13 +117,6 @@ public class Boss : MonoBehaviour, IMovable
     /// </summary>
     void PhaseOneUpdate()
     {
-        // 朝玩家移动
-        if (player != null)
-        {
-            Vector2 dir = (player.position - transform.position).normalized;
-            rb.velocity = dir * moveSpeed;
-        }
-
         // 弹幕计时
         circleFireTimer -= Time.deltaTime;
         if (circleFireTimer <= 0f)
@@ -165,13 +155,6 @@ public class Boss : MonoBehaviour, IMovable
     /// </summary>
     void PhaseTwoUpdate()
     {
-        // 加速追击（1.5倍速度）
-        if (player != null)
-        {
-            Vector2 dir = (player.position - transform.position).normalized;
-            rb.velocity = dir * moveSpeed * 1.5f;
-        }
-
         // 投弹计时
         bombTimer -= Time.deltaTime;
         if (bombTimer <= 0f)
@@ -194,19 +177,10 @@ public class Boss : MonoBehaviour, IMovable
     /// </summary>
     void ThrowBomb()
     {
-        if (bombPool == null || player == null) return;
+        if (sporeCloudPrefab == null || player == null) return;
 
-        // 计算朝向玩家的角度
-        Vector2 dir = (player.position - transform.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-        // 从对象池获取炸弹
-        BulletBehav bomb = bombPool.GetItem();
-        if (bomb != null)
-        {
-            bomb.transform.position = transform.position;
-            bomb.transform.rotation = Quaternion.Euler(0, 0, angle);
-        }
+        // 直接在玩家当前位置生成
+        Instantiate(sporeCloudPrefab, player.position, Quaternion.identity);
     }
 
     /// <summary>
@@ -246,8 +220,6 @@ public class Boss : MonoBehaviour, IMovable
         // 重置计时器
         bombTimer = bombInterval;
         summonTimer = summonInterval;
-
-        Debug.Log("Boss进入二阶段！");
     }
 
     // ==================== IMovable 接口实现 ====================

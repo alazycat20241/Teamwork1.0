@@ -21,6 +21,8 @@ public class AudioManager : MonoBehaviour
     private List<AudioSource> sfxSources = new List<AudioSource>();  // 所有音效源
     private List<AudioSource> bgmSources = new List<AudioSource>();  // 所有背景音乐源
 
+    [Header("UI音效")]
+    [SerializeField] private AudioClip clickSound;  // 鼠标点击音效
     void Awake()
     {
         // 单例初始化
@@ -39,6 +41,18 @@ public class AudioManager : MonoBehaviour
         sfxPlayer = gameObject.GetComponent<AudioSource>();
         sfxPlayer.playOnAwake = false;  // 不要自动播放
         sfxPlayer.loop = false;         // 短音效不循环
+    }
+
+    void Update()
+    {
+        // 只在非Menu场景播放
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Menu")
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                PlaySFX(clickSound);
+            }
+        }
     }
 
     // ===================================================

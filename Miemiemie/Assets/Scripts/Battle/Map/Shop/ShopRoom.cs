@@ -33,16 +33,18 @@ public class ShopRoom : RoomBase
         SetupExitData();
 
         // 已通关则直接激活出口
-        if (FixedRoomManager.Instance.IsRoomCleared(config.roomId))
-        {
-            ActivateExits();
-            return;
-        }
+        //if (FixedRoomManager.Instance.IsRoomCleared(config.roomId))
+        //{
+        //    ActivateExits();
+        //    return;
+        //}
 
         // 随机选出两个道具并展示
         GenerateShopProps();
         //TestSetProps(1, 2);  // 固定出现道具1和道具5
         ShowProps();
+
+        ActivateExits();
     }
 
     /// <summary>
@@ -77,6 +79,27 @@ public class ShopRoom : RoomBase
             else
             {
                 propObjects[i].SetActive(false);
+            }
+        }
+
+        // ===== 额外生成一个掉落物 =====
+        if (roomConfig.dropItems != null && roomConfig.dropItems.Length > 0)
+        {
+            float totalWeight = 0f;
+            foreach (var drop in roomConfig.dropItems)
+                totalWeight += drop.dropChance;
+
+            float roll = Random.Range(0f, totalWeight);
+            float cumulative = 0f;
+
+            foreach (var drop in roomConfig.dropItems)
+            {
+                cumulative += drop.dropChance;
+                if (roll <= cumulative)
+                {
+                    Instantiate(drop.prefab, new Vector3(0, 1.2f, 0), Quaternion.identity, transform);
+                    break;
+                }
             }
         }
     }

@@ -40,7 +40,7 @@ public class SaveLoadPanel : MonoBehaviour
     }
 
     // 刷新所有槽位
-    void RefreshAllSlots()
+    public void RefreshAllSlots()
     {
         for (int i = 0; i < slots.Length; i++)
         {

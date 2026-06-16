@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
 public class SaveSlot : MonoBehaviour
 {
@@ -9,8 +11,25 @@ public class SaveSlot : MonoBehaviour
     public Button slotButton;           // 点击存档/读档
 
     private int slotIndex;              // 当前槽位编号
-    private SaveLoadPanel panel;        // 父面板引用
+    private SaveLoadPanel panel;        // 母面板引用
 
+    [Header("确认弹窗")]
+    public GameObject confirmPanel;      // 确认面板（默认隐藏）
+    public Button confirmYesButton;      // 确认按钮
+    public Button confirmNoButton;       // 取消按钮
+
+    public bool isSave = false;
+
+    private Vector3 originalScale;
+    public float hoverScale = 1.1f;
+    private void Awake()
+    {
+        confirmYesButton.onClick.AddListener(OnConfirmYes);
+        confirmNoButton.onClick.AddListener(OnConfirmNo);
+        confirmPanel.SetActive(false);
+
+        originalScale = transform.localScale;
+    }
     // 刷新槽位显示
     public void Refresh(int index, bool isSaveMode, SaveLoadPanel parentPanel)
     {
@@ -36,8 +55,50 @@ public class SaveSlot : MonoBehaviour
             slotButton.interactable = true;
         }
 
-        // 绑定点击事件
+        isSave = isSaveMode;
+
+        // 点击槽位 → 弹出确认窗口，不直接执行
         slotButton.onClick.RemoveAllListeners();
-        slotButton.onClick.AddListener(() => panel.OnSlotClicked(slotIndex));
+        slotButton.onClick.AddListener(OnSlotClicked);
+    }
+
+    void OnSlotClicked()
+    {
+        confirmPanel.SetActive(true);
+    }
+
+    void OnConfirmYes()
+    {
+        confirmPanel.SetActive(false);
+
+        if (isSave)
+        {
+            // 存档模式 → 保存
+            SaveManager.Instance.SaveToSlot(slotIndex);
+        }
+        else
+        {
+            // 读档模式 → 读取
+            SaveManager.Instance.LoadFromSlot(slotIndex);
+        }
+
+        // 刷新面板
+        if (panel != null)
+            panel.RefreshAllSlots();
+    }
+
+    void OnConfirmNo()
+    {
+        confirmPanel.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        transform.localScale = originalScale * hoverScale;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.localScale = originalScale;
     }
 }

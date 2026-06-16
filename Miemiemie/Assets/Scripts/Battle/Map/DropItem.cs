@@ -2,14 +2,13 @@
 
 public class Collectible : MonoBehaviour
 {
-    public enum CollectibleType { Gold, SoulStone, halfLove,fullLove }
+    public enum CollectibleType { Gold, SoulStone, halfLove,fullLove,Seed }
 
     [SerializeField] private CollectibleType type;
     [SerializeField] private int amount = 1;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("碰到了");
         if (!other.CompareTag("Player")) return;
         Health health = other.GetComponent<Health>();
         if (PlayerInventory.Instance == null) return;
@@ -28,6 +27,10 @@ public class Collectible : MonoBehaviour
                 break;
             case CollectibleType.fullLove:
                 if(health != null)health.currentHealth += 10;
+                break;
+            case CollectibleType.Seed:
+                PlayerInventory.Instance.seedCount += amount;
+                PlayerInventory.Instance.UpdateStone();
                 break;
         }
 

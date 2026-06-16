@@ -16,6 +16,7 @@ public class ActionPointManager : MonoBehaviour
     public event Action<int, int> OnActionPointsChanged;        // (当前值, 最大值)
     public event Action<int> OnDayChanged;                      // (当前天数)
 
+    [SerializeField] private GameObject insufficientWarning;       // 点数不足提示
     void Awake()
     {
         if (Instance == null)
@@ -51,7 +52,7 @@ public class ActionPointManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("行动点数不足！");
+            ShowInsufficientWarning();
             return false;
         }
     }
@@ -123,5 +124,22 @@ public class ActionPointManager : MonoBehaviour
     {
         currentActionPoints = maxActionPoints;  // 或其他初始值
         currentDay = 1;
+    }
+
+    /// <summary>
+    /// 显示点数不足提示
+    /// </summary>
+    public void ShowInsufficientWarning()
+    {
+        if (insufficientWarning != null)
+        {
+            insufficientWarning.SetActive(true);
+            Invoke(nameof(HideWarning), 1f);
+        }
+    }
+
+    void HideWarning()
+    {
+        insufficientWarning.SetActive(false);
     }
 }

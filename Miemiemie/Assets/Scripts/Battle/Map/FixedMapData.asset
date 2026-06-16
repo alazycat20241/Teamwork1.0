@@ -21,12 +21,12 @@ MonoBehaviour:
     mapPosition: {x: 0, y: 0}
     isVisited: 0
     leftExit:
-      targetRoomId: 100
+      targetRoomId: 1
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
     rightExit:
-      targetRoomId: 100
+      targetRoomId: 1
       exitName: 
       exitDescription: 
       exitPosition: {x: 0, y: 0}
@@ -231,7 +231,19 @@ MonoBehaviour:
         spawnPosition: {x: 0, y: 0}
         isElite: 0
       rewardGold: 0
-    dropItems: []
+    dropItems:
+    - prefab: {fileID: 9099607215226205267, guid: 1a367d351fdf47c47baa323de96991cd,
+        type: 3}
+      dropChance: 0.5
+      Amount: 1
+    - prefab: {fileID: 2660146395871901073, guid: 04e8b2b13689fc640811eedb9b724a6e,
+        type: 3}
+      dropChance: 0.3
+      Amount: 1
+    - prefab: {fileID: 1773373833406034138, guid: c7dae89a138720d4083400f7fbdf63b0,
+        type: 3}
+      dropChance: 0.2
+      Amount: 1
     shopSetting:
       items: []
     eventSetting:
@@ -893,7 +905,19 @@ MonoBehaviour:
         spawnPosition: {x: -4.5, y: 2.5}
         isElite: 0
       rewardGold: 0
-    dropItems: []
+    dropItems:
+    - prefab: {fileID: 9099607215226205267, guid: 1a367d351fdf47c47baa323de96991cd,
+        type: 3}
+      dropChance: 0.5
+      Amount: 1
+    - prefab: {fileID: 2660146395871901073, guid: 04e8b2b13689fc640811eedb9b724a6e,
+        type: 3}
+      dropChance: 0.3
+      Amount: 1
+    - prefab: {fileID: 1773373833406034138, guid: c7dae89a138720d4083400f7fbdf63b0,
+        type: 3}
+      dropChance: 0.2
+      Amount: 1
     shopSetting:
       items: []
     eventSetting:
@@ -921,7 +945,7 @@ MonoBehaviour:
       enemies:
       - enemyPrefab: {fileID: 3219779317744118487, guid: 842a56ab5e6415e4e8e9b22db02b9be3,
           type: 3}
-        spawnPosition: {x: 0, y: 0}
+        spawnPosition: {x: 0, y: 1.2}
         isElite: 0
       rewardGold: 0
     dropItems: []

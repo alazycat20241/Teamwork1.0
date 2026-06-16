@@ -187,13 +187,13 @@ MonoBehaviour:
   phase2HealthPercent: 0.33
   circleBulletConfig: {fileID: 11400000, guid: 8ae8b846461ad384b84a0d1dfb4c2709, type: 2}
   circleFireInterval: 1.5
-  bombConfig: {fileID: 11400000, guid: 2080f266680305f4a8c2d7b3db024b56, type: 2}
+  sporeCloudPrefab: {fileID: 6470726890585559496, guid: bee921607f395a349a1458eb1f447031,
+    type: 3}
   bombInterval: 2
   minionPrefabs:
   - {fileID: 7960498430706057162, guid: a751310a5ed0a2a41a6e9726a3d94bbb, type: 3}
   - {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245, type: 3}
   - {fileID: 2152430162355477292, guid: 73cfa637bd912b744b9ad02b22f437e3, type: 3}
-  - {fileID: 6077347206989387153, guid: 1a65feff33bd9c741a50e0539d54d920, type: 3}
   initialMinionCount: 2
   maxInitialMinion: 3
   summonInterval: 30

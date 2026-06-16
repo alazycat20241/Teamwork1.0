@@ -16,6 +16,8 @@ public class SaveManager : MonoBehaviour
     private List<GrowBlockData> pendingFarmData;
     private bool isReturningFromOtherScene = false;
 
+    [SerializeField] private AudioClip LoadSound;  // 在Inspector中拖入对应的音效
+
     void Awake()
     {
         // ===== 单例 =====
@@ -61,7 +63,6 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("[SaveManager] 开始恢复田块和玩偶");
         RestoreFarmBlocks();
 
         if (DollPlay.Instance != null && PlayerInventory.Instance != null)
@@ -213,6 +214,12 @@ public class SaveManager : MonoBehaviour
     // ======================================================
     public bool LoadFromSlot(int index)
     {
+        // ★ 播放音效
+        if (LoadSound != null)
+        {
+            AudioManager.Instance.PlaySound(LoadSound);
+        }
+
         Time.timeScale = 1f;
 
         string path = GetSlotPath(index);
