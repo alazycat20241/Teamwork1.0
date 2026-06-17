@@ -226,30 +226,6 @@ public class EnemyDash : MonoBehaviour, IMovable
             chargeSkeleton.transform.localPosition = Vector3.zero;
         if (dashSkeleton != null)
             dashSkeleton.transform.localPosition = Vector3.zero;
-
-        // --- Idle 呼吸缩放效果 ---
-        // 空闲状态（巡逻/追逐/硬直）下，对蓄力子物体做正弦波缩放，模拟"活着"的呼吸感
-        // 同时保留左右翻转的方向（通过 localScale.x 的正负号）
-        if (currentActiveSpine == ActiveSpine.Idle && chargeSkeleton != null)
-        {
-            // 计算呼吸缩放值：以 1 为基准，±breatheAmount 的正弦波
-            float breatheScale = 1f + Mathf.Sin(Time.time * breatheSpeed) * breatheAmount;
-
-            // 保留当前 X 方向的翻转方向（正=朝右，负=朝左）
-            float currentScaleX = chargeSkeleton.transform.localScale.x;
-            float flipDirection = currentScaleX >= 0 ? 1f : -1f;
-
-            // 应用呼吸缩放，同时保持左右朝向
-            chargeSkeleton.transform.localScale = new Vector3(flipDirection * breatheScale, breatheScale, 1f);
-        }
-        else
-        {
-            // 非 Idle 状态恢复默认大小
-            if (chargeSkeleton != null)
-                chargeSkeleton.transform.localScale = Vector3.one;
-            if (dashSkeleton != null)
-                dashSkeleton.transform.localScale = Vector3.one;
-        }
     }
 
     // ============================================
@@ -267,8 +243,12 @@ public class EnemyDash : MonoBehaviour, IMovable
             patrolTimer = Random.Range(1f, 3f);                    // 重置倒计时
         }
         rb.velocity = patrolDirection * moveSpeed;
-        SwitchSpine(ActiveSpine.Idle);        // 显示空闲呼吸效果
+        SwitchSpine(ActiveSpine.Idle);        // 显示
         FlipAllSkeletons(patrolDirection);    // 左右翻转（巡逻只要左右）
+
+        // ★ 呼吸缩放
+        float breathe = 0.7f + Mathf.Sin(Time.time * breatheSpeed) * breatheAmount;
+        transform.localScale = new Vector3(breathe, 0.7f, 0.7f);
     }
 
     // ============================================
@@ -311,8 +291,12 @@ public class EnemyDash : MonoBehaviour, IMovable
     {
         Vector2 dir = (player.position - transform.position).normalized;
         rb.velocity = dir * moveSpeed;
-        SwitchSpine(ActiveSpine.Idle);        // 追逐时显示空闲呼吸
+        SwitchSpine(ActiveSpine.Idle);        // 追逐时显示
         FlipAllSkeletons(dir);                // 左右翻转（追逐只要左右）
+
+        // ★ 呼吸缩放
+        float breathe = 0.7f + Mathf.Sin(Time.time * breatheSpeed) * breatheAmount;
+        transform.localScale = new Vector3(breathe, 0.7f, 0.7f);
     }
 
     // ============================================
@@ -325,6 +309,14 @@ public class EnemyDash : MonoBehaviour, IMovable
     {
         Vector2 dir = (player.position - transform.position).normalized;
         rb.velocity = dir * dashSpeed;
+
+        // ★ 强制重置
+        if (dashSkeleton != null)
+        {
+            dashSkeleton.transform.localScale = Vector3.one;
+            dashSkeleton.transform.rotation = Quaternion.identity;
+        }
+
         RotateAllSkeletons(dir);              // 360度旋转（冲刺要任意方向）
 
         // 安全检查：如果动画被意外清除了，重新显示

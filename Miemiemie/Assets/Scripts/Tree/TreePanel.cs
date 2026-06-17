@@ -1,4 +1,4 @@
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 
@@ -15,11 +15,6 @@ public class TreePanel : MonoBehaviour
         oBtn.onClick.AddListener(Open);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Open()
     {
         slidePanel.Open();

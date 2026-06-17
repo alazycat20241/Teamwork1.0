@@ -1,0 +1,55 @@
+
+skeleton.png
+size: 512,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+固定怪前叶
+  rotate: true
+  xy: 177, 20
+  size: 100, 97
+  orig: 267, 157
+  offset: 88, 0
+  index: -1
+固定怪右前叶
+  rotate: true
+  xy: 2, 2
+  size: 118, 74
+  orig: 267, 157
+  offset: 149, 38
+  index: -1
+固定怪右后叶
+  rotate: true
+  xy: 332, 32
+  size: 88, 57
+  orig: 267, 157
+  offset: 149, 91
+  index: -1
+固定怪后叶
+  rotate: false
+  xy: 391, 77
+  size: 85, 43
+  orig: 267, 157
+  offset: 98, 114
+  index: -1
+固定怪左前叶
+  rotate: true
+  xy: 78, 7
+  size: 113, 97
+  orig: 267, 157
+  offset: 0, 28
+  index: -1
+固定怪左后叶
+  rotate: true
+  xy: 276, 25
+  size: 95, 54
+  orig: 267, 157
+  offset: 18, 92
+  index: -1
+固定怪花心
+  rotate: false
+  xy: 391, 11
+  size: 80, 64
+  orig: 267, 157
+  offset: 91, 76
+  index: -1
