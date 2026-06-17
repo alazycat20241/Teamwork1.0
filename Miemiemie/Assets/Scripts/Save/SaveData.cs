@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static UnityEngine.Mesh;
 
 [Serializable]
 public class SaveData
@@ -20,6 +21,9 @@ public class SaveData
     // ======= 所有田块的数据 =======
     public List<GrowBlockData> growBlockDataList = new List<GrowBlockData>();
 
+    // ======= 科技树数据 =======
+    public List<TechData> techDataList = new List<TechData>();
+
     // 单个田块的存档数据
     [Serializable]
     public class GrowBlockData
@@ -27,5 +31,14 @@ public class SaveData
         public string blockID;              // 用于匹配是哪一块田
         public int growthStage;             // (int)GrowthStage
         public int plantDay;                // 种植时的天数
+    }
+
+    // ===== 科技树 =====
+    [Serializable]
+    public class TechData
+    {
+        public string techID;
+        public bool isUnlocked;
+        public bool isPurchased;
     }
 }

@@ -17,10 +17,14 @@ public class Collectible : MonoBehaviour
         {
             case CollectibleType.Gold:
                 PlayerInventory.Instance.AddGold(amount);
+                // ★ 记录本次地图收集的金币
+                FixedRoomManager.Instance?.AddCollectedGold(amount);
                 break;
             case CollectibleType.SoulStone:
                 PlayerInventory.Instance.soulStones += amount;
                 PlayerInventory.Instance.UpdateStone();
+                // ★ 记录本次地图收集的灵魂石
+                FixedRoomManager.Instance?.AddCollectedSoulStone(amount);
                 break;
             case CollectibleType.halfLove:
                 if(health!=null)health.currentHealth += 5;

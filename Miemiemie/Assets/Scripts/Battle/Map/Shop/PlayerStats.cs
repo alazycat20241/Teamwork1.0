@@ -129,4 +129,25 @@ public class PlayerStats : MonoBehaviour
         tempSpeedBonus = 0f;
         tempMaxHealthBonus = 0f;
     }
+
+    /// <summary>
+    /// 新游戏时重置所有属性
+    /// </summary>
+    public void ResetData()
+    {
+        attackBonus = 0f;
+        rangeBonus = 0f;
+        speedBonus = 0f;
+        maxHealthBonus = 0f;
+        panicChance = 0f;
+        panicDuration = 0f;
+        stoneChance = 0f;
+        stoneDuration = 0f;
+        missChance = 0f;
+
+        tempAttackBonus = 0f;
+        tempRangeBonus = 0f;
+        tempSpeedBonus = 0f;
+        tempMaxHealthBonus = 0f;
+    }
 }

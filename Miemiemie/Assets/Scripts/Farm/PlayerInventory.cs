@@ -156,7 +156,7 @@ public class PlayerInventory : MonoBehaviour
         seedCount = 10;
         playerGold = 0;
         soulStones = 0;
-        DollCount = 1;
+        DollCount = 0;
         RefreshAllUI();
     }
 }

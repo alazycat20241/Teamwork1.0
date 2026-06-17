@@ -18,6 +18,8 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private AudioClip LoadSound;  // 在Inspector中拖入对应的音效
 
+    private List<TechData> pendingTechData;
+
     void Awake()
     {
         // ===== 单例 =====
@@ -50,28 +52,35 @@ public class SaveManager : MonoBehaviour
     {
         if (scene.name != "Home") return;
 
-        // 恢复 UI
+        // 恢复 UI（每次进家园都要）
         if (PlayerInventory.Instance != null)
         {
             PlayerInventory.Instance.FindUIElements();
             PlayerInventory.Instance.UpdateAllUI();
         }
 
-        if (!isReturningFromOtherScene)
+        // 新游戏 → 重置科技树，其他什么都不做
+        if (needResetTech)
         {
-            Debug.Log("[SaveManager] 第一次进家园，不恢复");
+            ResetAllTechButtons();
+            needResetTech = false;
             return;
         }
 
-        RestoreFarmBlocks();
-
-        if (DollPlay.Instance != null && PlayerInventory.Instance != null)
+        // 从其他场景回来 → 恢复田块、科技树、玩偶
+        if (isReturningFromOtherScene)
         {
-            DollPlay.Instance.DCount = PlayerInventory.Instance.DollCount;
-            DollPlay.Instance.SpawnDolls(PlayerInventory.Instance.DollCount);
-        }
+            RestoreFarmBlocks();
+            RestoreTech();
 
-        isReturningFromOtherScene = false;
+            if (DollPlay.Instance != null && PlayerInventory.Instance != null)
+            {
+                DollPlay.Instance.DCount = PlayerInventory.Instance.DollCount;
+                DollPlay.Instance.SpawnDolls(PlayerInventory.Instance.DollCount);
+            }
+
+            isReturningFromOtherScene = false;
+        }
     }
 
     // ======================================================
@@ -89,6 +98,14 @@ public class SaveManager : MonoBehaviour
             if (block != null)
                 pendingFarmData.Add(block.GetSaveData());
         }
+
+        // ===== 新增：收集科技 =====
+        pendingTechData = new List<TechData>();
+        foreach (var u in FindObjectsOfType<Unlock>(true)) pendingTechData.Add(u.GetSaveData());
+        foreach (var a in FindObjectsOfType<Attack>(true)) pendingTechData.Add(a.GetSaveData());
+        foreach (var m in FindObjectsOfType<MaxHealth>(true)) pendingTechData.Add(m.GetSaveData());
+        foreach (var r in FindObjectsOfType<Range>(true)) pendingTechData.Add(r.GetSaveData());
+        foreach (var s in FindObjectsOfType<Speed>(true)) pendingTechData.Add(s.GetSaveData());
     }
 
     // ======================================================
@@ -158,6 +175,36 @@ public class SaveManager : MonoBehaviour
         pendingFarmData = null;
     }
 
+    void RestoreTech()
+    {
+        if (pendingTechData == null || pendingTechData.Count == 0) return;
+        StartCoroutine(RestoreTechCoroutine());
+    }
+
+    IEnumerator RestoreTechCoroutine()
+    {
+        yield return null;
+        var dict = new Dictionary<string, TechData>();
+        foreach (var t in pendingTechData)
+            if (!string.IsNullOrEmpty(t.techID)) dict[t.techID] = t;
+
+        foreach (var u in FindObjectsOfType<Unlock>(true))
+            if (dict.TryGetValue(u.TechID, out var d)) u.LoadFromSave(d.isUnlocked);
+
+        foreach (var a in FindObjectsOfType<Attack>(true))
+            if (dict.TryGetValue(a.TechID, out var d)) a.LoadFromSave(d.isPurchased);
+
+        foreach (var m in FindObjectsOfType<MaxHealth>(true))
+            if (dict.TryGetValue(m.TechID, out var d)) m.LoadFromSave(d.isPurchased);
+
+        foreach (var r in FindObjectsOfType<Range>(true))
+            if (dict.TryGetValue(r.TechID, out var d)) r.LoadFromSave(d.isPurchased);
+
+        foreach (var s in FindObjectsOfType<Speed>(true))
+            if (dict.TryGetValue(s.TechID, out var d)) s.LoadFromSave(d.isPurchased);
+
+        pendingTechData = null;
+    }
     // ======================================================
     // 存档到槽位
     // ======================================================
@@ -198,6 +245,13 @@ public class SaveManager : MonoBehaviour
                 data.growBlockDataList.Add(blockData);
             }
         }
+
+        data.techDataList = new List<TechData>();
+        foreach (var u in FindObjectsOfType<Unlock>(true)) data.techDataList.Add(u.GetSaveData());
+        foreach (var a in FindObjectsOfType<Attack>(true)) data.techDataList.Add(a.GetSaveData());
+        foreach (var m in FindObjectsOfType<MaxHealth>(true)) data.techDataList.Add(m.GetSaveData());
+        foreach (var r in FindObjectsOfType<Range>(true)) data.techDataList.Add(r.GetSaveData());
+        foreach (var s in FindObjectsOfType<Speed>(true)) data.techDataList.Add(s.GetSaveData());
 
         // 时间戳
         data.saveTime = System.DateTime.Now.ToString("yyyy/MM/dd HH:mm");
@@ -248,6 +302,7 @@ public class SaveManager : MonoBehaviour
 
         // 缓存田块数据，等场景加载后恢复
         pendingFarmData = data.growBlockDataList;
+        pendingTechData = data.techDataList;
         isReturningFromOtherScene = true;
 
         // 加载家园场景
@@ -281,5 +336,54 @@ public class SaveManager : MonoBehaviour
     {
         string path = GetSlotPath(index);
         if (File.Exists(path)) File.Delete(path);
+    }
+
+    private bool needResetTech = false;
+    /// <summary>
+    /// 新游戏时清除所有缓存
+    /// </summary>
+    public void ResetAllCache()
+    {
+        pendingFarmData = null;
+        pendingTechData = null;
+        isReturningFromOtherScene = false;
+        needResetTech = true;   // 标记需要重置
+
+        // 重置背包
+        if (PlayerInventory.Instance != null)
+            PlayerInventory.Instance.ResetData();
+
+        // 重置行动点
+        if (ActionPointManager.Instance != null)
+            ActionPointManager.Instance.ResetData();
+
+        // 重置属性
+        if (PlayerStats.Instance != null)
+            PlayerStats.Instance.ResetData();
+    }
+
+    void ResetAllTechButtons()
+    {
+        StartCoroutine(ResetTechCoroutine());
+    }
+
+    IEnumerator ResetTechCoroutine()
+    {
+        yield return null;
+
+        foreach (var u in FindObjectsOfType<Unlock>(true))
+            u.ResetState();
+
+        foreach (var a in FindObjectsOfType<Attack>(true))
+            a.ResetState();
+
+        foreach (var m in FindObjectsOfType<MaxHealth>(true))
+            m.ResetState();
+
+        foreach (var r in FindObjectsOfType<Range>(true))
+            r.ResetState();
+
+        foreach (var s in FindObjectsOfType<Speed>(true))
+            s.ResetState();
     }
 }

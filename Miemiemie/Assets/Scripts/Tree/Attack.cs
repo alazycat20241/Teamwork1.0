@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using static SaveData;
 
 /// <summary>
 /// 攻击力升级按钮组件
@@ -32,10 +33,16 @@ public class Attack : MonoBehaviour
     /// </summary>
     public Sprite Select1Sprite;
 
+    public Sprite defaultSprite;      // ← 新增：默认图
+
     /// <summary>
     /// 按钮上的图片组件
     /// </summary>
     private Image img;
+
+    // ===== 新增 =====
+    public bool IsPurchased { get; private set; }
+    public string TechID => GetFullPath();
 
     /// <summary>
     /// 初始化组件，注册按钮点击事件
@@ -60,6 +67,8 @@ public class Attack : MonoBehaviour
         if (PlayerInventory.Instance.playerGold > GCOUNT &&
             PlayerInventory.Instance.soulStones > SCOUNT)
         {
+            IsPurchased = true;                                    // 新增
+
             // 将按钮图片切换为已升级状态
             img.sprite = Select1Sprite;
 
@@ -69,7 +78,41 @@ public class Attack : MonoBehaviour
 
             // 永久增加玩家攻击力
             PlayerStats.Instance.AddPermanentAttack(addCount);
+
+            L.interactable = false;                                // 新增
+
         }
         // 如果资源不足，不做任何操作（无法升级）
+    }
+
+    // ===== 新增方法 =====
+    public void LoadFromSave(bool purchased)
+    {
+        if (purchased)
+        {
+            IsPurchased = true;
+            if(Select1Sprite!=null)img.sprite = Select1Sprite;
+            L.interactable = false;
+        }
+    }
+
+    public TechData GetSaveData()
+    {
+        return new TechData { techID = TechID, isUnlocked = true, isPurchased = IsPurchased };
+    }
+
+    string GetFullPath()
+    {
+        string path = gameObject.name;
+        Transform t = transform.parent;
+        while (t != null) { path = t.name + "/" + path; t = t.parent; }
+        return path;
+    }
+
+    public void ResetState()
+    {
+        IsPurchased = false;
+        if (img != null && defaultSprite != null) img.sprite = defaultSprite;        // 恢复默认图
+        if (L != null) L.interactable = true;
     }
 }

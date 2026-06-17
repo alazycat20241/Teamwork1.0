@@ -815,7 +815,7 @@ MonoBehaviour:
   sfxVolume: 1
   bgmVolume: 1
   sfxPlayer: {fileID: 683842256}
-  clickSound: {fileID: 8300000, guid: f97ff0ee7715c10409a3b14e029fa99d, type: 3}
+  clickSound: {fileID: 8300000, guid: 62c80138794d68048a5d8faad8c59b4c, type: 3}
 --- !u!4 &683842258
 Transform:
   m_ObjectHideFlags: 0
@@ -1377,6 +1377,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1124779168}
   m_CullTransparentMesh: 1
+--- !u!1 &1167267504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1167267506}
+  - component: {fileID: 1167267505}
+  m_Layer: 0
+  m_Name: FarmManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1167267505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167267504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188ab123d85b9b946b64c58f8e2fd0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seedCount: 10
+  playerGold: 10000
+  soulStones: 10000
+  DollCount: 0
+--- !u!4 &1167267506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167267504}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 877.9125, y: 73.997925, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1201140989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2898,3 +2946,4 @@ SceneRoots:
   - {fileID: 1568912148}
   - {fileID: 1072207091}
   - {fileID: 683842258}
+  - {fileID: 1167267506}

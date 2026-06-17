@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro; 
 
 public class FixedRoomManager : MonoBehaviour
 {
@@ -27,6 +28,14 @@ public class FixedRoomManager : MonoBehaviour
     [Header("结算面板")]
     [SerializeField] private SlidePanel resultPanel;     // 结算UI面板
     [SerializeField] private Button btnContinue;         // 继续按钮
+
+    // 结算面板上的统计文本
+    [Header("结算统计")]
+    [SerializeField] private TMP_Text goldCollectedText;     // 金币收集数量
+    [SerializeField] private TMP_Text soulStoneCollectedText; // 灵魂石收集数量
+    // ★ 地图收集统计
+    private int goldCollectedThisRun = 0;
+    private int soulStonesCollectedThisRun = 0;
 
     // 运行时数据
     private RoomConfig currentRoom;
@@ -74,6 +83,10 @@ public class FixedRoomManager : MonoBehaviour
         clearedRooms.Clear();
 
         totalRooms = 12;  // ★ 总房间数
+
+        // 重置本次地图收集统计
+        goldCollectedThisRun = 0;
+        soulStonesCollectedThisRun = 0;
 
         foreach (var room in currentMap.rooms)
         {
@@ -254,6 +267,9 @@ public class FixedRoomManager : MonoBehaviour
             ActionPointManager.Instance.DefeatedInHunt();
         }
 
+        // ★ 在打开面板前更新统计文本
+        UpdateCollectionStatsText();
+
         if (resultPanel != null)
         {
             // ★ 更新进度条
@@ -293,6 +309,21 @@ public class FixedRoomManager : MonoBehaviour
             SceneManager.LoadScene("Home");  // 降级方案
         }
     }
+
+    // ★ 新增：更新结算面板的收集统计文本
+    private void UpdateCollectionStatsText()
+    {
+        if (goldCollectedText != null)
+        {
+            goldCollectedText.text = goldCollectedThisRun.ToString();
+        }
+
+        if (soulStoneCollectedText != null)
+        {
+            soulStoneCollectedText.text = soulStonesCollectedThisRun.ToString();
+        }
+    }
+
     public float deletex;
     // ★ 更新进度条填充
     private void UpdateProgressFill(bool victory)
@@ -334,5 +365,17 @@ public class FixedRoomManager : MonoBehaviour
             if (crossImage != null) crossImage.gameObject.SetActive(false);
             if (crossImageOnFill != null) crossImageOnFill.gameObject.SetActive(false);
         }
+    }
+
+    //记录收集的金币
+    public void AddCollectedGold(int amount)
+    {
+        goldCollectedThisRun += amount;
+    }
+
+    //记录收集的灵魂石
+    public void AddCollectedSoulStone(int amount)
+    {
+        soulStonesCollectedThisRun += amount;
     }
 }

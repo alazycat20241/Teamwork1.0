@@ -20,12 +20,7 @@ public class MenuButton : MonoBehaviour
     // 新游戏
     public void OnNewGame()
     {
-        // 重置所有数据
-        if (PlayerInventory.Instance != null)
-            PlayerInventory.Instance.ResetData();
-
-        if (ActionPointManager.Instance != null)
-            ActionPointManager.Instance.ResetData();
+        SaveManager.Instance.ResetAllCache();
 
         // 过渡加载
         if (SceneTransition.Instance != null)

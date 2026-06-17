@@ -16,12 +16,12 @@ public class MapUIManager : MonoBehaviour
     [SerializeField] private SlidePanel mapPanel;              // 地图总面板
 
     [Header("各功能面板（挂有SlidePanel组件）")]
-    [SerializeField] private SlidePanel dollShopPanel;         // 玩偶商店面板
+    [SerializeField] private SlidePanel TreePanel;         // 科技树面板
     [SerializeField] private SlidePanel farmShopPanel;         // 种地商店面板
     [SerializeField] private SlidePanel upgradeRoomPanel;      // 升级房面板
 
     [Header("地图内的按钮")]
-    [SerializeField] private Button dollShopButton;            // 玩偶商店按钮
+    [SerializeField] private Button TreeButton;            // 科技树按钮
     [SerializeField] private Button farmShopButton;            // 种地商店按钮
     [SerializeField] private Button upgradeRoomButton;         // 升级房按钮
     [SerializeField] private Button huntButton;                // 狩猎按钮
@@ -47,7 +47,7 @@ public class MapUIManager : MonoBehaviour
     void Start()
     {
         // 绑定按钮事件
-        dollShopButton.onClick.AddListener(OpenDollShop);
+        TreeButton.onClick.AddListener(OpenDollShop);
         farmShopButton.onClick.AddListener(OpenFarmShop);
         upgradeRoomButton.onClick.AddListener(OpenUpgradeRoom);
         huntButton.onClick.AddListener(GoHunting);
@@ -77,8 +77,7 @@ public class MapUIManager : MonoBehaviour
     void OpenDollShop()
     {
         // 行动点不足则无法打开
-        if (!ActionPointManager.Instance.UseActionPoints(1)) return;
-        SwitchPanel(dollShopPanel);
+        SwitchPanel(TreePanel);
     }
 
     /// <summary>

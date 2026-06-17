@@ -1,33 +1,70 @@
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
+using static SaveData;
 
+/// <summary>
+/// 移动速度升级按钮
+/// </summary>
 public class Speed : MonoBehaviour
 {
     public float addCount;
     public int GCOUNT;
     public int SCOUNT;
     public Button L;
-    
     public Sprite Select1Sprite;
     private Image img;
+    public Sprite defaultSprite;      // ← 新增：默认图
 
-    private void Awake()
+    public bool IsPurchased { get; private set; }
+    public string TechID => GetFullPath();
+
+    void Awake()
     {
         img = GetComponent<Image>();
-        if (L != null)
-            L.onClick.AddListener(click);
+        if (L != null) L.onClick.AddListener(Click);
     }
-    void click()
+
+    void Click()
     {
-       
-        if (PlayerInventory.Instance.playerGold > GCOUNT &&
-            PlayerInventory.Instance.soulStones > SCOUNT)
+        if (PlayerInventory.Instance.playerGold >= GCOUNT &&
+            PlayerInventory.Instance.soulStones >= SCOUNT)
         {
-           
+            IsPurchased = true;
             img.sprite = Select1Sprite;
             PlayerInventory.Instance.playerGold -= GCOUNT;
             PlayerInventory.Instance.soulStones -= SCOUNT;
             PlayerStats.Instance.AddPermanentSpeed(addCount);
+            L.interactable = false;
         }
+    }
+
+    public void LoadFromSave(bool purchased)
+    {
+        if (purchased)
+        {
+            IsPurchased = true;
+            img.sprite = Select1Sprite;
+            L.interactable = false;
+        }
+    }
+
+    public TechData GetSaveData()
+    {
+        return new TechData { techID = TechID, isUnlocked = true, isPurchased = IsPurchased };
+    }
+
+    string GetFullPath()
+    {
+        string path = gameObject.name;
+        Transform t = transform.parent;
+        while (t != null) { path = t.name + "/" + path; t = t.parent; }
+        return path;
+    }
+
+    public void ResetState()
+    {
+        IsPurchased = false;
+        if (img != null && defaultSprite != null) img.sprite = defaultSprite;        // 恢复默认图
+        if (L != null) L.interactable = true;
     }
 }
