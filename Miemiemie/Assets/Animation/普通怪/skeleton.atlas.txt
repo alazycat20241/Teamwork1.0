@@ -1,0 +1,20 @@
+
+skeleton.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+弹幕怪右前腿
+  rotate: true
+  xy: 301, 131
+  size: 118, 77
+  orig: 297, 260
+  offset: 132, 5
+  index: -1
+弹幕怪躯干
+  rotate: false
+  xy: 2, 2
+  size: 297, 247
+  orig: 297, 260
+  offset: 0, 10
+  index: -1

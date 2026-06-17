@@ -33,9 +33,15 @@ public class FixedRoomManager : MonoBehaviour
     [Header("结算统计")]
     [SerializeField] private TMP_Text goldCollectedText;     // 金币收集数量
     [SerializeField] private TMP_Text soulStoneCollectedText; // 灵魂石收集数量
+    [SerializeField] private TMP_Text timeText;               // ★ 用时显示
+
     // ★ 地图收集统计
     private int goldCollectedThisRun = 0;
     private int soulStonesCollectedThisRun = 0;
+    // ★ 计时器
+    private float runStartTime;       // 计时开始时间
+    private float runElapsedTime;     // 已用时间
+    private bool isTiming = false;    // 是否正在计时
 
     // 运行时数据
     private RoomConfig currentRoom;
@@ -93,14 +99,26 @@ public class FixedRoomManager : MonoBehaviour
             clearedRooms[room.roomId] = false;
         }
 
-        // 创建玩家（只创建一次，永远不销毁）
+        // 创建玩家（只创建一次
         CreatePlayer();
+
+        //开始计时
+        StartTiming();
 
         // 加载起始房间
         RoomConfig startRoom = currentMap.GetStartRoom();
         if (startRoom != null)
         {
             LoadRoom(startRoom);
+        }
+    }
+
+    // ★ 更新计时器（每帧调用）
+    void Update()
+    {
+        if (isTiming)
+        {
+            runElapsedTime = Time.time - runStartTime;
         }
     }
 
@@ -258,6 +276,9 @@ public class FixedRoomManager : MonoBehaviour
     // 返回家园
     public void ReturnToHome(bool victory)
     {
+        // ★ 停止计时
+        StopTiming();
+
         // ★ 还原本张地图所有临时效果
         PlayerStats.Instance?.RestoreTempEffects();
 
@@ -322,6 +343,15 @@ public class FixedRoomManager : MonoBehaviour
         {
             soulStoneCollectedText.text = soulStonesCollectedThisRun.ToString();
         }
+
+        if (timeText != null)
+        {
+            timeText.text = FormatTime(runElapsedTime);
+        }
+
+        // 复制道具
+        if(CopyChildSprites.Instance!=null)
+        CopyChildSprites.Instance.CopySprites();
     }
 
     public float deletex;
@@ -377,5 +407,27 @@ public class FixedRoomManager : MonoBehaviour
     public void AddCollectedSoulStone(int amount)
     {
         soulStonesCollectedThisRun += amount;
+    }
+
+    // ★ 开始计时
+    private void StartTiming()
+    {
+        runStartTime = Time.time;
+        runElapsedTime = 0f;
+        isTiming = true;
+    }
+
+    // ★ 停止计时
+    private void StopTiming()
+    {
+        isTiming = false;
+    }
+
+    // ★ 格式化时间为 分:秒 格式
+    private string FormatTime(float timeInSeconds)
+    {
+        int minutes = Mathf.FloorToInt(timeInSeconds / 60f);
+        int seconds = Mathf.FloorToInt(timeInSeconds % 60f);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

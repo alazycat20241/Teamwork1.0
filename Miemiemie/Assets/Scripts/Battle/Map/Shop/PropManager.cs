@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Spine.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -419,7 +420,9 @@ public class PropManager : MonoBehaviour
         // 获取敌人组件
         Health health = enemy.GetComponent<Health>();
         IMovable movable = enemy.GetComponent<IMovable>();
-        SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
+
+        //var sr = enemy.GetComponent<SpriteRenderer>();
+        var skeleton = enemy.GetComponentInChildren<SkeletonAnimation>();
 
         // === 进入石化 ===
 
@@ -429,8 +432,14 @@ public class PropManager : MonoBehaviour
         movable?.PauseMovement();
 
         // 变灰
-        Color originalColor = sr != null ? sr.color : Color.white;
-        if (sr != null) sr.color = Color.gray;
+        //Color originalColor = sr != null ? sr.color : Color.white;
+        //if (sr != null) sr.color = Color.gray;
+        object originalSpineColor = null;
+        if (skeleton != null)
+        {
+            originalSpineColor = skeleton.Skeleton.GetColor();
+            skeleton.Skeleton.SetColor(UnityEngine.Color.gray);
+        }
 
         // 等待石化时间
         yield return new WaitForSeconds(duration);
@@ -439,7 +448,10 @@ public class PropManager : MonoBehaviour
 
         if (health != null) health.isStoned = false;
         movable?.ResumeMovement();
-        if (sr != null) sr.color = originalColor;
+        //if (sr != null) sr.color = originalColor;
+        if (skeleton != null && originalSpineColor != null)
+            skeleton.Skeleton.SetColor((UnityEngine.Color)originalSpineColor);
+
     }
 
     // ==================== 道具11：狼人指尖 ====================
