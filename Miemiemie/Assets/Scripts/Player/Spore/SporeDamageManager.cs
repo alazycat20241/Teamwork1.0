@@ -4,7 +4,7 @@ using UnityEngine;
 public class SporeDamageManager : MonoBehaviour
 {
     public static SporeDamageManager Instance;                    // 单例
-    [SerializeField] private float damagePerSecond = 10f;         // ★ 每秒伤害，Inspector里调
+    [SerializeField] private float damagePerSecond = 10f;         // 每秒伤害
 
     // 目标 → 计时器（记录每个目标已经累积了多少秒，满1秒就扣血）
     private Dictionary<Health, float> targets = new Dictionary<Health, float>();

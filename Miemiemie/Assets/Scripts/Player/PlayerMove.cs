@@ -92,14 +92,14 @@ public class PlayerMove : MonoBehaviour
         
         if (flipByScale)
         {
-            // 方案1：缩发放翻转（推荐，带动所有子物体包括骨骼、魔杖、跟宠）
+            // 方案1：翻转 带动所有子物体包括骨骼、魔杖、跟宠）
             Vector3 scale = flipTarget.localScale;
-            scale.x = -Mathf.Abs(scale.x);  // 确保x为正
+            scale.x = -Mathf.Abs(scale.x);  
             flipTarget.localScale = scale;
         }
         else
         {
-            // 方案2：仅翻转SpriteRenderer（旧方案，不会带动子物体）
+            // 方案2：仅翻转SpriteRenderer（不会带动子物体）
             if (spriteRenderer != null)
                 spriteRenderer.flipX = true;
         }
@@ -114,9 +114,9 @@ public class PlayerMove : MonoBehaviour
         
         if (flipByScale)
         {
-            // 方案1：缩发放翻转
+            // 方案1：
             Vector3 scale = flipTarget.localScale;
-            scale.x = Mathf.Abs(scale.x);  // 确保x为负
+            scale.x = Mathf.Abs(scale.x);  
             flipTarget.localScale = scale;
         }
         else

@@ -57,6 +57,8 @@ public class FixedRoomManager : MonoBehaviour
     private int roomsClearedCount = 0;  // ★ 已通关房间数
     private int totalRooms = 0;         // ★ 总房间数
 
+    private PlayerPet pet ;  // 找跟宠
+
     /// <summary>
     /// 进入房间记号（供道具使用
     /// </summary>
@@ -111,6 +113,8 @@ public class FixedRoomManager : MonoBehaviour
         {
             LoadRoom(startRoom);
         }
+
+        pet = FindObjectOfType<PlayerPet>(); 
     }
 
     // ★ 更新计时器（每帧调用）
@@ -194,10 +198,12 @@ public class FixedRoomManager : MonoBehaviour
         {
             roomScript.SetupRoom(newRoom);
 
-            // 把玩家移动到新房间的出生点
+            // 把玩家和跟宠移动到新房间的出生点
             if (playerInstance != null && roomScript.playerSpawnPoint != null)
             {
                 playerInstance.transform.position = roomPos + roomScript.playerSpawnPoint.localPosition;
+
+                if(pet!=null)pet.TeleportToPlayer();
 
                 // 重置玩家状态（可选）
                 ResetPlayerState();

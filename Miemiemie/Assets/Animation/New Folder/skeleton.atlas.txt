@@ -1,0 +1,34 @@
+
+skeleton.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+控制怪前手
+  rotate: false
+  xy: 2, 74
+  size: 1020, 126
+  orig: 1355, 216
+  offset: 297, 81
+  index: -1
+控制怪右腿
+  rotate: false
+  xy: 1024, 123
+  size: 132, 77
+  orig: 1355, 216
+  offset: 1115, 13
+  index: -1
+控制怪后手
+  rotate: false
+  xy: 2, 2
+  size: 1089, 70
+  orig: 1355, 216
+  offset: 14, 77
+  index: -1
+控制怪躯干
+  rotate: false
+  xy: 1158, 26
+  size: 332, 174
+  orig: 1355, 216
+  offset: 981, 20
+  index: -1
