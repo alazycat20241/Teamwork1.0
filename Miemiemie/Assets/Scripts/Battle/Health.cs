@@ -136,11 +136,11 @@ public class Health : MonoBehaviour, IDamageable
         }
 
         // 敌人死亡：清理激光
-        EnemyLaser laser = GetComponent<EnemyLaser>();
-        if (laser != null)
-        {
-            laser.CleanupLaser();
-        }
+        //EnemyLaser laser = GetComponent<EnemyLaser>();
+        //if (laser != null)
+        //{
+        //    laser.CleanupLaser();
+        //}
 
         // 禁用物体（而非销毁，方便对象池复用）
         gameObject.SetActive(false);

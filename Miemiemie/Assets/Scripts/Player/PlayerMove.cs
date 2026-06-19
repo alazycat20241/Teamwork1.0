@@ -80,6 +80,12 @@ public class PlayerMove : MonoBehaviour
     
     void FixedUpdate()
     {
+        if (isStunned)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         rb.velocity = movement * moveSpeed;
     }
     

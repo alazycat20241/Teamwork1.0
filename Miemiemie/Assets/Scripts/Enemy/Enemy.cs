@@ -10,11 +10,6 @@ public class Enemy : MonoBehaviour,IMovable
         Patrol,         // 巡逻
         Chase,          // 追击
         Attack,         // 攻击
-        Pause,          // 停顿（怪2用）
-        Dash,           // 冲刺（怪2用）
-        Stun,           // 硬直（怪2用）
-        Flee,           // 远离（怪5用）
-        LaserAttack     // 激光射击（怪4用）
     }
 
     [Header("敌人参数")]

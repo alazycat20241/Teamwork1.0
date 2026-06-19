@@ -1,352 +1,344 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Spine;
+using Spine.Unity;
 
-public class EnemyLaser : MonoBehaviour, IMovable
+/// <summary>
+/// 触手型敌人
+/// 巡逻/追逐时显示第一帧静止，攻击时朝玩家方向甩出手臂
+/// 手臂通过 PathConstraint 延长，根骨骼可旋转
+///   右手骨骼：-15° 为向上
+///   左手骨骼：-195° 为向上
+/// 攻击流程：朝玩家旋转手臂 → 正向播放 attack_kongzhi 甩出 → 反向播放收回
+/// 手臂碰撞框检测到玩家 → 造成伤害 + 定身（一次攻击只命中一次）
+/// 
+/// 使用 bodyCenter 作为身体逻辑中心点，避免因骨骼偏移导致判断错误
+/// </summary>
+public class EnemyTentacle : MonoBehaviour, IMovable
 {
     [Header("索敌参数")]
     [SerializeField] private float chaseRange = 10f;        // 发现玩家范围
-    [SerializeField] private float attackRange = 6f;         // 开始射击范围
+    [SerializeField] private float attackRange = 6f;         // 开始攻击范围
     [SerializeField] private float moveSpeed = 2f;           // 移动速度
 
-    [Header("激光攻击")]
-    [SerializeField] private float laserDuration = 1f;       // 射击持续时间
-    [SerializeField] private float laserCooldown = 3f;       // 射击冷却时间
-    [SerializeField] private float laserDamagePerSecond = 15f; // 每秒伤害
-    [SerializeField] private LayerMask obstacleLayer;        // 障碍物层（墙、障碍物）
-    [SerializeField] private LineRenderer lineRenderer;      // 激光线渲染器
-    [SerializeField] public float maxLength = 20f;           // 激光最大长度
-
-    [Header("定身效果")]
+    [Header("攻击参数")]
+    [SerializeField] private float attackCooldown = 3f;     // 攻击冷却（秒）
     [SerializeField] private float stunDuration = 1f;        // 定身时长
 
+    [Header("Spine 动画")]
+    [SerializeField] private SkeletonAnimation skeletonAnimation;
+    [SpineAnimation]
+    [SerializeField] private string attackAnimName = "attack_kongzhi";  // 攻击动画名
+
+    [Header("身体中心点（拖一个空物体，放在怪物身体正中心）")]
+    [SerializeField] private Transform bodyCenter;           // ★ 逻辑中心
+
+    [Header("手臂骨骼 Transform（挂 SkeletonUtilityBone 的 GameObject）")]
+    [SerializeField] private Transform rightArmTransform;   // 右手臂路径根骨骼
+    [SerializeField] private Transform leftArmTransform;    // 左手臂路径根骨骼
+
     // 状态机
-    private enum State { Chase, LaserAttack }
-    private State currentState = State.Chase;
+    private enum State { Patrol, Chase, Attack, Cooldown }
+    private State currentState = State.Patrol;
 
     // 组件引用
-    private Transform player;        // 玩家位置
-    private Rigidbody2D rb;          // 刚体组件
-    private float cooldownTimer;     // 冷却计时器
-    private bool isLaserReady = true; // 激光是否准备就绪
+    private Transform player;
+    private Rigidbody2D rb;
+    private float cooldownTimer;
+    private bool hasAggro = false;
 
-    private bool hasAggro = false;   // 是否已激活仇恨
+    // 巡逻
+    private Vector2 patrolDirection;
+    private float patrolTimer;
 
-    // 特效相关（使用单例，不再需要拖拽）
-    private GameObject currentSpark; // 当前墙上的火花实例
+    // 击退/暂停
+    private bool isKnockedBack = false;
+    private bool isPaused = false;
 
-    private bool isKnockedBack = false;  // ★ 击退标记
+    // 攻击状态
+    public bool isAttacking;           // 是否正在攻击
+    private bool playerHitThisAttack;   // 本次攻击是否已命中（只命中一次）
+    private float animDirection;        // 1=正向甩出，-1=反向收回
 
+    // ============================================
+    // 初始化
+    // ============================================
     void Start()
     {
-        // 获取玩家引用（从房间管理器）
+        // 获取玩家
         GameObject playerObj = FixedRoomManager.Instance.GetPlayer();
         if (playerObj != null)
-        {
             player = playerObj.transform;
-        }
-        else
-        {
-            Debug.LogError("EnemyLaser: 无法找到玩家！");
-        }
 
-        // 初始化刚体
+        // 配置刚体
         rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.gravityScale = 0;      // 不受重力影响
-            rb.freezeRotation = true; // 锁定旋转
+            rb.gravityScale = 0;
+            rb.freezeRotation = true;
         }
 
-        // 初始化激光渲染器
-        if (lineRenderer != null)
-        {
-            lineRenderer.enabled = false;
-        }
+        // 初始化巡逻
+        patrolDirection = Random.insideUnitCircle.normalized;
+
+        // ★ 如果没有拖入 bodyCenter，默认用自身 Transform
+        if (bodyCenter == null)
+            bodyCenter = transform;
+
+        // 初始冻结在第一帧，隐藏手臂碰撞
+        FreezeAtFirstFrame();
     }
 
+    // ============================================
+    // 每帧更新
+    // ============================================
     void Update()
     {
-        if (isPaused||isKnockedBack) return;  // ★ 击退时跳过移动逻辑
-
-        // 安全检查：玩家不存在时不做任何操作
+        if (isPaused || isKnockedBack) return;
         if (player == null) return;
-        // 玩家伪装中 → 解除仇恨，静止
+
+        // 玩家伪装 → 取消仇恨
         if (!player.CompareTag("Player"))
         {
             hasAggro = false;
-            rb.velocity = Vector2.zero;
             return;
         }
 
-        float dist = Vector2.Distance(transform.position, player.position);
+        // ★ 用 bodyCenter 计算距离
+        float dist = Vector2.Distance(bodyCenter.position, player.position);
 
-        // 首次发现玩家，激活仇恨
+        // 首次发现玩家
         if (!hasAggro && dist <= chaseRange)
         {
             hasAggro = true;
             currentState = State.Chase;
         }
 
-        // 未发现玩家时，保持静止
+        // 未发现 → 巡逻
         if (!hasAggro)
         {
-            rb.velocity = Vector2.zero;
+            UpdatePatrol();
             return;
         }
 
-        // 冷却计时逻辑
-        if (!isLaserReady)
-        {
+        // 冷却计时（攻击时不走冷却）
+        if (!isAttacking)
             cooldownTimer -= Time.deltaTime;
-            // 冷却结束且不在攻击状态时，重置激光准备标记
-            if (cooldownTimer <= 0 && currentState != State.LaserAttack)
-            {
-                isLaserReady = true;
-            }
-        }
 
-        // 状态机行为
+        // 状态机
         switch (currentState)
         {
             case State.Chase:
-                // 进入攻击范围 且 冷却完成 → 开始激光攻击
-                if (dist <= attackRange && isLaserReady)
-                {
-                    EnterState(State.LaserAttack);
-                }
+                if (dist <= attackRange && cooldownTimer <= 0f)
+                    EnterState(State.Attack);
                 else
-                {
-                    Chase(); // 继续追击玩家
-                }
+                    Chase();
                 break;
 
-            case State.LaserAttack:
-                // 攻击状态下保持静止（移动由协程控制）
+            case State.Attack:
                 rb.velocity = Vector2.zero;
+                UpdateAttackAnimation();
+                break;
+
+            case State.Cooldown:
+                rb.velocity = Vector2.zero;
+                if (cooldownTimer <= 0f)
+                    currentState = State.Chase;
                 break;
         }
     }
 
-    /// <summary>
-    /// 追击玩家
-    /// </summary>
+    // ============================================
+    // 巡逻
+    // ============================================
+    void UpdatePatrol()
+    {
+        patrolTimer -= Time.deltaTime;
+        if (patrolTimer <= 0)
+        {
+            patrolDirection = Random.insideUnitCircle.normalized;
+            patrolTimer = Random.Range(1f, 3f);
+        }
+        rb.velocity = patrolDirection * moveSpeed * 0.3f;
+    }
+
+    // ============================================
+    // 追逐
+    // ============================================
     void Chase()
     {
-        Vector2 dir = (player.position - transform.position).normalized;
+        // ★ 用 bodyCenter 计算方向
+        Vector2 dir = (player.position - bodyCenter.position).normalized;
         rb.velocity = dir * moveSpeed;
     }
 
-    /// <summary>
-    /// 进入指定状态
-    /// </summary>
+    // ============================================
+    // 进入状态
+    // ============================================
     void EnterState(State newState)
     {
         currentState = newState;
-        switch (newState)
+        if (newState == State.Attack)
+            StartAttack();
+    }
+
+    // ============================================
+    // 攻击逻辑
+    // ============================================
+
+    /// <summary>
+    /// 开始攻击：旋转手臂朝向玩家 → 正向播放动画甩出
+    /// </summary>
+    void StartAttack()
+    {
+        isAttacking = true;
+        playerHitThisAttack = false;
+        animDirection = 1f;
+
+        // 旋转手臂朝向玩家
+        RotateArmsTowardsPlayer();
+
+        // ★ 延迟一帧再播动画，确保旋转生效
+        StartCoroutine(PlayAttackAnimNextFrame());
+    }
+
+    IEnumerator PlayAttackAnimNextFrame()
+    {
+        yield return null; // 等一帧
+
+        if (skeletonAnimation != null)
         {
-            case State.LaserAttack:
-                isLaserReady = false;
-                StartCoroutine(LaserAttack());
-                break;
+            var track = skeletonAnimation.AnimationState.SetAnimation(0, attackAnimName, false);
+            track.TrackTime = 0f;
+            track.TimeScale = 1f;
         }
     }
 
-
     /// <summary>
-    /// 激光攻击协程：持续射击一段时间，命中玩家则造成伤害并定身
+    /// 旋转手臂骨骼，使其朝向玩家方向
+    /// 以 bodyCenter 为基准计算玩家方向
     /// </summary>
-    IEnumerator LaserAttack()
+    void RotateArmsTowardsPlayer()
     {
-        // 攻击准备
-        isLaserReady = false;
-        rb.velocity = Vector2.zero;
+        if (player == null) return;
 
-        // 开启激光渲染
-        if (lineRenderer != null)
+        Vector2 dirToPlayer = (player.position - bodyCenter.position).normalized;
+        if (dirToPlayer == Vector2.zero) return;
+
+        float targetAngle = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
+
+        if (rightArmTransform != null)
         {
-            lineRenderer.enabled = true;
-            lineRenderer.widthMultiplier = 1f; // 重置宽度
+            float rightRotation =  targetAngle;
+            rightArmTransform.rotation = Quaternion.Euler(0, 0, rightRotation);
         }
 
-        float timer = 0f;
-        bool playerHit = false;      // 本次攻击是否已命中玩家（只命中一次）
-        currentSpark = null;         // 重置火花引用
-
-        // 持续射击直到持续时间结束
-        while (timer < laserDuration)
+        if (leftArmTransform != null)
         {
-            timer += Time.deltaTime;
-
-            // 更新激光方向（持续指向玩家当前位置）
-            Vector2 direction = (player.position - transform.position).normalized;
-
-            // 射线检测：从敌人位置沿激光方向发射，检测障碍物
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxLength, obstacleLayer);
-
-            Vector2 endPoint; // 激光终点
-            if (hit.collider != null)
-            {
-                // ========== 碰到障碍物（墙）：激光截断 ==========
-                endPoint = hit.point;
-
-                // --- 火花特效逻辑（使用单例对象池）---
-                // 如果还没有火花实例，从对象池获取一个
-                if (currentSpark == null && EffectPool.Instance != null)
-                {
-                    currentSpark = EffectPool.Instance.Get("LaserSpark");  // 改1
-                }
-
-                // 更新火花位置和朝向
-                if (currentSpark != null)
-                {
-                    currentSpark.transform.position = endPoint;
-                    // 火花朝向：垂直于墙面（hit.normal 是墙面的法线方向）
-                    float angle = Mathf.Atan2(hit.normal.y, hit.normal.x) * Mathf.Rad2Deg;
-                    currentSpark.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
-                }
-            }
-            else
-            {
-                // ========== 没有碰到障碍物：激光延伸到最大长度 ==========
-                // 回收火花特效（如果有）
-                if (currentSpark != null && EffectPool.Instance != null)
-                {
-                    EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改2
-                    currentSpark = null;
-                }
-                endPoint = (Vector2)transform.position + direction * maxLength;
-            }
-
-            // 绘制激光线
-            if (lineRenderer != null)
-            {
-                lineRenderer.SetPosition(0, transform.position);
-                lineRenderer.SetPosition(1, endPoint);
-            }
-
-            // ========== 玩家伤害判定 ==========
-            // 计算激光实际长度
-            float beamLength = Vector2.Distance(transform.position, endPoint);
-            // 发射射线检测玩家（只检测玩家层）
-            RaycastHit2D playerHit2D = Physics2D.Raycast(transform.position, direction, beamLength,
-                1 << player.gameObject.layer);
-
-            // 如果激光命中玩家且本次攻击还未造成伤害
-            if (playerHit2D.collider != null && !playerHit)
-            {
-                playerHit = true;
-
-                // 造成伤害（总伤害 = 每秒伤害 × 持续时间）
-                Health health = player.GetComponent<Health>();
-                if (health != null)
-                {
-                    health.TakeDamage(laserDamagePerSecond * laserDuration);
-                }
-                // ★ 检查玩家是否还活跃
-                if (player.gameObject.activeInHierarchy)
-                {
-                    PlayerMove playerMovement = player.GetComponent<PlayerMove>();
-                    if (playerMovement != null)
-                    {
-                        playerMovement.Stun(stunDuration);
-                    }
-                }
-                // 定身玩家
-            }
-
-            yield return null; // 等待下一帧
+            float leftRotation =  targetAngle-180f;
+            leftArmTransform.rotation = Quaternion.Euler(0, 0, leftRotation);
         }
-
-        // ========== 激光攻击结束，清理资源 ==========
-        // 回收火花特效
-        // 激光结束：回收火花
-        if (currentSpark != null && EffectPool.Instance != null)
-        {
-            EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改3
-            currentSpark = null;
-        }
-
-        // 射击结束 → 变细消失
-        float fadeOutDuration = 0.15f;
-        float elapsed = 0f;
-        float startWidth = lineRenderer.widthMultiplier;
-
-        while (elapsed < fadeOutDuration)
-        {
-            elapsed += Time.deltaTime;
-            lineRenderer.widthMultiplier = Mathf.Lerp(startWidth, 0f, elapsed / fadeOutDuration);
-            yield return null;
-        }
-
-        lineRenderer.widthMultiplier = startWidth;  // 恢复宽度
-        lineRenderer.enabled = false;
-        cooldownTimer = laserCooldown;
-        isLaserReady = false;
-        currentState = State.Chase;
     }
+
     /// <summary>
-    /// 清理激光特效（供外部调用，比如敌人死亡时）
+    /// 每帧更新攻击动画
+    /// 正向播完 → 自动反向播放收回
+    /// 反向播完 → 攻击结束
     /// </summary>
-    public void CleanupLaser()
+    void UpdateAttackAnimation()
     {
-        // 回收火花
-        if (currentSpark != null && EffectPool.Instance != null)
-        {
-            EffectPool.Instance.Release("LaserSpark", currentSpark);  // 改4
-            currentSpark = null;
-        }
+        if (!isAttacking) return;
 
-        // 关闭激光
-        if (lineRenderer != null)
-        {
-            lineRenderer.enabled = false;
-        }
+        var track = skeletonAnimation?.AnimationState?.GetCurrent(0);
+        if (track == null) return;
 
-        // 停止协程
+        // 正向甩出播完 → 开始反向收回
+        if (animDirection == 1f && track.IsComplete)
+        {
+            EndAttack();
+
+        }
+    }
+
+    /// <summary>
+    /// 攻击结束：冷却、冻结第一帧、关闭碰撞
+    /// </summary>
+    void EndAttack()
+    {
+        isAttacking = false;
+        cooldownTimer = attackCooldown;
+        currentState = State.Cooldown;
+
+        FreezeAtFirstFrame();
+    }
+
+    /// <summary>
+    /// 检测手臂碰撞框是否碰到玩家
+    /// </summary>
+    public void OnArmHitPlayer(GameObject playerObj)
+    {
+        if (playerHitThisAttack) return; // 一次攻击只命中一次
+        if (!isAttacking) return;        // 非攻击状态不触发
+
+        playerHitThisAttack = true;
+
+        PlayerMove playerMovement = playerObj.GetComponent<PlayerMove>();
+        if (playerMovement != null)
+            playerMovement.Stun(stunDuration);
+    }
+
+    // ============================================
+    // Spine 动画控制
+    // ============================================
+
+    /// <summary>
+    /// 冻结动画在第一帧（巡逻/追逐/冷却时显示静止姿态）
+    /// </summary>
+    void FreezeAtFirstFrame()
+    {
+        if (skeletonAnimation == null) return;
+        var track = skeletonAnimation.AnimationState.SetAnimation(0, attackAnimName, false);
+        track.TrackTime = 0f;
+        track.TimeScale = 0f;
+    }
+
+    // ============================================
+    // 外部清理（死亡时调用）
+    // ============================================
+    public void Cleanup()
+    {
         StopAllCoroutines();
     }
 
+    // ============================================
+    // IMovable 接口
+    // ============================================
     public float GetMoveSpeed() => moveSpeed;
-
-    public void SetMoveSpeed(float speed)
-    {
-        moveSpeed = speed;
-    }
-
-    public void StartKnockback()
-    {
-        isKnockedBack = true;  // 暂停移动
-    }
-
+    public void SetMoveSpeed(float speed) { moveSpeed = speed; }
+    public void StartKnockback() { isKnockedBack = true; }
     public void EndKnockback()
     {
         isKnockedBack = false;
-        rb.velocity = Vector2.zero;  // 击退结束
+        rb.velocity = Vector2.zero;
     }
-
-    private bool isPaused = false;
-
     public void PauseMovement()
     {
         isPaused = true;
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.velocity = Vector2.zero;
     }
+    public void ResumeMovement() { isPaused = false; }
 
-    public void ResumeMovement()
-    {
-        isPaused = false;
-    }
-
+    // ============================================
+    // 编辑器可视化（用 bodyCenter 绘制）
+    // ============================================
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
-    }
+        Vector3 center = bodyCenter != null ? bodyCenter.position : transform.position;
 
-    void OnDrawGizmos()
-    {
         Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
-        Gizmos.DrawSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere(center, chaseRange);
+        Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(center, attackRange);
     }
 }

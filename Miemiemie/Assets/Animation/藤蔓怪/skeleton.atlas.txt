@@ -6,29 +6,29 @@ filter: Linear,Linear
 repeat: none
 控制怪前手
   rotate: false
-  xy: 2, 74
+  xy: 2, 2
   size: 1020, 126
   orig: 1355, 216
   offset: 297, 81
   index: -1
 控制怪右腿
   rotate: false
-  xy: 1024, 123
-  size: 132, 77
+  xy: 1449, 128
+  size: 132, 73
   orig: 1355, 216
-  offset: 1115, 13
+  offset: 1117, 15
   index: -1
 控制怪后手
   rotate: false
-  xy: 2, 2
-  size: 1089, 70
+  xy: 2, 130
+  size: 1100, 71
   orig: 1355, 216
-  offset: 14, 77
+  offset: 6, 75
   index: -1
 控制怪躯干
   rotate: false
-  xy: 1158, 26
-  size: 332, 174
+  xy: 1104, 29
+  size: 343, 172
   orig: 1355, 216
-  offset: 981, 20
+  offset: 973, 21
   index: -1

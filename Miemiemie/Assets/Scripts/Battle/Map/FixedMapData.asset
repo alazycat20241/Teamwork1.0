@@ -402,7 +402,7 @@ MonoBehaviour:
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: 4.6, y: 1.5}
+        spawnPosition: {x: 1.8, y: 1.5}
         isElite: 0
       rewardGold: 0
     dropItems:
@@ -495,7 +495,7 @@ MonoBehaviour:
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: -1.5, y: 4}
+        spawnPosition: {x: -4.3, y: 4}
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
@@ -558,7 +558,7 @@ MonoBehaviour:
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: -4.5, y: 2.5}
+        spawnPosition: {x: -7.6, y: 2.5}
         isElite: 0
       rewardGold: 0
     dropItems:
@@ -698,7 +698,7 @@ MonoBehaviour:
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: 2.5, y: -1.7}
+        spawnPosition: {x: -0.3, y: -1.7}
         isElite: 0
       - enemyPrefab: {fileID: 3299601939692206755, guid: 0866fbd3c1f05f642a9f56fba11acf5b,
           type: 3}
@@ -706,7 +706,7 @@ MonoBehaviour:
         isElite: 0
       - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: -2.4, y: 2.45}
+        spawnPosition: {x: -5.2, y: 2.45}
         isElite: 0
       rewardGold: 0
     dropItems:
@@ -974,9 +974,9 @@ MonoBehaviour:
       exitPosition: {x: 0, y: 0}
     battleSetting:
       enemies:
-      - enemyPrefab: {fileID: 3299601939692206755, guid: 0866fbd3c1f05f642a9f56fba11acf5b,
+      - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
           type: 3}
-        spawnPosition: {x: 2, y: 2}
+        spawnPosition: {x: -2.8, y: 2}
         isElite: 0
       rewardGold: 0
     dropItems: []

@@ -33,7 +33,6 @@ public class ExitTriggerZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"[ExitTriggerZone] 碰撞到: {other.name}, tag: {other.tag}, isActive: {isActive}");
         if (!isActive)
         {
             return;
@@ -51,7 +50,6 @@ public class ExitTriggerZone : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log($"[ExitTriggerZone] 触发出口: {exitData.targetRoomId}");
             FixedRoomManager.Instance.MoveToRoom(exitData.targetRoomId);
         }
         if (!isActive) return;
