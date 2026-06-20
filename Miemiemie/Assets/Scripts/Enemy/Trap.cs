@@ -1,26 +1,49 @@
 ﻿using UnityEngine;
-
+using Spine;
+using Spine.Unity;
+using System.Collections;
 public class Trap : MonoBehaviour
 {
-    [SerializeField] private float damage = 10f;            // 对玩家伤害
-    //[SerializeField] private float lifetime = 30f;          // 最长存活时间
+    [Header("伤害")]
+    [SerializeField] private float damage = 10f;
 
-    /// <summary>
-    /// 玩家踩到陷阱
-    /// </summary>
+    [Header("Spine 动画")]
+    [SerializeField] private SkeletonAnimation skeletonAnimation;
+    [SpineAnimation]
+    [SerializeField] private string appearAnimation = "xianjing";  // 动画名
+
+    private void Awake()
+    {
+        // ★ 先设为透明
+        if (skeletonAnimation != null)
+            skeletonAnimation.Skeleton.SetColor(new Color(1, 1, 1, 0));
+
+        // 下一帧恢复不透明
+        StartCoroutine(ShowFirstFrame());
+    }
+    void Start()
+    {
+        // 播放一次，不循环
+        if (skeletonAnimation != null)
+            skeletonAnimation.AnimationState.SetAnimation(0, appearAnimation, false);
+    }
+
+    IEnumerator ShowFirstFrame()
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (skeletonAnimation != null)
+            skeletonAnimation.Skeleton.SetColor(Color.white);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             Health health = other.GetComponent<Health>();
             if (health != null)
-            {
                 health.TakeDamage(damage);
-            }
-            // 踩到后陷阱消失
+
             Destroy(gameObject);
         }
     }
-
-    // 陷阱有Health组件，可以被子弹打掉（在Health里设maxHealth=1即可）
 }

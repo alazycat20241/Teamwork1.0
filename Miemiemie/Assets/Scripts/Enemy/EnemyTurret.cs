@@ -34,9 +34,11 @@ public class EnemyTurret : MonoBehaviour
     private float attackAnimTimer;     // 攻击动画计时器
     private bool isAttacking;          // 是否正在播放攻击动画
 
-    // ============================================
-    // 初始化
-    // ============================================
+    [Header("音效")]
+    [SerializeField] private AudioClip attackSound;
+    private AudioSource audioSource;  // 自己的 AudioSource
+
+
     void Start()
     {
         // 获取玩家引用
@@ -52,6 +54,11 @@ public class EnemyTurret : MonoBehaviour
 
         // 初始播放呼吸动画
         PlayAnimation(breathAnimation, true);
+
+        // 创建自己的 AudioSource
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
     }
 
     // ============================================
@@ -59,7 +66,6 @@ public class EnemyTurret : MonoBehaviour
     // ============================================
     void Update()
     {
-        Debug.Log($"player={player?.name}, dist={Vector2.Distance(transform.position, player?.position ?? transform.position)}");
         // 玩家不可用时 → 回到呼吸
         if (player == null || !player.CompareTag("Player"))
         {
@@ -87,8 +93,6 @@ public class EnemyTurret : MonoBehaviour
         // ★ 冷却好了 → 立刻攻击，哪怕上次动画还没播完也打断重播
         if (attackTimer <= 0f)
         {
-            Debug.Log($"攻击触发！attackTimer={attackTimer}, dist={dist}, attackRange={attackRange}");
-
             attackTimer = attackCooldown;   // 重置冷却（新冷却从此刻开始）
             StartAttack();
         }
@@ -106,13 +110,18 @@ public class EnemyTurret : MonoBehaviour
         isAttacking = true;
         attackAnimTimer = attackAnimDuration;
 
+        // 播放音效
+        if (audioSource != null && attackSound != null)
+        {
+            audioSource.clip = attackSound;
+            audioSource.Play();
+        }
+
         // 播放攻击动画（不循环）
         PlayAnimation(attackAnimation, false);
 
         // ★ 延迟生成爆炸
         StartCoroutine(SpawnAfterDelay(spawnDelay));
-        Debug.Log("12");
-
     }
 
     /// <summary>
@@ -120,7 +129,6 @@ public class EnemyTurret : MonoBehaviour
     /// </summary>
     IEnumerator SpawnAfterDelay(float delay)
     {
-        Debug.Log("123");
         yield return new WaitForSeconds(delay);
         Instantiate(sporeCloudPrefab, player.position, Quaternion.identity);
     }

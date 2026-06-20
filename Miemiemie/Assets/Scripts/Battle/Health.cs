@@ -135,12 +135,12 @@ public class Health : MonoBehaviour, IDamageable
             EffectPool.Instance.PlayAt("EnemyDeath", transform.position);
         }
 
-        // 敌人死亡：清理激光
-        //EnemyLaser laser = GetComponent<EnemyLaser>();
-        //if (laser != null)
-        //{
-        //    laser.CleanupLaser();
-        //}
+        // 敌人死亡：清理触手怪（防止死亡时手臂碰到玩家导致卡住）
+        EnemyTentacle tentacle = GetComponent<EnemyTentacle>();
+        if (tentacle != null)
+        {
+            tentacle.OnDeath();
+        }
 
         // 禁用物体（而非销毁，方便对象池复用）
         gameObject.SetActive(false);

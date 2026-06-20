@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 public class SporePool : MonoBehaviour
 {
-    public static SporePool Instance { get; private set; }  // ← 加这行
+    public static SporePool Instance { get; private set; }  
 
     [Header("孢子预制体")]
     [SerializeField] private GameObject sporePrefab;

@@ -974,9 +974,9 @@ MonoBehaviour:
       exitPosition: {x: 0, y: 0}
     battleSetting:
       enemies:
-      - enemyPrefab: {fileID: 8369378119362718211, guid: f754e35bdd000a9478bf1caedb5c8245,
+      - enemyPrefab: {fileID: 3299601939692206755, guid: 0866fbd3c1f05f642a9f56fba11acf5b,
           type: 3}
-        spawnPosition: {x: -2.8, y: 2}
+        spawnPosition: {x: 2, y: 2}
         isElite: 0
       rewardGold: 0
     dropItems: []

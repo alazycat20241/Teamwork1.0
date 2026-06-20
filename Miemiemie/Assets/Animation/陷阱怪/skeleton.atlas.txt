@@ -1,0 +1,55 @@
+
+skeleton.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+蜘蛛主体
+  rotate: false
+  xy: 221, 167
+  size: 133, 95
+  orig: 359, 460
+  offset: 147, 326
+  index: -1
+蜘蛛右中腿
+  rotate: true
+  xy: 2, 171
+  size: 91, 114
+  orig: 359, 460
+  offset: 245, 336
+  index: -1
+蜘蛛右前腿
+  rotate: true
+  xy: 2, 55
+  size: 112, 151
+  orig: 359, 460
+  offset: 246, 292
+  index: -1
+蜘蛛右后腿
+  rotate: false
+  xy: 118, 169
+  size: 101, 93
+  orig: 359, 460
+  offset: 217, 356
+  index: -1
+蜘蛛左中腿
+  rotate: true
+  xy: 155, 53
+  size: 112, 129
+  orig: 359, 460
+  offset: 79, 320
+  index: -1
+蜘蛛左前腿
+  rotate: false
+  xy: 286, 2
+  size: 177, 152
+  orig: 359, 460
+  offset: 3, 285
+  index: -1
+蜘蛛左后腿
+  rotate: false
+  xy: 356, 156
+  size: 117, 106
+  orig: 359, 460
+  offset: 94, 343
+  index: -1

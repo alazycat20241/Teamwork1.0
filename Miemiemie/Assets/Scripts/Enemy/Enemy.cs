@@ -50,6 +50,12 @@ public class Enemy : MonoBehaviour,IMovable
     private bool hasPlayedFinding;  // 是否已播放过"发现玩家"动画
     private string currentAnim;  // 记录当前播放的动画名
 
+    [Header("音效")]
+    [SerializeField] private AudioClip detectSound;    // 发现玩家音效（播一次）
+    [SerializeField] private AudioClip attackSound;    // 攻击音效（循环）
+
+    private AudioSource attackAudioSource;  // 攻击音效的循环播放器
+
     void Awake()
     {
         // 初始化子弹对象池
@@ -70,6 +76,12 @@ public class Enemy : MonoBehaviour,IMovable
 
         // ★ 初始播放巡逻动画
         PlayAnimation(walkWithoutHate, true);
+
+        // 给攻击音效准备一个循环播放器
+        attackAudioSource = gameObject.GetComponent<AudioSource>();
+        attackAudioSource.playOnAwake = false;
+        attackAudioSource.loop = true;
+        attackAudioSource.clip = attackSound;
     }
 
     void Update()
@@ -99,6 +111,10 @@ public class Enemy : MonoBehaviour,IMovable
         {
             hasAggro = true;
             currentState = State.Chase;
+
+            // 播放发现音效
+            if (AudioManager.Instance != null && detectSound != null)
+                AudioManager.Instance.PlaySound(detectSound);
 
             hasPlayedFinding = false;  // 准备播放
         }
@@ -144,6 +160,9 @@ public class Enemy : MonoBehaviour,IMovable
     // 追击：朝玩家走
     void Chase()
     {
+        if (attackAudioSource != null && attackAudioSource.isPlaying)
+            attackAudioSource.Stop();
+
         Vector2 dir = (player.position - transform.position).normalized;
         rb.velocity = dir * moveSpeed;
 
@@ -174,6 +193,10 @@ public class Enemy : MonoBehaviour,IMovable
             fireTimer = 0f;
             FireBullet();
         }
+
+        // 循环播放攻击音效
+        if (attackAudioSource != null && !attackAudioSource.isPlaying)
+            attackAudioSource.Play();
     }
 
     void FireBullet()

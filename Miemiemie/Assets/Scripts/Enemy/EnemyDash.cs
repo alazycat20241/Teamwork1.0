@@ -49,9 +49,12 @@ public class EnemyDash : MonoBehaviour, IMovable
     [SerializeField] private float breatheSpeed = 2f;      // 呼吸缩放频率（值越大越快）
     [SerializeField] private float breatheAmount = 0.05f;   // 呼吸缩放幅度（0.05 = 5% 的大小变化）
 
-    // ============================================
+    // 在字段区加
+    [Header("音效")]
+    [SerializeField] private AudioClip dashSound;  // 冲刺音效
+    private AudioSource audioSource;  // 自己的 AudioSource
+
     // 状态枚举
-    // ============================================
     /// <summary>敌人行为状态</summary>
     private enum State
     {
@@ -110,6 +113,15 @@ public class EnemyDash : MonoBehaviour, IMovable
 
         // --- 初始显示 Idle 状态（蓄力第一帧冻结 + 呼吸效果） ---
         SwitchSpine(ActiveSpine.Idle);
+
+        // 创建自己的 AudioSource
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+
+        // 注册到 AudioManager 统一管音量
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.RegisterSFX(audioSource);
     }
 
     // ============================================
@@ -310,6 +322,13 @@ public class EnemyDash : MonoBehaviour, IMovable
         Vector2 dir = (player.position - transform.position).normalized;
         rb.velocity = dir * dashSpeed;
 
+        // ★ 播放冲刺音效
+        if (audioSource != null && dashSound != null)
+        {
+            audioSource.clip = dashSound;
+            audioSource.Play();
+        }
+
         // ★ 强制重置
         if (dashSkeleton != null)
         {
@@ -322,6 +341,13 @@ public class EnemyDash : MonoBehaviour, IMovable
         // 安全检查：如果动画被意外清除了，重新显示
         if (currentActiveSpine != ActiveSpine.Dash)
             SwitchSpine(ActiveSpine.Dash);
+    }
+
+    void OnDestroy()
+    {
+        // 注销
+        if (AudioManager.Instance != null && audioSource != null)
+            AudioManager.Instance.UnregisterSFX(audioSource);
     }
 
     // ============================================

@@ -132,23 +132,41 @@ public class PlayerMove : MonoBehaviour
                 spriteRenderer.flipX = false;
         }
     }
-    
+
     /// <summary>
     /// 被定身（外部调用）
     /// </summary>
+    private Coroutine stunCoroutine;  //
+
     public void Stun(float duration)
     {
         if (!isStunned)
             StartCoroutine(StunCoroutine(duration));
+
+        stunCoroutine = StartCoroutine(StunCoroutine(duration));
     }
-    
+
     IEnumerator StunCoroutine(float duration)
     {
         isStunned = true;
         yield return new WaitForSeconds(duration);
         isStunned = false;
+        stunCoroutine = null;
     }
-    
+
+    /// <summary>
+    /// 强制解除定身（怪物死亡时调用）
+    /// </summary>
+    public void CancelStun()
+    {
+        if (stunCoroutine != null)
+        {
+            StopCoroutine(stunCoroutine);
+            stunCoroutine = null;
+        }
+        isStunned = false;
+    }
+
     /// <summary>
     /// 定身（直到调用 Resume 解除）
     /// </summary>

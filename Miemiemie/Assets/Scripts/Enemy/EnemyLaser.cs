@@ -60,9 +60,10 @@ public class EnemyTentacle : MonoBehaviour, IMovable
     private bool playerHitThisAttack;   // 本次攻击是否已命中（只命中一次）
     private float animDirection;        // 1=正向甩出，-1=反向收回
 
-    // ============================================
-    // 初始化
-    // ============================================
+    [Header("音效")]
+    [SerializeField] private AudioClip attackSound;  // 攻击音效
+    private AudioSource audioSource;  // 自己的 AudioSource
+
     void Start()
     {
         // 获取玩家
@@ -87,6 +88,11 @@ public class EnemyTentacle : MonoBehaviour, IMovable
 
         // 初始冻结在第一帧，隐藏手臂碰撞
         FreezeAtFirstFrame();
+
+        // 创建自己的 AudioSource
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
     }
 
     // ============================================
@@ -197,6 +203,14 @@ public class EnemyTentacle : MonoBehaviour, IMovable
 
         // 旋转手臂朝向玩家
         RotateArmsTowardsPlayer();
+
+        // 播放攻击音效
+
+        if (audioSource != null && attackSound != null)
+        {
+            audioSource.clip = attackSound;
+            audioSource.Play();
+        }
 
         // ★ 延迟一帧再播动画，确保旋转生效
         StartCoroutine(PlayAttackAnimNextFrame());
@@ -309,7 +323,19 @@ public class EnemyTentacle : MonoBehaviour, IMovable
     {
         StopAllCoroutines();
     }
+    public void OnDeath()
+    {
 
+        // ★ 如果玩家正在被这个怪物定身，强制解除
+        if (player != null)
+        {
+            PlayerMove playerMovement = player.GetComponent<PlayerMove>();
+            if (playerMovement != null)
+            {
+                playerMovement.CancelStun();
+            }
+        }
+    }
     // ============================================
     // IMovable 接口
     // ============================================
