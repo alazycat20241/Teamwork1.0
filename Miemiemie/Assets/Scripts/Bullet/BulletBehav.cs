@@ -15,7 +15,7 @@ public class BulletBehav : MonoBehaviour
     // ========== 对象池引用 ==========
     public BulletPool pool;                        // 所属对象池
 
-    // ========== ★ 新增：伤害与特效（在预制体Inspector上手动配置） ==========
+    // ========== 伤害与特效（在预制体手动配置） ==========
     public float damage = 10f;                     // 伤害值
     public LayerMask targetLayer;                  // 目标层（玩家或敌人）
     public string hitEffectKey = "BulletHit";      // 击中特效名（对应EffectPool的key）
@@ -24,7 +24,7 @@ public class BulletBehav : MonoBehaviour
     private bool isReleased = false;               // 是否已回收（防止重复回收报错）
 
     [Header("边界检测")]
-    public LayerMask wallLayer;  // ★ Wall 层，碰到就回收
+    public LayerMask wallLayer;  // Wall 层，碰到就回收
 
     /// <summary>
     /// 每次从池中激活时重置状态
@@ -83,7 +83,7 @@ public class BulletBehav : MonoBehaviour
     }
 
     /// <summary>
-    /// ★ 碰到 Wall 层就回收（防止子弹飞出房间）
+    /// 碰到 Wall 层就回收
     /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {

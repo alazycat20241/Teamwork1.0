@@ -7289,10 +7289,6 @@ MonoBehaviour:
     prefab: {fileID: 8280722860524035032, guid: acf262fb088c0004d9c584cb0b263f08,
       type: 3}
     capacity: 100
-  - effectKey: LaserSpark
-    prefab: {fileID: 3459705448160236806, guid: 15efa72494c009445b1b1d591459be1d,
-      type: 3}
-    capacity: 10
   - effectKey: EnemyDeath
     prefab: {fileID: 4850285988053331134, guid: 030a7b7d5b03b2f4b99eecb64328647e,
       type: 3}

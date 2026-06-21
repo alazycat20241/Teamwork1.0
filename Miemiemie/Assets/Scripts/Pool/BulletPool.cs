@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 public class BulletPool
 {
-    private ObjectPool<BulletBehav> pool;          // Unity内置对象池
+    private ObjectPool<BulletBehav> pool;          // 装 BulletBehav 类型对象的对象池
     public BulletObject bulletObject;              // 子弹配置数据（运动参数来源）
 
     /// <summary>
@@ -50,8 +50,6 @@ public class BulletPool
 
     /// <summary>
     /// 初始化子弹的运动参数
-    /// 注意：不覆盖 damage、targetLayer、hitEffectKey
-    /// 这些值在预制体Inspector上手动配置
     /// </summary>
     private void InitBullet(BulletBehav bh)
     {
@@ -63,7 +61,7 @@ public class BulletPool
         bh.LifeCycle = bulletObject.LifeCycle;
         bh.MaxVelocity = bulletObject.MaxVelocity;
 
-        // ★ 注意：damage、targetLayer、hitEffectKey 不在这里初始化
+        // 注：damage、targetLayer、hitEffectKey 不在这里初始化
         // 这些值在预制体上手动配置，每次 OnGetItem 也不会被覆盖
     }
 
@@ -101,7 +99,7 @@ public class BulletPool
     }
 
     /// <summary>
-    /// 清空对象池（场景切换时调用）
+    /// 清空对象池（场景切换时调用），目前manager里有，暂时不管
     /// </summary>
     public void Clear()
     {

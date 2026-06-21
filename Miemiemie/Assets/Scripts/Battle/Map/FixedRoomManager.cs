@@ -304,11 +304,11 @@ public class FixedRoomManager : MonoBehaviour
         }
 
         // ========== 清空所有对象池 ==========
-        if (PoolManager.Instance != null)PoolManager.Instance.ClearAllPools();
+        if (PoolManager.Instance != null)PoolManager.Instance.ClearAllPools();//子弹池
 
-        if (EffectPool.Instance != null)EffectPool.Instance.Clear();
+        if (EffectPool.Instance != null)EffectPool.Instance.Clear();//特效池
 
-        if (SporePool.Instance != null)SporePool.Instance.Clear();
+        if (SporePool.Instance != null)SporePool.Instance.Clear();//孢子池
 
         // 销毁玩家
         if (playerInstance != null)
