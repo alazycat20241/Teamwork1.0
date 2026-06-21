@@ -33,11 +33,12 @@ public class FixedRoomManager : MonoBehaviour
     [Header("结算统计")]
     [SerializeField] private TMP_Text goldCollectedText;     // 金币收集数量
     [SerializeField] private TMP_Text soulStoneCollectedText; // 灵魂石收集数量
-    [SerializeField] private TMP_Text timeText;               // ★ 用时显示
+    [SerializeField] private TMP_Text timeText;               // 用时显示
 
     // ★ 地图收集统计
     private int goldCollectedThisRun = 0;
     private int soulStonesCollectedThisRun = 0;
+
     // ★ 计时器
     private float runStartTime;       // 计时开始时间
     private float runElapsedTime;     // 已用时间
@@ -130,10 +131,8 @@ public class FixedRoomManager : MonoBehaviour
     private void CreatePlayer()
     {
         playerInstance = Instantiate(playerPrefab);
-        //DontDestroyOnLoad(playerInstance);
-        playerInstance.tag = "Player"; // 确保标签正确
 
-        // ★ 把 PlayerStats 的永久属性应用到新创建的玩家身上
+        // 把 PlayerStats 的永久属性应用到新创建玩家上
         ApplyPlayerStats();
     }
 
@@ -189,7 +188,7 @@ public class FixedRoomManager : MonoBehaviour
         //摄像头跟随房间
         Camera.main.GetComponent<CameraFollow>()?.MoveToRoom(roomPos);
 
-        // ★ 翻页音效
+        // 翻页音效
         AudioManager.Instance.PlaySound(pageFlipSound);
 
         // 设置房间
@@ -205,7 +204,7 @@ public class FixedRoomManager : MonoBehaviour
 
                 if(pet!=null)pet.TeleportToPlayer();
 
-                // 重置玩家状态（可选）
+                // 重置玩家状态
                 ResetPlayerState();
             }
         }
@@ -282,10 +281,10 @@ public class FixedRoomManager : MonoBehaviour
     // 返回家园
     public void ReturnToHome(bool victory)
     {
-        // ★ 停止计时
+        // 停止计时
         StopTiming();
 
-        // ★ 还原本张地图所有临时效果
+        // 还原本张地图所有临时效果
         PlayerStats.Instance?.RestoreTempEffects();
 
         // 战败处理：通知行动点管理器
@@ -294,12 +293,12 @@ public class FixedRoomManager : MonoBehaviour
             ActionPointManager.Instance.DefeatedInHunt();
         }
 
-        // ★ 在打开面板前更新统计文本
+        // 在打开面板前更新统计文本
         UpdateCollectionStatsText();
 
         if (resultPanel != null)
         {
-            // ★ 更新进度条
+            // 更新进度条
             UpdateProgressFill(victory);
             resultPanel.Open();
         }
@@ -337,7 +336,7 @@ public class FixedRoomManager : MonoBehaviour
         }
     }
 
-    // ★ 新增：更新结算面板的收集统计文本
+    // 更新结算面板的收集统计文本
     private void UpdateCollectionStatsText()
     {
         if (goldCollectedText != null)
@@ -361,7 +360,7 @@ public class FixedRoomManager : MonoBehaviour
     }
 
     public float deletex;
-    // ★ 更新进度条填充
+    // 更新进度条填充
     private void UpdateProgressFill(bool victory)
     {
         // 更新进度条
@@ -371,7 +370,7 @@ public class FixedRoomManager : MonoBehaviour
             {
                 progressFillImage.fillAmount = roomsClearedCount * 0.065f;
             }
-            else
+            else 
             {
                 progressFillImage.fillAmount = 1f;
             }
@@ -415,15 +414,15 @@ public class FixedRoomManager : MonoBehaviour
         soulStonesCollectedThisRun += amount;
     }
 
-    // ★ 开始计时
+    // 开始计时
     private void StartTiming()
     {
-        runStartTime = Time.time;
-        runElapsedTime = 0f;
+        runStartTime = Time.time;//游戏运行的总时间
+        runElapsedTime = 0f;//已用时间
         isTiming = true;
     }
 
-    // ★ 停止计时
+    // 停止计时
     private void StopTiming()
     {
         isTiming = false;

@@ -2,8 +2,6 @@
 
 public class ExitTriggerZone : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer iconRenderer;
-
     private RoomExit exitData;
     private Collider2D triggerCollider;
     private bool isActive = false;

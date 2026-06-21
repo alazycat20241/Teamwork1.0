@@ -66,7 +66,7 @@ MonoBehaviour:
   dashAnimation: animation
   breatheSpeed: 5
   breatheAmount: 0.05
-  dashSound: {fileID: 8300000, guid: b2ffdf21da0d3df4faea4a46ec8f4066, type: 3}
+  dashSound: {fileID: 8300000, guid: e6842d10411b66d428aa3f35d308960d, type: 3}
 --- !u!50 &5742870918592501013
 Rigidbody2D:
   serializedVersion: 4

@@ -7,8 +7,8 @@ using UnityEngine;
 public class RoomConfig
 {
     [Header("基本信息")]
-    public string roomId;            // 房间唯一ID，如 "start", "battle1"
-    public string roomName;          // 显示名称，如 "起始空地"
+    public string roomId;            // 房间唯一ID
+    public string roomName;          // 显示名称
     public RoomType roomType;        // 房间类型
 
     [Header("自定义房间预制体(可选)")]
@@ -20,20 +20,16 @@ public class RoomConfig
     [Header("运行状态")]
     public bool isVisited = false;   // 是否访问过
 
-    [Header("两条固定出口")]
+    [Header("固定出口")]
     public RoomExit leftExit;        // 左路出口
     public RoomExit rightExit;       // 右路出口
 
-    [Header("战斗配置(仅战斗/Boss房间)")]
+    [Header("战斗配置")]
     public BattleRoomSetting battleSetting;
     [Header("掉落配置")]
     public DropItem[] dropItems;  // 该房间胜利后的掉落物
 
-    [Header("商店配置(仅商店房间)")]
-    public ShopSetting shopSetting;
-
-    [Header("事件配置(仅事件房间)")]
-    public EventSetting eventSetting;
+    [Header("事件配置")]
     public EventData customEventData;  // 拖入具体事件
 }
 
@@ -42,8 +38,7 @@ public class RoomConfig
 public class RoomExit
 {
     public string targetRoomId;      // 目标房间ID
-    public string exitName;          // 出口名称，如"东边小路"
-    public string exitDescription;   // 描述，如"前方传来打斗声"
+    public string exitName;          // 出口名称
     public Vector2 exitPosition;     // 出口在房间内的坐标
 }
 
@@ -61,30 +56,6 @@ public class EnemySpawnInfo
 {
     public GameObject enemyPrefab;   // 敌人预制体
     public Vector2 spawnPosition;    // 生成位置
-    public bool isElite = false;     // 是否精英怪
-}
-
-// 商店设置
-[Serializable]
-public class ShopSetting
-{
-    public List<ShopItem> items = new List<ShopItem>();
-}
-
-// 商店物品
-[Serializable]
-public class ShopItem
-{
-    public string itemName;
-    public int price;
-}
-
-// 事件设置
-[Serializable]
-public class EventSetting
-{
-    public string eventDescription;
-    public EventType eventType;
 }
 
 // 掉落物

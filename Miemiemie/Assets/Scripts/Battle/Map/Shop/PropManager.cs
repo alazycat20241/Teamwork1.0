@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 道具管理器（单例）
+/// 道具管理器
 /// 管理所有道具数据和效果
 /// 所有"永久有效"均为本张地图内有效，返回Home时自动还原
 /// </summary>
@@ -73,9 +73,8 @@ public class PropManager : MonoBehaviour
         }
     }
 
-    // PropManager.cs 里对应方法的实现
 
-    // ==================== 道具01：枯木逢春 ====================ok
+    // ==================== 道具01：枯木逢春 ====================
     // 每次战斗结束时恢复5HP（0.5心），生效3次后枯萎消失
 
     private void KuMuFengChun()
@@ -98,26 +97,26 @@ public class PropManager : MonoBehaviour
         if (kuMuCounter <= 0)
         {
             BattleRoom.OnBattleEnd -= OnBattleEnd_Heal;
-            NotifyPropUsed(1);  // ★
+            NotifyPropUsed(1);  
         }
     }
 
-    // ==================== 道具02：碎裂的护身符 ====================ok
+    // ==================== 道具02：碎裂的护身符 ====================
     // 受到致命伤害时保留5HP（0.5心）不死，随后护身符破碎消失（一次性）
     private void SuiLieHuShenFu()
     {
-        huShenFuActive = true;// 1. 标记护身符已激活
+        huShenFuActive = true;// 标记护身符已激活
     }
 
-    public bool TryUseHuShenFu()
+    public bool TryUseHuShenFu()//锁血，health里调用
     {
         if (!huShenFuActive) return false;
         huShenFuActive = false;
-        NotifyPropUsed(2);  // ★
+        NotifyPropUsed(2); 
         return true;
     }
 
-    // ==================== 道具03：鼹鼠牙齿 ====================ok
+    // ==================== 道具03：鼹鼠牙齿 ====================
     // 每次战斗额外掉落2金币，本张地图有效
 
     private void YanShuYaChi()
@@ -130,7 +129,7 @@ public class PropManager : MonoBehaviour
         PlayerInventory.Instance?.AddGold(2);
     }
 
-    // ==================== 道具04：萤火虫囊 ====================ok
+    // ==================== 道具04：萤火虫囊 ====================
     // 射程+1，本张地图有效
 
     private void YingHuoChongNang()
@@ -139,7 +138,7 @@ public class PropManager : MonoBehaviour
             PlayerShoot.Instance.AddRange(1);
     }
 
-    // ==================== 道具05：腐烂号角 ====================ok
+    // ==================== 道具05：腐烂号角 ====================
     // 每场战斗开始时，所有敌人停止移动3秒，本张地图有效
 
     /// 应用道具效果：订阅战斗开始事件
@@ -183,7 +182,7 @@ public class PropManager : MonoBehaviour
             movable.ResumeMovement();
     }
 
-    // ==================== 道具06：蜕皮壳 ====================ok
+    // ==================== 道具06：蜕皮壳 ====================
     // 获得1次庇护（阻挡任意一次攻击），生效后破损
     // 立刻在自身3格范围内生成毒气圈，维持2秒，1秒2伤（对自身无伤，只对敌）
 
@@ -223,7 +222,7 @@ public class PropManager : MonoBehaviour
             health.OnDamaged -= CheckTuiPiKe;
         }
 
-        NotifyPropUsed(6);  // ★
+        NotifyPropUsed(6); 
 
         // 释放毒气
         var player = FixedRoomManager.Instance.GetPlayer();
@@ -258,10 +257,10 @@ public class PropManager : MonoBehaviour
     /// </summary>
     IEnumerator GasDamageCoroutine(Vector3 center)
     {
-        float elapsed = 0f;
-        float duration = 2f;
-        float interval = 0.5f;
-        float radius = 3f;
+        float elapsed = 0f;//计时
+        float duration = 2f;//总持续时间
+        float interval = 0.5f;//检测间隔
+        float radius = 3f;//范围半径
 
         while (elapsed < duration)
         {
@@ -279,7 +278,7 @@ public class PropManager : MonoBehaviour
         }
     }
 
-    // ==================== 道具07：血苔绷带 ====================//ok
+    // ==================== 道具07：血苔绷带 ====================
     // 血量＞5HP（0.5心）时，每次进入新房间扣除5HP
     // 伤害+0.5，本张地图有效
 
@@ -287,7 +286,7 @@ public class PropManager : MonoBehaviour
     {
         xueTaiActive = true;
         FixedRoomManager.OnRoomEntered += OnRoomEntered_XueTai;
-        PlayerStats.Instance?.AddTempAttack(0.5f);  // ★ 临时加成，地图结束还原
+        PlayerStats.Instance?.AddTempAttack(0.5f); 
     }
 
     private void OnRoomEntered_XueTai()
@@ -304,9 +303,9 @@ public class PropManager : MonoBehaviour
     // ==================== 道具08：枯叶斗篷 ====================ok
     // 站立不动3秒后进入伪装，敌人无法发现你（仇恨解除，正常巡逻且不触发仇恨），本张地图有效
 
-    private bool douPengActive = false;
-    private float standStillTimer = 0f;
-    private bool isCamouflaged = false;
+    private bool douPengActive = false;//是否激活
+    private float standStillTimer = 0f;//计时器
+    private bool isCamouflaged = false;//是否在伪装
     private Vector3 lastPosition;
 
     private void KuYeDouPeng()
@@ -315,7 +314,7 @@ public class PropManager : MonoBehaviour
         lastPosition = FixedRoomManager.Instance.GetPlayer().transform.position;
     }
 
-    // 需要在 Update 里检测，加一个公共方法给 PlayerController 调用
+    // 需要在 Update 里检测，一个公共方法,给 PlayerController 调用
     public void UpdateDouPeng(bool isMoving, bool isShooting)
     {
         if (!douPengActive) return;
@@ -355,12 +354,12 @@ public class PropManager : MonoBehaviour
             sr.color = visible ? Color.white : new Color(1, 1, 1, 0.3f);
     }
 
-    // ==================== 道具09：蜂后蜜 ====================ok
+    // ==================== 道具09：蜂后蜜 ====================
     // 攻击力+0.5，但每次战斗开始时有50%概率额外生成2个敌人，本张地图有效
 
     private void FengHouMi()
     {
-        PlayerStats.Instance?.AddTempAttack(0.5f);  // ★ 临时加成，地图结束还原
+        PlayerStats.Instance?.AddTempAttack(0.5f);  // 临时加成，地图结束还原
         BattleRoom.OnBattleStart += OnBattleStart_SpawnExtraEnemies;
     }
 
@@ -383,7 +382,7 @@ public class PropManager : MonoBehaviour
         }
     }
 
-    // ==================== 道具10：石化种子 ====================okk
+    // ==================== 道具10：石化种子 ====================
     // 每次攻击有10%概率对敌人造成石化（静止不动2秒，无法攻击移动，无法受到伤害），本张地图有效
 
     /// <summary>
@@ -393,7 +392,6 @@ public class PropManager : MonoBehaviour
     {
         PlayerStats.Instance.stoneChance = 0.1f;       // 10%概率触发
         PlayerStats.Instance.stoneDuration = 2f;        // 石化持续2秒
-        // stoneChance 和 stoneDuration 会随 PlayerStats 在地图结束时还原
     }
 
     /// <summary>
@@ -421,8 +419,7 @@ public class PropManager : MonoBehaviour
         Health health = enemy.GetComponent<Health>();
         IMovable movable = enemy.GetComponent<IMovable>();
 
-        //var sr = enemy.GetComponent<SpriteRenderer>();
-        var skeleton = enemy.GetComponentInChildren<SkeletonAnimation>();
+        var skeleton = enemy.GetComponentInChildren<SkeletonAnimation>();//从自己开始往子物体找
 
         // === 进入石化 ===
 
@@ -432,8 +429,6 @@ public class PropManager : MonoBehaviour
         movable?.PauseMovement();
 
         // 变灰
-        //Color originalColor = sr != null ? sr.color : Color.white;
-        //if (sr != null) sr.color = Color.gray;
         object originalSpineColor = null;
         if (skeleton != null)
         {
@@ -448,24 +443,21 @@ public class PropManager : MonoBehaviour
 
         if (health != null) health.isStoned = false;
         movable?.ResumeMovement();
-        //if (sr != null) sr.color = originalColor;
+
         if (skeleton != null && originalSpineColor != null)
             skeleton.Skeleton.SetColor((UnityEngine.Color)originalSpineColor);
 
     }
 
-    // ==================== 道具11：狼人指尖 ====================
+    // ==================== 道具11：狼人指尖 ====================（可能恐慌会抽搐，看看试玩
     // 射程-0.5，攻击+0.5，每次攻击敌人有20%概率造成恐慌1.5秒
     // 恐慌：停止攻击，尽可能远离主角
     // 本张地图有效
 
     private void LangRenZhiJian()
     {
-        if (PlayerShoot.Instance != null)
-            PlayerShoot.Instance.AddRange(-0.5f);
-
-        PlayerStats.Instance?.AddTempAttack(0.5f);   // ★ 临时加成
-        PlayerStats.Instance?.AddTempRange(-0.5f);   // ★ 临时加成
+        PlayerStats.Instance?.AddTempAttack(0.5f);   
+        PlayerStats.Instance?.AddTempRange(-0.5f);   
         PlayerStats.Instance.panicChance = 0.2f;
         PlayerStats.Instance.panicDuration = 1.5f;
     }
@@ -519,7 +511,7 @@ public class PropManager : MonoBehaviour
         }
     }
 
-    // ==================== 道具12：月蚀碎片 ====================ok
+    // ==================== 道具12：月蚀碎片 ====================
     // 本场战斗内血量上限+1心（+10HP），一次性
 
     /// 记录月蚀碎片加的血量，用于战斗结束后还原
@@ -553,7 +545,7 @@ public class PropManager : MonoBehaviour
             // 还原血量上限
             health.maxHealth -= yueShiBonus;
 
-            NotifyPropUsed(12);  // ★
+            NotifyPropUsed(12);  
 
             // 当前血量不超过新上限
             health.currentHealth = Mathf.Min(health.currentHealth, health.maxHealth);

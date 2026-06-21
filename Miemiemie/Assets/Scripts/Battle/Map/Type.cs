@@ -7,12 +7,3 @@ public enum RoomType
     Shop,       // 商店房间
     Boss        // Boss房间
 }
-
-// 事件类型
-public enum EventType
-{
-    Treasure,   // 宝箱
-    Heal,       // 治疗
-    Curse,      // 诅咒
-    Random      // 随机
-}

@@ -13,8 +13,7 @@ public class AutoRegisterAudio : MonoBehaviour
     }
 
     [Header("音频类型")]
-    [Tooltip("选择这个预制体是音效还是背景音乐，决定受哪个Slider控制")]
-    public AudioType audioType = AudioType.BGM;  // 默认为BGM，因为你说预制体几乎都是BGM
+    public AudioType audioType = AudioType.BGM;  // 默认为BGM
 
     // 缓存AudioSource组件引用
     private AudioSource audioSource;
@@ -30,13 +29,11 @@ public class AutoRegisterAudio : MonoBehaviour
         // 安全检查
         if (audioSource == null)
         {
-            Debug.LogWarning($"[AutoRegisterAudio] {gameObject.name} 没有AudioSource组件！");
             return;
         }
 
         if (AudioManager.Instance == null)
         {
-            Debug.LogWarning($"[AutoRegisterAudio] AudioManager.Instance 不存在！");
             return;
         }
 

@@ -75,7 +75,7 @@ public class FarmShopController : MonoBehaviour
         }
         else
         {
-            inv.playerGold -= item.price;
+            inv.SpendGold(item.price);
 
             // ★ 显示购买成功提示
             ShowTip("购买了：" + item.itemName);

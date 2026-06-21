@@ -20,7 +20,7 @@ public class BattleRoom : RoomBase
 
     public override void SetupRoom(RoomConfig config)
     {
-        Current = this;  // ★ 设置当前房间
+        Current = this;  // 设置当前房间
         base.SetupRoom(config);
 
         if (FixedRoomManager.Instance.IsRoomCleared(config.roomId))
@@ -121,11 +121,19 @@ public class BattleRoom : RoomBase
 
         foreach (DropItem item in roomConfig.dropItems)
         {
+            // ★ 按概率随机：Random.value 返回 0~1 的随机小数
+            // 比如 dropChance=0.5 → 50% 概率掉落
             if (Random.value <= item.dropChance)
             {
+                // 掉几个就生成几个（比如金币掉5个）
                 for (int i = 0; i < item.Amount; i++)
                 {
-                    Instantiate(item.prefab, GetRandomDropPosition(), Quaternion.identity);
+                    // 在随机位置生成掉落物
+                    Instantiate(
+                        item.prefab,                 // 掉落物的预制体
+                        GetRandomDropPosition(),     // 随机位置（在房间中心附近散开）
+                        Quaternion.identity          // 不旋转
+                    );
                 }
             }
         }
@@ -133,7 +141,12 @@ public class BattleRoom : RoomBase
 
     private Vector3 GetRandomDropPosition()
     {
-        float range = 2f;
-        return transform.position + new Vector3(Random.Range(-range, range), Random.Range(-range, range), 0);
+        float range = 2f;  // 在 ±2 米范围内随机
+
+        return transform.position + new Vector3(
+            Random.Range(-range, range),  // X：随机 -2 到 2
+            Random.Range(-range, range),  // Y：随机 -2 到 2
+            0                              // Z：0
+        );
     }
 }

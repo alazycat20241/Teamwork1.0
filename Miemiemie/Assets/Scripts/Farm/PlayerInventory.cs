@@ -19,6 +19,10 @@ public class PlayerInventory : MonoBehaviour
     private TextMeshProUGUI SeedText;
     private TextMeshProUGUI GoldText;
 
+    [Header("音效")]
+    [SerializeField] private AudioClip dropSound;
+    private AudioSource audioSource;
+
     void Awake()
     {
         // ===== 保持单例但允许重赋值 =====
@@ -38,6 +42,8 @@ public class PlayerInventory : MonoBehaviour
     {
         FindUIElements();
         UpdateAllUI();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -110,7 +116,11 @@ public class PlayerInventory : MonoBehaviour
     public void AddGold(int amount)
     {
         playerGold += amount;
-        Debug.Log($"金币+{amount}，当前金币: {playerGold}");
+    }
+
+    public void AddStone(int amount)
+    {
+        soulStones += amount;
     }
 
     /// <summary>
@@ -124,7 +134,6 @@ public class PlayerInventory : MonoBehaviour
     public void SpendSoulStones(int amount)
     {
         soulStones = Mathf.Max(0, soulStones - amount);
-        Debug.Log($"消耗灵魂石: -{amount}, 剩余: {soulStones}");
     }
 
     /// <summary>
@@ -138,7 +147,10 @@ public class PlayerInventory : MonoBehaviour
     public void SpendGold(int amount)
     {
         playerGold = Mathf.Max(0, playerGold - amount);
-        Debug.Log($"消耗金币: -{amount}, 剩余: {playerGold}");
+        if (audioSource != null && dropSound != null)
+        {
+            audioSource.PlayOneShot(dropSound);
+        }
     }
 
 

@@ -31,10 +31,6 @@ public class EnemyDash : MonoBehaviour, IMovable
     [SerializeField] private float moveSpeed = 3f;          // 追逐/巡逻移动速度
     [SerializeField] private float triggerBuffer = 1f;      // 缓冲带距离：硬直结束后玩家必须走出 attackRange+buffer 才重新追逐
 
-    // ============================================
-    // Spine 动画配置
-    // 两个 SkeletonDataAsset 骨骼/贴图不同，无法合并，分别挂在子物体上
-    // ============================================
     [Header("Spine - 蓄力动画（也用于空闲展示）")]
     [SerializeField] private SkeletonAnimation chargeSkeleton;   // 蓄力子物体上的 SkeletonAnimation 组件
     [SpineAnimation]                                              // Inspector 显示为下拉菜单
@@ -322,13 +318,6 @@ public class EnemyDash : MonoBehaviour, IMovable
         Vector2 dir = (player.position - transform.position).normalized;
         rb.velocity = dir * dashSpeed;
 
-        // ★ 播放冲刺音效
-        if (audioSource != null && dashSound != null)
-        {
-            audioSource.clip = dashSound;
-            audioSource.Play();
-        }
-
         // ★ 强制重置
         if (dashSkeleton != null)
         {
@@ -412,6 +401,11 @@ public class EnemyDash : MonoBehaviour, IMovable
                 break;
 
             case ActiveSpine.Dash:
+                // ★ 播放冲刺音效
+                if (audioSource != null && dashSound != null)
+                {
+                    audioSource.PlayOneShot(dashSound);
+                }
                 // 冲刺：播放完整冲刺动画（不循环）
                 if (dashSkeleton != null)
                 {

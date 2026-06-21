@@ -7,9 +7,16 @@ public class Collectible : MonoBehaviour
     [SerializeField] private CollectibleType type;
     [SerializeField] private int amount = 1;
 
+    [SerializeField] private AudioClip collectSound;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
+
+        if (collectSound != null && AudioManager.Instance != null)//音效
+        {
+            AudioManager.Instance.PlaySound(collectSound);
+        }
+
         Health health = other.GetComponent<Health>();
         if (PlayerInventory.Instance == null) return;
 
@@ -17,13 +24,13 @@ public class Collectible : MonoBehaviour
         {
             case CollectibleType.Gold:
                 PlayerInventory.Instance.AddGold(amount);
-                // ★ 记录本次地图收集的金币
+                // 记录本次地图收集的金币
                 FixedRoomManager.Instance?.AddCollectedGold(amount);
                 break;
             case CollectibleType.SoulStone:
-                PlayerInventory.Instance.soulStones += amount;
+                PlayerInventory.Instance.AddStone(amount); 
                 PlayerInventory.Instance.UpdateStone();
-                // ★ 记录本次地图收集的灵魂石
+                // 记录本次地图收集的灵魂石
                 FixedRoomManager.Instance?.AddCollectedSoulStone(amount);
                 break;
             case CollectibleType.halfLove:
@@ -37,7 +44,6 @@ public class Collectible : MonoBehaviour
                 PlayerInventory.Instance.UpdateStone();
                 break;
         }
-
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

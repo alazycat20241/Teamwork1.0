@@ -16,7 +16,7 @@ public class HealthUI : MonoBehaviour
     [SerializeField] private Sprite emptyHeartA;    // 空心样式A
     [SerializeField] private Sprite emptyHeartB;    // 空心样式B
 
-    [Header("心形Image列表（场景里拖好，顺序从左到右）")]
+    [Header("心形Image列表")]
     [SerializeField] private Image[] hearts;
 
     private Health targetHealth;   // 玩家血量组件
@@ -40,7 +40,6 @@ public class HealthUI : MonoBehaviour
                 targetHealth = player.GetComponent<Health>();
                 if (targetHealth != null)
                 {
-                    Debug.Log("HealthUI: 获取玩家成功");
                     break;
                 }
             }
@@ -56,7 +55,7 @@ public class HealthUI : MonoBehaviour
     {
         if (!isReady || targetHealth == null) return;
 
-        // 只有血量变化时才刷新UI，每帧仅一次float比较，性能极低开销
+        // 只有血量变化时才刷新UI
         if (targetHealth.CurrentHealth != lastHP)
         {
             lastHP = targetHealth.CurrentHealth;

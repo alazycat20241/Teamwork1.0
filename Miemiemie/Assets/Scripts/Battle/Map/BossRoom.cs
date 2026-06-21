@@ -19,7 +19,7 @@ public class BossRoom : RoomBase
         // 生成Boss
         SpawnBoss();
         // 触发战斗开始事件
-        BattleRoom.TriggerBattleStart();  // ★ 战斗开始
+        BattleRoom.TriggerBattleStart(); 
     }
 
     private void SpawnBoss()
@@ -40,7 +40,7 @@ public class BossRoom : RoomBase
         Health bossHealth = bossInstance.GetComponent<Health>();
         if (bossHealth != null)
         {
-            bossHealth.OnDeath += OnBossDefeated;  // ← 就是这里
+            bossHealth.OnDeath += OnBossDefeated;  
         }
     }
 
@@ -52,15 +52,16 @@ public class BossRoom : RoomBase
         // 触发战斗结束效果
         BattleRoom.TriggerBattleEnd();
 
-        // 给奖励（可选）
-        //int reward = roomConfig.battleSetting.rewardGold;
-        //if (PlayerInventory.Instance != null)
-        //{
-        //    PlayerInventory.Instance.AddGold(reward);
-        //}
+        // 给奖励
+        if (PlayerInventory.Instance != null)
+        {
+            PlayerInventory.Instance.AddGold(10);
+            PlayerInventory.Instance.AddStone(5);
+        }
 
-        // 延迟一下再返回，让玩家看到Boss死亡效果
-        StartCoroutine(DelayedReturn());
+        FixedRoomManager.Instance.ReturnToHome(true);  // 胜利返回
+        // 延迟一下再
+        //StartCoroutine(DelayedReturn());
     }
 
     private System.Collections.IEnumerator DelayedReturn()
