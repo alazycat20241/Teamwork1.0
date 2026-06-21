@@ -14,7 +14,7 @@ public class EventRoom : RoomBase
 {
     public static EventRoom Current { get; private set; }
 
-    [Header("事件UI（挂在这个房间预制体上）")]
+    [Header("事件UI")]
     [SerializeField] private SlidePanel eventPanel;
     [SerializeField] private TextMeshProUGUI descriptionText; // 事件描述
     [SerializeField] private Button[] choiceButtons;          // 选项按钮数组
@@ -46,10 +46,6 @@ public class EventRoom : RoomBase
     private EventData eventData;
     private int currentPropID = -1;  // 当前展示的道具ID
 
-    // ==================== 订阅清理 ====================
-    private List<Action> battleEndCleanups = new List<Action>();         // 战斗结束时的还原回调
-    private List<Action> roomEnteredCleanups = new List<Action>();       // 进入房间时的还原回调
-
     // ==================== 生命周期 ====================
 
     void Awake()
@@ -60,16 +56,7 @@ public class EventRoom : RoomBase
     void OnDestroy()
     {
         if (Current == this) Current = null;
-
-        // 清理本场战斗的订阅
-        foreach (var action in battleEndCleanups)
-            BattleRoom.OnBattleEnd -= action;
-        battleEndCleanups.Clear();
-
-        // 清理跨房间的订阅
-        foreach (var action in roomEnteredCleanups)
-            FixedRoomManager.OnRoomEntered -= action;
-        roomEnteredCleanups.Clear();
+        // 所有回调已移至 EventEffectExecutor，这里不再需要清理
     }
 
     public override void SetupRoom(RoomConfig config)
@@ -141,24 +128,37 @@ public class EventRoom : RoomBase
 
     void OnPanelOpened()
     {
+        // 把事件数据里的描述文字显示到面板上
         descriptionText.text = eventData.description;
 
         for (int i = 0; i < choiceButtons.Length; i++)
         {
+            // ----- 有选项的情况 -----
             if (i < eventData.choices.Count)
             {
-                var choice = eventData.choices[i];
+                var choice = eventData.choices[i];           // 取出第 i 个选项数据
+
+                // 显示这个按钮
                 choiceButtons[i].gameObject.SetActive(true);
+
+                // 计算成功率，显示选项文字
                 float rate = CalculateSuccessRate(choice);
-                choiceTexts[i].text = $"{choice.choiceText}\n( {rate:F0}%)";
+                choiceTexts[i].text = choice.choiceText;
+
+                // 检查是否满足选项要求，不满足按钮变灰，不可点击
                 choiceButtons[i].interactable = CheckRequirements(choice);
 
-                int index = i;
-                choiceButtons[i].onClick.RemoveAllListeners();
-                choiceButtons[i].onClick.AddListener(() => OnChoiceSelected(eventData.choices[index]));
+                // 绑定点击事件（用局部变量 index 防止闭包陷阱）
+                int index = i;  // 存一个局部变量，不能用 i 直接放进 Lambda
+                choiceButtons[i].onClick.RemoveAllListeners();        // 先清掉旧的监听
+                choiceButtons[i].onClick.AddListener(() =>            // 绑定新的
+                    OnChoiceSelected(eventData.choices[index])        // 点击时调用
+                );
             }
+            // ----- 没有选项的情况（多余的按钮）-----
             else
             {
+                // 隐藏多余的按钮
                 choiceButtons[i].gameObject.SetActive(false);
             }
         }
@@ -243,19 +243,18 @@ public class EventRoom : RoomBase
         bool success = roll < rate;
 
         resultText.text = success ? choice.successText : choice.failText;
-        Debug.Log($"事件掷骰 - 成功率: {rate}%, 掷骰: {roll}, 结果: {(success ? "成功" : "失败")}");
 
         // 隐藏描述和选项，只显示结果文字
         descriptionText.gameObject.SetActive(false);
         foreach (var btn in choiceButtons)
             btn.gameObject.SetActive(false);
 
-        // 执行成功或失败的效果列表
+        // 执行成功或失败的效果列表（委托给持久化执行器）
         var effects = success ? choice.successEffects : choice.failEffects;
-        ExecuteEffects(effects);
+        EventRoomEffect.Instance?.ExecuteEffects(effects);
 
         // 延迟关闭面板
-        StartCoroutine(CloseAfterDelay(2f));
+        StartCoroutine(CloseAfterDelay(1f));
     }
 
     IEnumerator CloseAfterDelay(float delay)
@@ -266,127 +265,11 @@ public class EventRoom : RoomBase
     }
 
     // ================================================================
-    // 效果分发
+    // 场景相关方法（需要场景物体，由 EventEffectExecutor 回调）
     // ================================================================
-
-    /// <summary>遍历效果列表，根据类型分发到对应方法</summary>
-    void ExecuteEffects(List<EventEffect> effects)
-    {
-        foreach (var effect in effects)
-        {
-            switch (effect.effectType)
-            {
-                // ========== 即时效果 ==========
-                case EffectType.Heal:
-                    HealPlayer(effect.value);
-                    break;
-
-                case EffectType.Damage:
-                    DamagePlayer(effect.value);
-                    break;
-
-                case EffectType.AddGold:
-                    PlayerInventory.Instance?.AddGold((int)effect.value);
-                    break;
-
-                case EffectType.LoseGold:
-                    PlayerInventory.Instance?.SpendGold((int)effect.value);
-                    break;
-
-                case EffectType.AddItem:
-                    GiveProp(effect);
-                    break;
-
-                case EffectType.RemoveRandomItem:
-                    RemoveRandomProp();
-                    break;
-
-                case EffectType.NextDamageImmune:
-                    SetNextDamageImmune();
-                    break;
-
-                case EffectType.StartBattle:
-                    StartForcedBattle(effect);
-                    break;
-
-                // ========== 血量上限 ==========
-                case EffectType.MaxHPUp:
-                    ChangeMaxHP((int)effect.value);
-                    break;
-
-                case EffectType.MaxHPDown:
-                    ChangeMaxHP(-(int)effect.value);
-                    break;
-
-                // ========== 攻击力（本场战斗，战斗结束后自动还原） ==========
-                case EffectType.AttackUp:
-                    AddAttackThisBattle(effect.value);
-                    break;
-
-                case EffectType.AttackDown:
-                    AddAttackThisBattle(-effect.value);
-                    break;
-
-                // ========== 射程（本场战斗，战斗结束后自动还原） ==========
-                case EffectType.RangeUp:
-                    AddRangeThisBattle(effect.value);
-                    break;
-
-                case EffectType.RangeDown:
-                    AddRangeThisBattle(-effect.value);
-                    break;
-
-                // ========== 射速（本场战斗，战斗结束后自动还原） ==========
-                case EffectType.SpeedUp:
-                    AddSpeedThisBattle(effect.value);
-                    break;
-
-                case EffectType.SpeedDown:
-                    AddSpeedThisBattle(-effect.value);
-                    break;
-
-                // ========== 失误率（本场战斗，战斗结束后清除） ==========
-                case EffectType.MissRate:
-                    SetMissRate(effect.value);
-                    break;
-
-                // ========== 跨房间诅咒（事件03A失败，进下2个房间扣血） ==========
-                case EffectType.CurseNextRoom:
-                    SetCurseForNextRoom(effect.value);
-                    break;
-
-                // ========== Buff ==========
-                case EffectType.AddBuff:
-                    AddBuff(effect.extraId);
-                    break;
-            }
-        }
-    }
-
-    // ================================================================
-    // 即时效果
-    // ================================================================
-
-    /// <summary>回复血量</summary>
-    void HealPlayer(float amount)
-    {
-        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
-        if (health != null)
-        {
-            health.currentHealth = Mathf.Min(health.currentHealth + amount, health.maxHealth);
-            Debug.Log($"事件回血: +{amount}");
-        }
-    }
-
-    /// <summary>扣除血量（1心=10HP）</summary>
-    void DamagePlayer(float amount)
-    {
-        FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>()?.TakeDamage(amount);
-        Debug.Log($"事件扣血: -{amount}");
-    }
 
     /// <summary>给予道具（extraId指定则给指定道具，否则随机）</summary>
-    void GiveProp(EventEffect effect)
+    public void SpawnPropByEffect(EventEffect effect)
     {
         if (!string.IsNullOrEmpty(effect.extraId) && int.TryParse(effect.extraId, out int itemId))
         {
@@ -402,19 +285,8 @@ public class EventRoom : RoomBase
         }
     }
 
-    /// <summary>设置下次受伤免疫（事件04B）</summary>
-    void SetNextDamageImmune()
-    {
-        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
-        if (health != null)
-        {
-            health.isNextDamageImmune = true;
-            Debug.Log("下次受伤免疫已激活");
-        }
-    }
-
     /// <summary>强制战斗，在玩家周围生成小怪</summary>
-    void StartForcedBattle(EventEffect effect)
+    public void StartForcedBattle(EventEffect effect)
     {
         if (commonEnemies == null || commonEnemies.Count == 0) return;
 
@@ -424,7 +296,6 @@ public class EventRoom : RoomBase
             var info = commonEnemies[Random.Range(0, commonEnemies.Count)];
             Instantiate(info.enemyPrefab, GetRandomSpawnPos(), Quaternion.identity);
         }
-        Debug.Log($"强制战斗：生成 {enemyCount} 只敌人");
     }
 
     /// <summary>玩家周围随机位置（距离2-4格）</summary>
@@ -434,152 +305,6 @@ public class EventRoom : RoomBase
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
         float dist = Random.Range(2f, 4f);
         return playerPos + new Vector3(Mathf.Cos(angle) * dist, Mathf.Sin(angle) * dist, 0);
-    }
-
-    // ================================================================
-    // 血量上限（永久改变，不还原）
-    // ================================================================
-
-    /// <summary>血量上限永久变化（事件02A失败：-0.5心）</summary>
-    void ChangeMaxHP(int amount)
-    {
-        var health = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
-        if (health == null) return;
-        health.maxHealth = Mathf.Max(1, health.maxHealth + amount);
-        health.currentHealth = Mathf.Clamp(health.currentHealth, 0, health.maxHealth);
-        Debug.Log($"血量上限永久变化: {amount}");
-    }
-
-    // ================================================================
-    // 攻击力（本场战斗，战斗结束后自动还原）
-    // ================================================================
-
-    /// <summary>攻击力本场战斗变化（事件03A成功+20%，事件06A成功+50%，事件06A失败-50%，事件10B+20%）</summary>
-    void AddAttackThisBattle(float amount)
-    {
-        if (PlayerStats.Instance == null) return;
-        PlayerStats.Instance.attackBonus += amount;
-
-        // 注册战斗结束还原回调
-        Action cleanup = () =>
-        {
-            PlayerStats.Instance.attackBonus -= amount;
-            Debug.Log($"攻击力战斗加成已还原: {-amount}");
-        };
-        BattleRoom.OnBattleEnd += cleanup;
-        battleEndCleanups.Add(cleanup);
-
-        Debug.Log($"攻击力本场战斗变化: {amount}");
-    }
-
-    // ================================================================
-    // 射程（本场战斗，战斗结束后自动还原）
-    // ================================================================
-
-    /// <summary>射程本场战斗变化（事件05B成功+1，事件07A失败-0.5，事件08A失败-0.5，事件09A失败-1，事件09B成功-1）</summary>
-    void AddRangeThisBattle(float amount)
-    {
-        if (PlayerShoot.Instance == null) return;
-        PlayerShoot.Instance.AddRange(amount);
-
-        // 注册战斗结束还原回调
-        Action cleanup = () =>
-        {
-            PlayerShoot.Instance.AddRange(-amount);
-            Debug.Log($"射程战斗加成已还原: {-amount}");
-        };
-        BattleRoom.OnBattleEnd += cleanup;
-        battleEndCleanups.Add(cleanup);
-
-        Debug.Log($"射程本场战斗变化: {amount}");
-    }
-
-    // ================================================================
-    // 射速（本场战斗，战斗结束后自动还原）
-    // ================================================================
-
-    /// <summary>射速本场战斗变化（事件05B成功+0.5，事件06C-0.5，事件10A失败-0.5）</summary>
-    void AddSpeedThisBattle(float amount)
-    {
-        if (PlayerStats.Instance == null) return;
-        PlayerStats.Instance.speedBonus += amount;
-
-        // 注册战斗结束还原回调
-        Action cleanup = () =>
-        {
-            PlayerStats.Instance.speedBonus -= amount;
-            Debug.Log($"射速战斗加成已还原: {-amount}");
-        };
-        BattleRoom.OnBattleEnd += cleanup;
-        battleEndCleanups.Add(cleanup);
-
-        Debug.Log($"射速本场战斗变化: {amount}");
-    }
-
-    // ================================================================
-    // 失误率（本场战斗，战斗结束后清除）
-    // ================================================================
-
-    /// <summary>设置失误率，本场战斗有效（事件05A失败：10%）</summary>
-    void SetMissRate(float rate)
-    {
-        if (PlayerStats.Instance == null) return;
-        PlayerStats.Instance.missChance = rate;
-
-        // 注册战斗结束清除回调
-        Action cleanup = () =>
-        {
-            PlayerStats.Instance.missChance = 0f;
-            Debug.Log("失误率已清除");
-        };
-        BattleRoom.OnBattleEnd += cleanup;
-        battleEndCleanups.Add(cleanup);
-
-        Debug.Log($"设置失误率: {rate * 100}%");
-    }
-
-    // ================================================================
-    // 跨房间诅咒（事件03A失败，进入下2个房间时各扣0.5心）
-    // ================================================================
-
-    /// <summary>进入下2个房间时触发扣血</summary>
-    /// <param name="damageAmount">每次扣血量（5=0.5心）</param>
-    void SetCurseForNextRoom(float damageAmount)
-    {
-        int remaining = 2;  // 固定持续2个房间
-
-        FixedRoomManager.OnRoomEntered += OnRoomEntered;
-        void OnRoomEntered()
-        {
-            remaining--;
-            if (remaining <= 0)
-            {
-                FixedRoomManager.OnRoomEntered -= OnRoomEntered;
-                roomEnteredCleanups.Remove(OnRoomEntered);
-                return;
-            }
-            DamagePlayer(damageAmount);
-            Debug.Log($"诅咒触发：扣血 {damageAmount}，剩余 {remaining} 次");
-        }
-        // 注册清理回调（房间销毁时兜底取消订阅）
-        roomEnteredCleanups.Add(OnRoomEntered);
-    }
-
-    // ================================================================
-    // Buff系统（预留接口）
-    // ================================================================
-
-    /// <summary>添加Buff</summary>
-    void AddBuff(string buffId)
-    {
-        Debug.Log($"添加Buff: {buffId}");
-    }
-
-    /// <summary>检查是否拥有指定Buff</summary>
-    bool HasBuff(string buffId)
-    {
-        // TODO: 对接Buff系统
-        return false;
     }
 
     // ================================================================
@@ -596,7 +321,6 @@ public class EventRoom : RoomBase
         propObject.SetActive(true);
         propImage.sprite = propData.icon;
         propObject.GetComponent<DragHandler>().propData = propData;
-        Debug.Log($"事件生成道具: {propData.propName}");
     }
 
     /// <summary>道具被拖到槽位时调用（由DropHandler触发）</summary>
@@ -633,7 +357,6 @@ public class EventRoom : RoomBase
         int removedID = target.propID;
         target.GrayOut();
         target.propID = -1;
-        Debug.Log($"事件移除道具ID: {removedID}");
     }
 
     /// <summary>检查玩家是否有任意道具</summary>
@@ -645,6 +368,13 @@ public class EventRoom : RoomBase
             if (slot.propID != -1)
                 return true;
         }
+        return false;
+    }
+
+    /// <summary>检查是否拥有指定Buff</summary>
+    bool HasBuff(string buffId)
+    {
+        //没做到，先不管
         return false;
     }
 }

@@ -25,9 +25,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     // ==================== 描边参数 ====================
     [Header("悬浮 HDR 描边设置")]
-    [Tooltip("描边颜色，支持 HDR 发光")]
-    [ColorUsage(true, true)]
-    public Color outlineColor = Color.yellow;
+    [ColorUsage(true, true)]//支持 HDR 和透明度
+    public Color outlineColor = Color.yellow; 
 
     [Tooltip("描边粗细，范围 0 ~ 0.2")]
     [Range(0, 0.2f)]
@@ -119,7 +118,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
         else
         {
-            // Overlay 模式兜底
+            // Overlay 模式
             rectTransform.position = eventData.position;
         }
     }

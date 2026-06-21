@@ -5,10 +5,10 @@ using UnityEngine;
 
 /// <summary>
 /// 通用血量组件
-/// 支持 SpriteRenderer 和 MeshRenderer（含 Spine）的受击闪烁
+/// 受击闪烁
 /// 实现 IDamageable 接口
 /// </summary>
-public class Health : MonoBehaviour, IDamageable
+public class Health : MonoBehaviour
 {
     [Header("血量设置")]
     public float maxHealth = 100f;
@@ -26,7 +26,7 @@ public class Health : MonoBehaviour, IDamageable
     // 闪烁相关组件
     private SpriteRenderer spriteRenderer;
     private MaterialPropertyBlock propertyBlock;
-    private MaterialPropertyBlock meshMpb;                     // MeshRenderer 用的 PropertyBlock
+    //private MaterialPropertyBlock meshMpb;                     // MeshRenderer 用的 PropertyBlock
     private Coroutine flashCoroutine;                           // 闪烁协程引用（避免重复启动）
 
     public event Action OnDeath;          // 死亡事件
@@ -46,12 +46,13 @@ public class Health : MonoBehaviour, IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null && enableHitFlash)
         {
+            // 创建 MaterialPropertyBlock 实例，用于覆盖渲染属性而不生成材质实例
             propertyBlock = new MaterialPropertyBlock();
-            spriteRenderer.GetPropertyBlock(propertyBlock);
+            spriteRenderer.GetPropertyBlock(propertyBlock);// 获取当前属性块，保留已有的 Shader 属性值
         }
 
         // 初始化 MeshRenderer 闪烁组件（Spine 等）
-        meshMpb = new MaterialPropertyBlock();
+        //meshMpb = new MaterialPropertyBlock();
     }
 
     /// <summary>
@@ -62,11 +63,10 @@ public class Health : MonoBehaviour, IDamageable
         // 已死亡，不再受伤
         if (IsDead) return;
 
-        // 下次受伤免疫（格挡等）
+        // 下次受伤免疫（道具、事件
         if (isNextDamageImmune)
         {
             isNextDamageImmune = false;
-            Debug.Log("下次受伤免疫触发，伤害被抵挡");
             return;
         }
 
@@ -142,13 +142,13 @@ public class Health : MonoBehaviour, IDamageable
             tentacle.OnDeath();
         }
 
-        // 禁用物体（而非销毁，方便对象池复用）
+        // 禁用物体
         gameObject.SetActive(false);
     }
 
     /// <summary>
     /// 受击闪烁协程
-    /// 同时处理 SpriteRenderer（旧）和 MeshRenderer（Spine/3D）
+    /// 同时处理 SpriteRenderer和 MeshRenderer（Spine）
     /// 每次新受伤会中断旧闪烁重新开始，避免材质卡在闪烁状态
     /// </summary>
     private IEnumerator HitFlash()
@@ -157,7 +157,7 @@ public class Health : MonoBehaviour, IDamageable
         // 闪烁阶段：设置 _FlashAmount = 1
         // ============================================
 
-        // SpriteRenderer 闪烁（旧版敌人/玩家用）
+        // SpriteRenderer 闪烁（玩家用）
         if (spriteRenderer != null)
         {
             propertyBlock.SetColor("_FlashColor", enemyFlashColor);
@@ -165,8 +165,8 @@ public class Health : MonoBehaviour, IDamageable
             spriteRenderer.SetPropertyBlock(propertyBlock);
         }
 
-        // MeshRenderer 闪烁（Spine 动画 / 3D 模型用）
-        // ★ Spine 闪烁：通过 SkeletonAnimation.Skeleton.Color 改色
+        // MeshRenderer 闪烁（Spine 动画用）
+        // Spine 闪烁：通过 SkeletonAnimation.Skeleton.Color 改色
         var allSkeletonAnimations = GetComponentsInChildren<SkeletonAnimation>(true);
         foreach (var sa in allSkeletonAnimations)
         {

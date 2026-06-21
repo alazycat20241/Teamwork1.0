@@ -14,8 +14,7 @@ public class ShopRoom : RoomBase
 
     [Header("道具展示（场景中的两个道具物体）")]
     [SerializeField] private GameObject[] propObjects;          // 道具物体（挂DragHandler）
-    [SerializeField] private Image[] propImages;                // 道具图标（Image组件）
-    //[SerializeField] private TextMeshProUGUI[] propNames;       // 道具名
+    [SerializeField] private Image[] propImages;                // 道具图标
 
     [Header("道具栏（右侧6个槽位）")]
     [SerializeField] private Transform[] inventorySlots;        // 槽位（挂DropHandler）
@@ -24,7 +23,6 @@ public class ShopRoom : RoomBase
     private PropData[] shopProps = new PropData[2];             // 本次商店的两个道具
     private bool picked = false;                                // 是否已拾取
 
-    // ==================== 初始化 ====================
 
     public override void SetupRoom(RoomConfig config)
     {
@@ -32,16 +30,9 @@ public class ShopRoom : RoomBase
         roomConfig = config;
         SetupExitData();
 
-        // 已通关则直接激活出口
-        //if (FixedRoomManager.Instance.IsRoomCleared(config.roomId))
-        //{
-        //    ActivateExits();
-        //    return;
-        //}
-
         // 随机选出两个道具并展示
         GenerateShopProps();
-        //TestSetProps(1, 2);  // 固定出现道具1和道具5
+
         ShowProps();
 
         ActivateExits();
@@ -53,13 +44,13 @@ public class ShopRoom : RoomBase
     void GenerateShopProps()
     {
         List<PropData> allProps = PropManager.Instance.GetAllProps();
-        List<PropData> pool = new List<PropData>(allProps);
+        List<PropData> pool = new List<PropData>(allProps);//复制一份道具列表，防止后续操作改到原始数据
 
         for (int i = 0; i < 2 && pool.Count > 0; i++)
         {
             int idx = Random.Range(0, pool.Count);
             shopProps[i] = pool[idx];
-            pool.RemoveAt(idx);
+            pool.RemoveAt(idx);//从复制列表里移除
         }
     }
 
@@ -104,7 +95,6 @@ public class ShopRoom : RoomBase
         }
     }
 
-    // ==================== 拖拽拾取 ====================
 
     /// <summary>
     /// 道具被拖到道具栏槽位时调用（由DropHandler触发）
@@ -121,7 +111,7 @@ public class ShopRoom : RoomBase
         int propIndex = draggedObj == propObjects[0] ? 0 : 1;
         PropData prop = shopProps[propIndex];
 
-        // 记录到背包
+        // 记录到道具背包
         inventory.Add(prop);
 
         // 隐藏另一个道具

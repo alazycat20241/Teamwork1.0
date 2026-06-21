@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Event0 5
   m_EditorClassIdentifier: 
   eventName: "\u661F\u843D\u82D4\u539F "
-  description: " \u4E00\u5757\u9668\u77F3\u7838\u7A7F\u4E86\u6797\u51A0\uFF0C\u9668\u77F3\u8868\u9762\u957F\u6EE1\u4E86\u53D1\u5149\u7684\u84DD\u8272\u82D4\u85D3\uFF0C\u82D4\u85D3\u4E2D\u5D4C\u7740\u65E0\u6570\u7EC6\u5C0F\u7684\u7ED3\u6676\u3002"
+  description: "\u4E00\u5757\u9668\u77F3\u7838\u7A7F\u4E86\u6797\u51A0\uFF0C\u9668\u77F3\u8868\u9762\u957F\u6EE1\u4E86\u53D1\u5149\u7684\u84DD\u8272\u82D4\u85D3\uFF0C\u82D4\u85D3\u4E2D\u5D4C\u7740\u65E0\u6570\u7EC6\u5C0F\u7684\u7ED3\u6676\u3002"
   choices:
   - choiceText: "\u522E\u4E0B\u82D4\u85D3\u7ED3\u6676 "
     requiresItem: 0
@@ -31,13 +31,11 @@ MonoBehaviour:
     - effectType: 3
       value: 10
       extraId: 
-      durationRooms: 1
     failText: "\u5B62\u5B50\u7206\u70B8"
     failEffects:
     - effectType: 17
       value: 10
       extraId: 
-      durationRooms: 1
   - choiceText: "\u8EBA\u5728\u9668\u77F3\u5751\u4E2D"
     requiresItem: 0
     requiredSoulStones: 0
@@ -54,14 +52,11 @@ MonoBehaviour:
     - effectType: 7
       value: 1
       extraId: 
-      durationRooms: 1
     - effectType: 9
       value: 5
       extraId: 
-      durationRooms: 1
     failText: "\u88AB\u82D4\u85D3\u540C\u5316\u3002"
     failEffects:
     - effectType: 2
       value: 15
       extraId: 
-      durationRooms: 0

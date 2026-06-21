@@ -512,7 +512,6 @@ GameObject:
   - component: {fileID: 3842885713965316155}
   - component: {fileID: 8571476736652885224}
   - component: {fileID: 8811935060188009833}
-  - component: {fileID: 5409651624743797976}
   - component: {fileID: 5609613829274702421}
   - component: {fileID: 4685365106314687660}
   - component: {fileID: 8352938248199812614}
@@ -670,21 +669,6 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &5409651624743797976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016356464010253478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2138e3ee2cd73454b8a46516b180ef43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gasRadius: 3
-  gasDuration: 2
-  gasDamage: 4
 --- !u!114 &5609613829274702421
 MonoBehaviour:
   m_ObjectHideFlags: 0

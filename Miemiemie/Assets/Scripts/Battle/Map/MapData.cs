@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// 地图数据 - 右键Create创建
+// 地图数据 
 [CreateAssetMenu(fileName = "NewMap", menuName = "Game/Fixed Map Data")]
 public class FixedMapData : ScriptableObject
 {

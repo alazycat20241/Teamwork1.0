@@ -1,5 +1,4 @@
-﻿// PropData.cs
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewProp", menuName = "Game/Prop Data")]
 public class PropData : ScriptableObject
@@ -17,11 +16,4 @@ public class PropData : ScriptableObject
 
     [Tooltip("道具唯一ID（1-12）")]
     public int propID;
-
-    [Header("属性")]
-    [Tooltip("是否永久生效")]
-    public bool isPermanent;
-
-    [Tooltip("使用次数，-1表示无限/永久")]
-    public int maxUseCount = -1;
 }
