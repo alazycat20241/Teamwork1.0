@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -67,21 +67,18 @@ public class MenuUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;  // 恢复游戏
 
-        // 获取玩家引用
-        //if (FixedRoomManager.Instance != null)
-        //{
-        //    playerInstance = FixedRoomManager.Instance.GetPlayer();
-        //}
+        // 还原所有临时效果
+        PlayerStats.Instance?.RestoreTempEffects();
+        // 清理事件效果的所有回调（防止跨场景残留）
+        EventRoomEffect.Instance?.CleanupAll();
+        // 清理道具效果（防止跨场景残留）
+        PropManager.Instance?.CleanupAllProps();
+
+        // 清理存档缓存（防止跨场景残留）
+        SaveManager.Instance?.ClearPendingData();
 
         menuPanel.Close(() =>
         {
-            // 销毁玩家
-            //if (playerInstance != null)
-            //{
-            //    Destroy(playerInstance);
-            //    playerInstance = null;
-            //}
-
             if (SceneTransition.Instance != null)
             {
                 SceneTransition.Instance.LoadScene("Menu");

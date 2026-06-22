@@ -102,6 +102,12 @@ public class ActionPointManager : MonoBehaviour
     {
         if (currentDay >= 15)
         {
+            // 清理所有临时效果和缓存
+            PlayerStats.Instance?.RestoreTempEffects();
+            EventRoomEffect.Instance?.CleanupAll();
+            PropManager.Instance?.CleanupAllProps();
+            SaveManager.Instance?.ClearPendingData();
+
             // 月圆之夜降临，返回主菜单
             UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
         }

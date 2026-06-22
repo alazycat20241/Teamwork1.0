@@ -1321,6 +1321,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4111782071215699133, guid: c29b8e862258d1f44a670b4a177983ae,
         type: 3}
+      propertyPath: m_Name
+      value: Button27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4111782071215699133, guid: c29b8e862258d1f44a670b4a177983ae,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1483,6 +1488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: m_Name
+      value: Button24
       objectReference: {fileID: 0}
     - target: {fileID: 2964951251839645997, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -1657,6 +1667,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: m_Name
+      value: Button28
       objectReference: {fileID: 0}
     - target: {fileID: 2964951251839645997, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -2108,6 +2123,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: m_Name
+      value: Button17
+      objectReference: {fileID: 0}
     - target: {fileID: 5216756106906414053, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
       propertyPath: m_Color.a
@@ -2276,6 +2296,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button5
       objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -2626,6 +2651,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: m_Name
+      value: Button16
       objectReference: {fileID: 0}
     - target: {fileID: 4795569292937519066, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
@@ -3242,6 +3272,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: m_Name
+      value: Button8
       objectReference: {fileID: 0}
     - target: {fileID: 5216756106906414053, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
@@ -4048,6 +4083,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: m_Name
+      value: Button26
+      objectReference: {fileID: 0}
     - target: {fileID: 5216756106906414053, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
       propertyPath: m_Color.a
@@ -4269,6 +4309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button21
       objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -5585,8 +5630,6 @@ MonoBehaviour:
   butt: {fileID: 1173122406}
   buttt: {fileID: 719706415}
   butttt: {fileID: 1940978688}
-  goldCost: 20
-  stoneCost: 25
 --- !u!1 &482570818
 GameObject:
   m_ObjectHideFlags: 0
@@ -6657,6 +6700,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button15
+      objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
       propertyPath: m_Color.a
@@ -7710,8 +7758,6 @@ MonoBehaviour:
   butt: {fileID: 300152296}
   buttt: {fileID: 573451139}
   butttt: {fileID: 1232474834}
-  goldCost: 10
-  stoneCost: 15
 --- !u!114 &762409100 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6012496009909360736, guid: e32d132bdb29b844ca497055099f3716,
@@ -8922,6 +8968,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button6
+      objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
       propertyPath: m_Color.a
@@ -9299,6 +9350,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button22
+      objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
       propertyPath: m_Color.a
@@ -9478,6 +9534,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button1
       objectReference: {fileID: 0}
     - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -9771,8 +9832,6 @@ MonoBehaviour:
   butt: {fileID: 871446579}
   buttt: {fileID: 859492307}
   butttt: {fileID: 1433058070}
-  goldCost: 20
-  stoneCost: 25
 --- !u!4 &970405729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -10988,6 +11047,11 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5873022820355036658, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: m_Name
+      value: Button13
+      objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
       propertyPath: GCOUNT
@@ -11974,7 +12038,7 @@ PrefabInstance:
     - target: {fileID: 5873022820355036658, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
       propertyPath: m_Name
-      value: Button
+      value: Button23
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
@@ -13414,8 +13478,6 @@ MonoBehaviour:
   butt: {fileID: 1004864048}
   buttt: {fileID: 766816488}
   butttt: {fileID: 962100833}
-  goldCost: 20
-  stoneCost: 25
 --- !u!114 &1226977803 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 187890608704016981, guid: 6fb3e68c12c268449881e959a7ea4de9,
@@ -13464,8 +13526,6 @@ MonoBehaviour:
   butt: {fileID: 1449909124}
   buttt: {fileID: 1454720420}
   butttt: {fileID: 478408757}
-  goldCost: 20
-  stoneCost: 25
 --- !u!1 &1238334356
 GameObject:
   m_ObjectHideFlags: 0
@@ -15232,6 +15292,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button14
+      objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
       propertyPath: m_Color.a
@@ -15525,6 +15590,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5873022820355036658, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: m_Name
+      value: Button18
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
@@ -15912,6 +15982,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: m_Name
+      value: Button4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -16124,6 +16199,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: m_Name
+      value: Button10
+      objectReference: {fileID: 0}
     - target: {fileID: 2332314219305283745, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
       propertyPath: m_Color.a
@@ -16204,8 +16284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minAttackBonus: -2
-  minAttackPercentBonus: -0.9
-  minRangeBonus: -3
+  minAttackPercentBonus: -0.5
+  minRangeBonus: -2.5
   minSpeedBonus: -0.5
   attackBonus: 0
   attackPercentBonus: 0
@@ -16277,6 +16357,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: m_Name
+      value: Button9
       objectReference: {fileID: 0}
     - target: {fileID: 2964951251839645997, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -18836,6 +18921,11 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5873022820355036658, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: m_Name
+      value: Button19
+      objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
       propertyPath: GCOUNT
@@ -19774,8 +19864,6 @@ MonoBehaviour:
   butt: {fileID: 1628000408}
   buttt: {fileID: 203142875}
   butttt: {fileID: 1226325309}
-  goldCost: 20
-  stoneCost: 25
 --- !u!1 &1945884601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
@@ -19812,8 +19900,6 @@ MonoBehaviour:
   butt: {fileID: 1847231411}
   buttt: {fileID: 1095612833}
   butttt: {fileID: 736720733}
-  goldCost: 10
-  stoneCost: 15
 --- !u!4 &1948595206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -19865,6 +19951,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: m_Name
+      value: Button7
       objectReference: {fileID: 0}
     - target: {fileID: 2964951251839645997, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -21729,6 +21820,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: m_Name
+      value: Button12
+      objectReference: {fileID: 0}
     - target: {fileID: 5189277136420087550, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -22426,6 +22522,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
+      propertyPath: m_Name
+      value: Button2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702675471071175036, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -22893,6 +22994,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 8480b8dbf7786b641b7620162659ce9c,
         type: 3}
+    - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: m_Name
+      value: Button3
+      objectReference: {fileID: 0}
     - target: {fileID: 2903829144662163124, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
       propertyPath: m_IsActive
@@ -23417,6 +23523,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5873022820355036658, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: m_Name
+      value: Button11
+      objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
       propertyPath: defaultSprite
@@ -23613,6 +23724,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 393536258}
     m_Modifications:
+    - target: {fileID: 4976097198272356133, guid: bd5300108bd25d546af1ede9df1698c8,
+        type: 3}
+      propertyPath: m_Name
+      value: Button20
+      objectReference: {fileID: 0}
     - target: {fileID: 6813957851734135436, guid: bd5300108bd25d546af1ede9df1698c8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -24300,8 +24416,6 @@ MonoBehaviour:
   butt: {fileID: 1309902420}
   buttt: {fileID: 71273699}
   butttt: {fileID: 1945884603}
-  goldCost: 5
-  stoneCost: 5
 --- !u!224 &8387635594075139558 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8483243966756064542, guid: c29b8e862258d1f44a670b4a177983ae,
@@ -24534,6 +24648,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: wind25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6853891467992788782, guid: 0715179cdfc79134c8941b1d4fe6c4f7,
+        type: 3}
+      propertyPath: m_Name
+      value: Button25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

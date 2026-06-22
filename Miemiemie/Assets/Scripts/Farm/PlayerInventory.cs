@@ -134,6 +134,7 @@ public class PlayerInventory : MonoBehaviour
     public void SpendSoulStones(int amount)
     {
         soulStones = Mathf.Max(0, soulStones - amount);
+        UpdateStone();
     }
 
     /// <summary>
@@ -151,6 +152,7 @@ public class PlayerInventory : MonoBehaviour
         {
             audioSource.PlayOneShot(dropSound);
         }
+        UpdateGold();
     }
 
 

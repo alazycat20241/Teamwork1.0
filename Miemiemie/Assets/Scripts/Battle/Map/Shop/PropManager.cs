@@ -1,4 +1,4 @@
-using Spine.Unity;
+﻿﻿using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,47 +26,83 @@ public class PropManager : MonoBehaviour
         else { Destroy(gameObject); return; }
     }
 
+    void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
     /// <summary>
     /// 清理所有道具效果（在返回家园时调用）
     /// </summary>
     public void CleanupAllProps()
     {
-        // 道具01：枯木逢春
+        // ===== 静态事件安全取消 =====
+        // 静态事件本身不会因为 Instance 被销毁而报错，但回调里可能访问已销毁对象
+        // 先取消所有 BattleRoom 静态事件订阅
         BattleRoom.OnBattleEnd -= OnBattleEnd_Heal;
-        kuMuCounter = 0;
-        
-        // 道具02：护身符
-        huShenFuActive = false;
-        
-        // 道具03：鼹鼠牙齿
         BattleRoom.OnBattleEnd -= OnBattleEnd_ExtraGold;
-        
-        // 道具04：萤火虫囊 - 由 PlayerStats.RestoreTempEffects() 处理
-        
-        // 道具05：腐烂号角
+        BattleRoom.OnBattleEnd -= OnBattleEnd_YueShi;
         BattleRoom.OnBattleStart -= OnBattleStart_StopEnemies;
-        
-        // 道具06：蜕皮壳 - 一次性使用，已在使用时取消订阅
-        
-        // 道具07：血苔绷带
-        FixedRoomManager.OnRoomEntered -= OnRoomEntered_XueTai;
+        BattleRoom.OnBattleStart -= OnBattleStart_SpawnExtraEnemies;
+
+        // ===== 道具01：枯木逢春 =====
+        kuMuCounter = 0;
+
+        // ===== 道具02：护身符 =====
+        huShenFuActive = false;
+
+        // ===== 道具03：鼹鼠牙齿 =====
+        // 事件已在上面取消
+
+        // ===== 道具04：萤火虫囊 =====
+        // 由 PlayerStats.RestoreTempEffects() 处理
+
+        // ===== 道具05：腐烂号角 =====
+        // 事件已在上面取消
+
+        // ===== 道具06：蜕皮壳 =====
+        StopAllCoroutines();  // 停止毒气协程（不需要判空，自身还在）
+        if (FixedRoomManager.Instance != null)
+        {
+            var health06 = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+            if (health06 != null)
+                health06.OnDamaged -= CheckTuiPiKe;
+        }
+        tuiPiKeActive = false;
+        tuiPiKeBroken = false;
+
+        // ===== 道具07：血苔绷带 =====
+        if (FixedRoomManager.Instance != null)
+            FixedRoomManager.OnRoomEntered -= OnRoomEntered_XueTai;
         xueTaiActive = false;
-        
-        // 道具08：枯叶斗篷
+
+        // ===== 道具08：枯叶斗篷 =====
         douPengActive = false;
         isCamouflaged = false;
         standStillTimer = 0f;
-        // 恢复玩家可见性
-        SetPlayerVisible(true);
-        
-        // 道具09：蜂后蜜
-        BattleRoom.OnBattleStart -= OnBattleStart_SpawnExtraEnemies;
-        
-        // 道具10：石化种子 - 由 PlayerStats.RestoreTempEffects() 处理
-        
-        // 道具11：狼人指尖 - 由 PlayerStats.RestoreTempEffects() 处理
-        
-        // 道具12：月蚀碎片 - 一次性使用，已在使用时取消订阅
+        SetPlayerVisible(true);  // 内部已有判空，可以保留
+
+        // ===== 道具09：蜂后蜜 =====
+        // 事件已在上面取消
+
+        // ===== 道具10：石化种子 =====
+        // 由 PlayerStats.RestoreTempEffects() 处理
+
+        // ===== 道具11：狼人指尖 =====
+        // 由 PlayerStats.RestoreTempEffects() 处理
+
+        // ===== 道具12：月蚀碎片 =====
+        if (FixedRoomManager.Instance != null)
+        {
+            var health12 = FixedRoomManager.Instance.GetPlayer()?.GetComponent<Health>();
+            if (health12 != null && yueShiBonus > 0)
+            {
+                health12.maxHealth -= yueShiBonus;
+                health12.currentHealth = Mathf.Min(health12.currentHealth, health12.maxHealth);
+            }
+        }
+        yueShiBonus = 0;
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-using Spine.Unity;
+﻿using Spine.Unity;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -70,7 +70,7 @@ public class Health : MonoBehaviour
             return;
         }
 
-        // 石化中的敌人不受伤害（提前检查，避免播放特效）
+        // 石化中的敌人不受伤害
         if (isStoned && CompareTag("Enemy")) return;
 
         // 触发受击闪烁（自动覆盖旧闪烁，避免材质卡住）
@@ -93,10 +93,10 @@ public class Health : MonoBehaviour
             {
                 DamageVignette.Instance.TriggerDamageVignette();
             }
-        }
 
-        // 触发受伤事件（外部可监听播放动画等）
-        OnDamaged?.Invoke(damage);
+            // 触发玩家受伤事件（道具用）
+            OnDamaged?.Invoke(damage);
+        }
 
         // 扣血
         currentHealth -= damage;

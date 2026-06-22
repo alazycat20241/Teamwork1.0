@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -33,14 +33,13 @@ public class Attack : MonoBehaviour
     /// </summary>
     public Sprite Select1Sprite;
 
-    public Sprite defaultSprite;      // ← 新增：默认图
+    public Sprite defaultSprite;      
 
     /// <summary>
     /// 按钮上的图片组件
     /// </summary>
     private Image img;
 
-    // ===== 新增 =====
     public bool IsPurchased { get; private set; }
     public string TechID => GetFullPath();
 
@@ -51,6 +50,7 @@ public class Attack : MonoBehaviour
     {
         // 获取当前物体上的Image组件
         img = GetComponent<Image>();
+        if(img == null )gameObject.AddComponent<Image>();
 
         // 如果按钮已绑定，则添加点击事件监听
         if (L != null)
@@ -63,42 +63,35 @@ public class Attack : MonoBehaviour
     /// </summary>
     void click()
     {
-        // 如果已经购买，直接返回
         if (IsPurchased) return;
 
         // 检查玩家金币和灵魂石是否满足升级要求
         if (PlayerInventory.Instance.playerGold >= GCOUNT &&
             PlayerInventory.Instance.soulStones >= SCOUNT)
         {
-            IsPurchased = true;
+            IsPurchased = true;                                    // 新增
 
             // 将按钮图片切换为已升级状态
             if (img != null && Select1Sprite != null)
                 img.sprite = Select1Sprite;
 
             // 扣除升级所需资源
-            PlayerInventory.Instance.playerGold -= GCOUNT;
-            PlayerInventory.Instance.soulStones -= SCOUNT;
-            PlayerInventory.Instance.UpdateGold();
-            PlayerInventory.Instance.UpdateStone();
+            PlayerInventory.Instance.SpendGold(GCOUNT);      // 扣除金币
+            PlayerInventory.Instance.SpendSoulStones(SCOUNT);      // 扣除灵魂石
 
             // 永久增加玩家攻击力
             PlayerStats.Instance.AddPermanentAttack(addCount);
 
-            if (L != null)
-                L.interactable = false;
-
-            // 自动解锁子物体的Unlock组件
-            Unlock[] childUnlocks = GetComponentsInChildren<Unlock>(true);
-            foreach (var unlock in childUnlocks)
+            // ========== 检测子物体里有没有 Unlock 脚本 ==========
+            Unlock unlock = GetComponentInChildren<Unlock>();
+            if (unlock != null)
             {
+                // 调用 ForceUnlock() 解锁功能
                 unlock.ForceUnlock();
             }
         }
-        // 如果资源不足，不做任何操作（无法升级）
     }
 
-    // ===== 新增方法 =====
     public void LoadFromSave(bool purchased)
     {
         if (purchased)

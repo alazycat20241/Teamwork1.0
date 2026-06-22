@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -13,7 +13,7 @@ public class Speed : MonoBehaviour
     public Button L;
     public Sprite Select1Sprite;
     private Image img;
-    public Sprite defaultSprite;      // ← 新增：默认图
+    public Sprite defaultSprite;      
 
     public bool IsPurchased { get; private set; }
     public string TechID => GetFullPath();
@@ -26,27 +26,22 @@ public class Speed : MonoBehaviour
 
     void Click()
     {
-        // 如果已经购买，直接返回
         if (IsPurchased) return;
 
         if (PlayerInventory.Instance.playerGold >= GCOUNT &&
             PlayerInventory.Instance.soulStones >= SCOUNT)
         {
             IsPurchased = true;
-            if (img != null && Select1Sprite != null)
-                img.sprite = Select1Sprite;
-            PlayerInventory.Instance.playerGold -= GCOUNT;
-            PlayerInventory.Instance.soulStones -= SCOUNT;
-            PlayerInventory.Instance.UpdateGold();
-            PlayerInventory.Instance.UpdateStone();
+            img.sprite = Select1Sprite;
+            PlayerInventory.Instance.SpendGold(GCOUNT);      // 扣除金币
+            PlayerInventory.Instance.SpendSoulStones(SCOUNT);      // 扣除灵魂石
             PlayerStats.Instance.AddPermanentSpeed(addCount);
-            if (L != null)
-                L.interactable = false;
 
-            // 自动解锁子物体的Unlock组件
-            Unlock[] childUnlocks = GetComponentsInChildren<Unlock>(true);
-            foreach (var unlock in childUnlocks)
+            // ========== 检测子物体里有没有 Unlock 脚本 ==========
+            Unlock unlock = GetComponentInChildren<Unlock>();
+            if (unlock != null)
             {
+                // 调用 ForceUnlock() 解锁功能
                 unlock.ForceUnlock();
             }
         }

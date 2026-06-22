@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -17,6 +17,7 @@ public class Unlock : MonoBehaviour
 
     public bool IsUnlocked { get; private set; }
     public string TechID => GetFullPath();
+  
 
     /// <summary>
     /// 执行解锁逻辑（由外部调用，跳过扣费）
@@ -45,7 +46,7 @@ public class Unlock : MonoBehaviour
         if (butttt != null) butttt.gameObject.SetActive(true);
     }
 
-    // ===== 新增方法 =====
+    // ===== 读取方法 =====
     public void LoadFromSave(bool unlocked)
     {
         if (unlocked)
