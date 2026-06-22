@@ -668,7 +668,7 @@ MonoBehaviour:
   shootRange: 5
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
 --- !u!114 &5609613829274702421
 MonoBehaviour:
   m_ObjectHideFlags: 0

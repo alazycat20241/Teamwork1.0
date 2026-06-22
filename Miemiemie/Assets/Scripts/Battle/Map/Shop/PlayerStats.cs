@@ -4,6 +4,12 @@ public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance { get; private set; }
 
+    [Header("属性最小值限制")]
+    public float minAttackBonus = -2f;         // 攻击力最小-2
+    public float minAttackPercentBonus = -0.9f;// 攻击百分比最小-90%
+    public float minRangeBonus = -3f;          // 射程加成最小-3
+    public float minSpeedBonus = -0.5f;        // 射速加成最小-0.5
+
     [Header("永久属性（跨场景保留）")]
     public float attackBonus = 0f;
     public float attackPercentBonus = 0f;  // 攻击百分比加成（0.2 = 20%）
@@ -43,18 +49,21 @@ public class PlayerStats : MonoBehaviour
     public void AddPermanentAttack(float amount)
     {
         attackBonus += amount;
+        attackBonus = Mathf.Max(attackBonus, minAttackBonus);  // 限制最小值
     }
 
     /// <summary>永久加射程</summary>
     public void AddPermanentRange(float amount)
     {
         rangeBonus += amount;
+        rangeBonus = Mathf.Max(rangeBonus, minRangeBonus);    // 限制最小值
     }
 
     /// <summary>永久加射速</summary>
     public void AddPermanentSpeed(float amount)
     {
         speedBonus += amount;
+        speedBonus = Mathf.Max(speedBonus, minSpeedBonus);    // 限制最小值
     }
 
     /// <summary>永久加血量上限</summary>
@@ -88,6 +97,7 @@ public class PlayerStats : MonoBehaviour
     public void AddTempAttack(float amount)
     {
         attackBonus += amount;
+        attackBonus = Mathf.Max(attackBonus, minAttackBonus);  // 限制最小值
         tempAttackBonus += amount;
     }
 
@@ -97,6 +107,7 @@ public class PlayerStats : MonoBehaviour
     public void AddTempAttackPercent(float percent)
     {
         attackPercentBonus += percent;
+        attackPercentBonus = Mathf.Max(attackPercentBonus, minAttackPercentBonus);  // 限制最小值（最小-90%）
         tempAttackPercentBonus += percent;
     }
 
@@ -106,6 +117,7 @@ public class PlayerStats : MonoBehaviour
     public void AddTempRange(float amount)
     {
         rangeBonus += amount;
+        rangeBonus = Mathf.Max(rangeBonus, minRangeBonus);    // 限制最小值
         tempRangeBonus += amount;
     }
 
@@ -115,6 +127,7 @@ public class PlayerStats : MonoBehaviour
     public void AddTempSpeed(float amount)
     {
         speedBonus += amount;
+        speedBonus = Mathf.Max(speedBonus, minSpeedBonus);    // 限制最小值
         tempSpeedBonus += amount;
     }
 

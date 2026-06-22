@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -286,6 +286,12 @@ public class FixedRoomManager : MonoBehaviour
 
         // 还原本张地图所有临时效果
         PlayerStats.Instance?.RestoreTempEffects();
+        
+        // 清理事件效果的所有回调（防止跨场景残留）
+        EventRoomEffect.Instance?.CleanupAll();
+        
+        // 清理道具效果（防止跨场景残留）
+        PropManager.Instance?.CleanupAllProps();
 
         // 战败处理：通知行动点管理器
         if (!victory && ActionPointManager.Instance != null)

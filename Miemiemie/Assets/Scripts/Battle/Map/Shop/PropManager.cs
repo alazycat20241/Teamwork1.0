@@ -1,4 +1,4 @@
-﻿using Spine.Unity;
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +24,49 @@ public class PropManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
+    }
+
+    /// <summary>
+    /// 清理所有道具效果（在返回家园时调用）
+    /// </summary>
+    public void CleanupAllProps()
+    {
+        // 道具01：枯木逢春
+        BattleRoom.OnBattleEnd -= OnBattleEnd_Heal;
+        kuMuCounter = 0;
+        
+        // 道具02：护身符
+        huShenFuActive = false;
+        
+        // 道具03：鼹鼠牙齿
+        BattleRoom.OnBattleEnd -= OnBattleEnd_ExtraGold;
+        
+        // 道具04：萤火虫囊 - 由 PlayerStats.RestoreTempEffects() 处理
+        
+        // 道具05：腐烂号角
+        BattleRoom.OnBattleStart -= OnBattleStart_StopEnemies;
+        
+        // 道具06：蜕皮壳 - 一次性使用，已在使用时取消订阅
+        
+        // 道具07：血苔绷带
+        FixedRoomManager.OnRoomEntered -= OnRoomEntered_XueTai;
+        xueTaiActive = false;
+        
+        // 道具08：枯叶斗篷
+        douPengActive = false;
+        isCamouflaged = false;
+        standStillTimer = 0f;
+        // 恢复玩家可见性
+        SetPlayerVisible(true);
+        
+        // 道具09：蜂后蜜
+        BattleRoom.OnBattleStart -= OnBattleStart_SpawnExtraEnemies;
+        
+        // 道具10：石化种子 - 由 PlayerStats.RestoreTempEffects() 处理
+        
+        // 道具11：狼人指尖 - 由 PlayerStats.RestoreTempEffects() 处理
+        
+        // 道具12：月蚀碎片 - 一次性使用，已在使用时取消订阅
     }
 
     /// <summary>

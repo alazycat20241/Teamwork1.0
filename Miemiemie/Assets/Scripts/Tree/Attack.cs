@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -63,24 +63,37 @@ public class Attack : MonoBehaviour
     /// </summary>
     void click()
     {
+        // 如果已经购买，直接返回
+        if (IsPurchased) return;
+
         // 检查玩家金币和灵魂石是否满足升级要求
-        if (PlayerInventory.Instance.playerGold > GCOUNT &&
-            PlayerInventory.Instance.soulStones > SCOUNT)
+        if (PlayerInventory.Instance.playerGold >= GCOUNT &&
+            PlayerInventory.Instance.soulStones >= SCOUNT)
         {
-            IsPurchased = true;                                    // 新增
+            IsPurchased = true;
 
             // 将按钮图片切换为已升级状态
-            img.sprite = Select1Sprite;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
 
             // 扣除升级所需资源
-            PlayerInventory.Instance.playerGold -= GCOUNT;      // 扣除金币
-            PlayerInventory.Instance.soulStones -= SCOUNT;      // 扣除灵魂石
+            PlayerInventory.Instance.playerGold -= GCOUNT;
+            PlayerInventory.Instance.soulStones -= SCOUNT;
+            PlayerInventory.Instance.UpdateGold();
+            PlayerInventory.Instance.UpdateStone();
 
             // 永久增加玩家攻击力
             PlayerStats.Instance.AddPermanentAttack(addCount);
 
-            L.interactable = false;                                // 新增
+            if (L != null)
+                L.interactable = false;
 
+            // 自动解锁子物体的Unlock组件
+            Unlock[] childUnlocks = GetComponentsInChildren<Unlock>(true);
+            foreach (var unlock in childUnlocks)
+            {
+                unlock.ForceUnlock();
+            }
         }
         // 如果资源不足，不做任何操作（无法升级）
     }
@@ -91,8 +104,10 @@ public class Attack : MonoBehaviour
         if (purchased)
         {
             IsPurchased = true;
-            if(Select1Sprite!=null)img.sprite = Select1Sprite;
-            L.interactable = false;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
+            if (L != null)
+                L.interactable = false;
         }
     }
 

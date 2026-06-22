@@ -224,7 +224,8 @@ public class EventRoomEffect : MonoBehaviour
     void AddAttackThisBattle(float amount)
     {
         if (PlayerStats.Instance == null) return;
-        PlayerStats.Instance.attackBonus += amount;
+        // 使用临时加成方法，确保有最小值限制且返回时会被正确清空
+        PlayerStats.Instance.AddTempAttack(amount);
 
         // 注册战斗结束还原回调
         Action cleanup = () =>
@@ -239,15 +240,8 @@ public class EventRoomEffect : MonoBehaviour
     void AddAttackPercentThisBattle(float percent)
     {
         if (PlayerStats.Instance == null) return;
-        PlayerStats.Instance.attackPercentBonus += percent;
-
-        // 注册战斗结束还原回调
-        Action cleanup = () =>
-        {
-            PlayerStats.Instance.attackPercentBonus -= percent;
-        };
-        BattleRoom.OnBattleEnd += cleanup;
-        battleEndCleanups.Add(cleanup);
+        // 使用临时加成方法，确保返回时会被正确清空
+        PlayerStats.Instance.AddTempAttackPercent(percent);
     }
 
     // ================================================================

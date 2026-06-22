@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -26,15 +26,29 @@ public class Speed : MonoBehaviour
 
     void Click()
     {
+        // 如果已经购买，直接返回
+        if (IsPurchased) return;
+
         if (PlayerInventory.Instance.playerGold >= GCOUNT &&
             PlayerInventory.Instance.soulStones >= SCOUNT)
         {
             IsPurchased = true;
-            img.sprite = Select1Sprite;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
             PlayerInventory.Instance.playerGold -= GCOUNT;
             PlayerInventory.Instance.soulStones -= SCOUNT;
+            PlayerInventory.Instance.UpdateGold();
+            PlayerInventory.Instance.UpdateStone();
             PlayerStats.Instance.AddPermanentSpeed(addCount);
-            L.interactable = false;
+            if (L != null)
+                L.interactable = false;
+
+            // 自动解锁子物体的Unlock组件
+            Unlock[] childUnlocks = GetComponentsInChildren<Unlock>(true);
+            foreach (var unlock in childUnlocks)
+            {
+                unlock.ForceUnlock();
+            }
         }
     }
 
@@ -43,8 +57,10 @@ public class Speed : MonoBehaviour
         if (purchased)
         {
             IsPurchased = true;
-            img.sprite = Select1Sprite;
-            L.interactable = false;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
+            if (L != null)
+                L.interactable = false;
         }
     }
 

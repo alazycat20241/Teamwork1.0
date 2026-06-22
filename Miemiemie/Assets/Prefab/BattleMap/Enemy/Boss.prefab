@@ -168,7 +168,7 @@ MonoBehaviour:
   currentHealth: 0
   isStoned: 0
   enableHitFlash: 1
-  enemyFlashColor: {r: 0.9198112, g: 0.1952428, b: 0.1952428, a: 0.8666667}
+  enemyFlashColor: {r: 0.4433961, g: 0.083659574, b: 0.083659574, a: 0.8666667}
   flashDuration: 0.1
   hurtSound: {fileID: 0}
   isNextDamageImmune: 0

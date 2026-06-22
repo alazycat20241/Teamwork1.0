@@ -17,11 +17,6 @@ public class Unlock : MonoBehaviour
 
     private Button buttonn;                 // 当前物体上的解锁按钮
 
-
-    [Header("解锁消耗")]
-    public int goldCost = 0;        // 金币消耗
-    public int stoneCost = 0;       // 灵魂石消耗
-
     // ===== 新增 =====
     public bool IsUnlocked { get; private set; }
     public string TechID => GetFullPath();
@@ -45,23 +40,44 @@ public class Unlock : MonoBehaviour
     /// </summary>
     void onnclick()
     {
-        if (PlayerInventory.Instance.playerGold < goldCost ||
-            PlayerInventory.Instance.soulStones < stoneCost)
+        // 如果已经解锁，直接返回
+        if (IsUnlocked) return;
+
+        // 检查PlayerInventory是否存在
+        if (PlayerInventory.Instance == null)
         {
             return;
         }
 
-        IsUnlocked = true;                                        // 新增
+        // 执行解锁
+        DoUnlock();
+    }
+
+    /// <summary>
+    /// 执行解锁逻辑（由外部调用，跳过扣费）
+    /// </summary>
+    public void ForceUnlock()
+    {
+        if (IsUnlocked) return;
+        DoUnlock();
+    }
+
+    /// <summary>
+    /// 实际执行解锁
+    /// </summary>
+    private void DoUnlock()
+    {
+        IsUnlocked = true;
 
         // 隐藏锁定图标，表示该功能已解锁
-        img1.gameObject.SetActive(false);
-        img2.gameObject.SetActive(false);
-        img3.gameObject.SetActive(false);
+        if (img1 != null) img1.gameObject.SetActive(false);
+        if (img2 != null) img2.gameObject.SetActive(false);
+        if (img3 != null) img3.gameObject.SetActive(false);
 
         // 显示功能按钮，允许玩家使用这些功能
-        butt.gameObject.SetActive(true);
-        buttt.gameObject.SetActive(true);
-        butttt.gameObject.SetActive(true);
+        if (butt != null) butt.gameObject.SetActive(true);
+        if (buttt != null) buttt.gameObject.SetActive(true);
+        if (butttt != null) butttt.gameObject.SetActive(true);
     }
 
     // ===== 新增方法 =====
@@ -70,12 +86,12 @@ public class Unlock : MonoBehaviour
         if (unlocked)
         {
             IsUnlocked = true;
-            img1.gameObject.SetActive(false);
-            img2.gameObject.SetActive(false);
-            img3.gameObject.SetActive(false);
-            butt.gameObject.SetActive(true);
-            buttt.gameObject.SetActive(true);
-            butttt.gameObject.SetActive(true);
+            if (img1 != null) img1.gameObject.SetActive(false);
+            if (img2 != null) img2.gameObject.SetActive(false);
+            if (img3 != null) img3.gameObject.SetActive(false);
+            if (butt != null) butt.gameObject.SetActive(true);
+            if (buttt != null) buttt.gameObject.SetActive(true);
+            if (butttt != null) butttt.gameObject.SetActive(true);
         }
     }
 

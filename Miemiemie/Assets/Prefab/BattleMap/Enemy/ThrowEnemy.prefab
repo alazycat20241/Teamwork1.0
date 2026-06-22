@@ -212,8 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b16b61b0d0bc0e4dadef798986ad4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3.5
-  attackCooldown: 3
+  attackRange: 3
+  attackCooldown: 5
   attackAnimDuration: 1.733
   spawnDelay: 0.8
   sporeCloudPrefab: {fileID: 6470726890585559496, guid: bee921607f395a349a1458eb1f447031,

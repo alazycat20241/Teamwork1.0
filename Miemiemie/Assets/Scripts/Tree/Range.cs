@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using static SaveData;
 
@@ -26,15 +26,29 @@ public class Range : MonoBehaviour
 
     void Click()
     {
+        // 如果已经购买，直接返回
+        if (IsPurchased) return;
+
         if (PlayerInventory.Instance.playerGold >= GCOUNT &&
             PlayerInventory.Instance.soulStones >= SCOUNT)
         {
             IsPurchased = true;
-            img.sprite = Select1Sprite;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
             PlayerInventory.Instance.playerGold -= GCOUNT;
             PlayerInventory.Instance.soulStones -= SCOUNT;
+            PlayerInventory.Instance.UpdateGold();
+            PlayerInventory.Instance.UpdateStone();
             PlayerStats.Instance.AddPermanentRange(addCount);
-            r.interactable = false;
+            if (r != null)
+                r.interactable = false;
+
+            // 自动解锁子物体的Unlock组件
+            Unlock[] childUnlocks = GetComponentsInChildren<Unlock>(true);
+            foreach (var unlock in childUnlocks)
+            {
+                unlock.ForceUnlock();
+            }
         }
     }
 
@@ -43,8 +57,10 @@ public class Range : MonoBehaviour
         if (purchased)
         {
             IsPurchased = true;
-            img.sprite = Select1Sprite;
-            r.interactable = false;
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
+            if (r != null)
+                r.interactable = false;
         }
     }
 
