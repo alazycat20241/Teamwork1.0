@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
  * Spine Runtimes License Agreement
  * Last updated January 1, 2020. Replaces all prior versions.
  *
@@ -116,8 +116,6 @@ namespace Spine.Unity.Examples {
 		[ContextMenu("Check Tracks")]
 		void CheckTracks () {
 			var state = skeletonAnimation.AnimationState;
-			Debug.Log(state.GetCurrent(0));
-			Debug.Log(state.GetCurrent(1));
 		}
 
 		#region Transient Actions

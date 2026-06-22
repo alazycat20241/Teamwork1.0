@@ -121,7 +121,6 @@ public class GrowBlock : MonoBehaviour
         else
         {
             // 没有种子
-            Debug.Log("种子不足，无法种植！");
         }
     }
     //自动生长

@@ -143,6 +143,13 @@ public class PlayerStats : MonoBehaviour
         tempRangeBonus = 0f;
         tempSpeedBonus = 0f;
         tempMaxHealthBonus = 0f;
+
+        // 清理道具效果（本张地图有效）
+        stoneChance = 0f;
+        stoneDuration = 0f;
+        panicChance = 0f;
+        panicDuration = 0f;
+        missChance = 0f;
     }
 
     /// <summary>

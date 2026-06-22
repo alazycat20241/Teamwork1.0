@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,6 +71,9 @@ public class ActionPointManager : MonoBehaviour
         currentDay++;
         OnDayChanged?.Invoke(currentDay);
 
+        // 检查是否到达月圆之夜（第15天）
+        CheckFullMoon();
+
         // 默认回满
         currentActionPoints = maxActionPoints;
         OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
@@ -90,6 +93,18 @@ public class ActionPointManager : MonoBehaviour
         // 回复上限的一半，向下取整
         currentActionPoints = Mathf.FloorToInt(maxActionPoints / 2f);
         OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
+    }
+
+    /// <summary>
+    /// 检查是否到达月圆之夜（第15天），若是则返回主菜单
+    /// </summary>
+    private void CheckFullMoon()
+    {
+        if (currentDay >= 15)
+        {
+            // 月圆之夜降临，返回主菜单
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        }
     }
 
     /// <summary>

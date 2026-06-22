@@ -1,4 +1,4 @@
-﻿using Spine.Unity;
+using Spine.Unity;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -63,14 +63,14 @@ public class Health : MonoBehaviour
         // 已死亡，不再受伤
         if (IsDead) return;
 
-        // 下次受伤免疫（道具、事件
+        // 下次受伤免疫（道具、事件）
         if (isNextDamageImmune && CompareTag("Player"))
         {
             isNextDamageImmune = false;
             return;
         }
 
-        // 石化中的敌人不受伤害
+        // 石化中的敌人不受伤害（提前检查，避免播放特效）
         if (isStoned && CompareTag("Enemy")) return;
 
         // 触发受击闪烁（自动覆盖旧闪烁，避免材质卡住）

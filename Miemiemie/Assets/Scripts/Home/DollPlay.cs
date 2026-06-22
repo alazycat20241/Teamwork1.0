@@ -25,14 +25,12 @@ public class DollPlay : MonoBehaviour
 
     public void SpawnDolls(int count)
     {
-        Debug.Log($"SpawnDolls 被调用: count={count}, prefab={dollPrefab}, spawnPoint={dollSpawnPoint}");
 
         ClearAllDolls();
         DCount = count;
 
         if (dollPrefab == null)
         {
-            Debug.LogError("dollPrefab 为空！请在 Inspector 拖拽预制体");
             return;
         }
 
@@ -42,7 +40,6 @@ public class DollPlay : MonoBehaviour
         {
             Vector3 offset = new Vector3(i * 0.5f, 0, 0);
             GameObject doll = Instantiate(dollPrefab, dollSpawnPoint.position + offset, Quaternion.identity);
-            Debug.Log($"生成玩偶 {i}: {doll.name}");
 
             if (dollParent != null)
                 doll.transform.SetParent(dollParent);
@@ -50,7 +47,6 @@ public class DollPlay : MonoBehaviour
             activeDolls.Add(doll);
         }
 
-        Debug.Log($"共生成 {activeDolls.Count} 个玩偶");
     }
 
     public void AddDoll()

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class BossRoom : RoomBase
@@ -59,9 +59,8 @@ public class BossRoom : RoomBase
             PlayerInventory.Instance.AddStone(5);
         }
 
-        FixedRoomManager.Instance.ReturnToHome(true);  // 胜利返回
-        // 延迟一下再
-        //StartCoroutine(DelayedReturn());
+        // 延迟返回，让死亡动画播放完毕
+        StartCoroutine(DelayedReturn());
     }
 
     private System.Collections.IEnumerator DelayedReturn()

@@ -28,7 +28,6 @@ public class CopyChildSprites : MonoBehaviour
     public void CopySprites()
     {
         if (sourceImages == null || targetImages == null) return;
-        Debug.Log("123456");
         // 取两者中较小的长度，防止越界
         int count = Mathf.Min(sourceImages.Length, targetImages.Length);
 
