@@ -15,43 +15,8 @@ public class Unlock : MonoBehaviour
     [SerializeField] private Button buttt;  // 解锁后显示的功能按钮2
     [SerializeField] private Button butttt; // 解锁后显示的功能按钮3
 
-    private Button buttonn;                 // 当前物体上的解锁按钮
-
-    // ===== 新增 =====
     public bool IsUnlocked { get; private set; }
     public string TechID => GetFullPath();
-
-    /// <summary>
-    /// 初始化组件，注册按钮点击事件
-    /// </summary>
-    void Awake()
-    {
-        // 获取当前物体上的Button组件
-        buttonn = GetComponent<Button>();
-
-        // 如果按钮存在，则添加点击事件监听
-        if (buttonn != null)
-            buttonn.onClick.AddListener(onnclick);
-    }
-
-    /// <summary>
-    /// 解锁按钮点击处理逻辑
-    /// 隐藏所有锁定图标，显示所有功能按钮
-    /// </summary>
-    void onnclick()
-    {
-        // 如果已经解锁，直接返回
-        if (IsUnlocked) return;
-
-        // 检查PlayerInventory是否存在
-        if (PlayerInventory.Instance == null)
-        {
-            return;
-        }
-
-        // 执行解锁
-        DoUnlock();
-    }
 
     /// <summary>
     /// 执行解锁逻辑（由外部调用，跳过扣费）
