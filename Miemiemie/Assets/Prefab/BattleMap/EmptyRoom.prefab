@@ -933,7 +933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e3e2ed4559da04fb9ddbf32cc6391c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 4968912218397806032}
 --- !u!212 &4968912218397806032
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3725,8 +3724,8 @@ Transform:
   m_GameObject: {fileID: 8429357776878950606}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.94, z: 0}
-  m_LocalScale: {x: 0.62, y: 0.62, z: 0.62}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 0.61, y: 0.61, z: 0.61}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4786623422179235208}

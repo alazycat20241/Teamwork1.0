@@ -1,4 +1,4 @@
-﻿using Spine.Unity;
+using Spine.Unity;
 using UnityEngine;
 using System.Collections;
 public class Enemy : MonoBehaviour,IMovable
@@ -101,6 +101,10 @@ public class Enemy : MonoBehaviour,IMovable
             rb.velocity = patrolDirection * moveSpeed * 0.3f;
 
             FlipByVelocity(patrolDirection);  // ★ 翻转
+            
+            // ★ 切换回巡逻动画
+            PlayAnimation(walkWithoutHate, true);
+            
             return;
         }
 

@@ -6,6 +6,7 @@ public class PlayerStats : MonoBehaviour
 
     [Header("永久属性（跨场景保留）")]
     public float attackBonus = 0f;
+    public float attackPercentBonus = 0f;  // 攻击百分比加成（0.2 = 20%）
     public float rangeBonus = 0f;
     public float speedBonus = 0f;
     public float maxHealthBonus = 0f;
@@ -17,6 +18,7 @@ public class PlayerStats : MonoBehaviour
 
     // ========== 临时效果记录 ==========
     private float tempAttackBonus = 0f;
+    private float tempAttackPercentBonus = 0f;
     private float tempRangeBonus = 0f;
     private float tempSpeedBonus = 0f;
     private float tempMaxHealthBonus = 0f;
@@ -68,11 +70,13 @@ public class PlayerStats : MonoBehaviour
     {
         // 清除上次残留的临时值
         attackBonus -= tempAttackBonus;
+        attackPercentBonus -= tempAttackPercentBonus;
         rangeBonus -= tempRangeBonus;
         speedBonus -= tempSpeedBonus;
         maxHealthBonus -= tempMaxHealthBonus;
 
         tempAttackBonus = 0f;
+        tempAttackPercentBonus = 0f;
         tempRangeBonus = 0f;
         tempSpeedBonus = 0f;
         tempMaxHealthBonus = 0f;
@@ -85,6 +89,15 @@ public class PlayerStats : MonoBehaviour
     {
         attackBonus += amount;
         tempAttackBonus += amount;
+    }
+
+    /// <summary>
+    /// 临时加攻击百分比（本张地图有效，ReturnToHome 时还原）
+    /// </summary>
+    public void AddTempAttackPercent(float percent)
+    {
+        attackPercentBonus += percent;
+        tempAttackPercentBonus += percent;
     }
 
     /// <summary>
@@ -120,11 +133,13 @@ public class PlayerStats : MonoBehaviour
     public void RestoreTempEffects()
     {
         attackBonus -= tempAttackBonus;
+        attackPercentBonus -= tempAttackPercentBonus;
         rangeBonus -= tempRangeBonus;
         speedBonus -= tempSpeedBonus;
         maxHealthBonus -= tempMaxHealthBonus;
 
         tempAttackBonus = 0f;
+        tempAttackPercentBonus = 0f;
         tempRangeBonus = 0f;
         tempSpeedBonus = 0f;
         tempMaxHealthBonus = 0f;
@@ -136,6 +151,7 @@ public class PlayerStats : MonoBehaviour
     public void ResetData()
     {
         attackBonus = 0f;
+        attackPercentBonus = 0f;
         rangeBonus = 0f;
         speedBonus = 0f;
         maxHealthBonus = 0f;
@@ -146,6 +162,7 @@ public class PlayerStats : MonoBehaviour
         missChance = 0f;
 
         tempAttackBonus = 0f;
+        tempAttackPercentBonus = 0f;
         tempRangeBonus = 0f;
         tempSpeedBonus = 0f;
         tempMaxHealthBonus = 0f;

@@ -121,6 +121,15 @@ public class EventRoomEffect : MonoBehaviour
                     AddAttackThisBattle(-effect.value);
                     break;
 
+                // ========== 攻击百分比（本场战斗，战斗结束后自动还原） ==========
+                case EffectType.AttackPercentUp:
+                    AddAttackPercentThisBattle(effect.value / 100f);  // 转成小数
+                    break;
+
+                case EffectType.AttackPercentDown:
+                    AddAttackPercentThisBattle(-effect.value / 100f);
+                    break;
+
                 // ========== 射程（本场战斗，战斗结束后自动还原） ==========
                 case EffectType.RangeUp:
                     AddRangeThisBattle(effect.value);
@@ -226,6 +235,21 @@ public class EventRoomEffect : MonoBehaviour
         battleEndCleanups.Add(cleanup);
     }
 
+    /// <summary>攻击百分比本场战斗变化（例如+20表示+20%）</summary>
+    void AddAttackPercentThisBattle(float percent)
+    {
+        if (PlayerStats.Instance == null) return;
+        PlayerStats.Instance.attackPercentBonus += percent;
+
+        // 注册战斗结束还原回调
+        Action cleanup = () =>
+        {
+            PlayerStats.Instance.attackPercentBonus -= percent;
+        };
+        BattleRoom.OnBattleEnd += cleanup;
+        battleEndCleanups.Add(cleanup);
+    }
+
     // ================================================================
     // 射程（本场战斗，战斗结束后自动还原）
     // ================================================================
@@ -265,7 +289,7 @@ public class EventRoomEffect : MonoBehaviour
     }
 
     // ================================================================
-    // 失误率（本场战斗，战斗结束后清除）
+    // 失误率（本场战斗，战斗结束后清除）//其实失误率没做。
     // ================================================================
 
     /// <summary>设置失误率，本场战斗有效（事件05A失败：10%）</summary>

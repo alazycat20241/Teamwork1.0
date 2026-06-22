@@ -28,16 +28,14 @@ MonoBehaviour:
     useFireMode: 0
     successText: "\u82D4\u85D3\u6536\u7F29\uFF0C\u5410\u51FA\u4E00\u4E2A\u9053\u5177\u3002 "
     successEffects:
-    - effectType: 13
-      value: 0
+    - effectType: 15
+      value: 1
       extraId: 
-      durationRooms: 1
     failText: "\u82D4\u85D3\u75AF\u72C2\u8513\u5EF6\uFF0C\u7F20\u4F4F\u4F60\u7684\u624B\u81C2\u5438\u8840\u3002"
     failEffects:
     - effectType: 2
       value: 10
       extraId: 
-      durationRooms: 0
   - choiceText: "\u7ED5\u5F00"
     requiresItem: 0
     requiredSoulStones: 0
@@ -54,10 +52,8 @@ MonoBehaviour:
     - effectType: 0
       value: 0
       extraId: 
-      durationRooms: 0
     failText: 
     failEffects:
     - effectType: 0
       value: 0
       extraId: 
-      durationRooms: 0

@@ -33,8 +33,8 @@ MonoBehaviour:
       extraId: 
     failText: "\u5B62\u5B50\u7206\u70B8"
     failEffects:
-    - effectType: 17
-      value: 10
+    - effectType: 19
+      value: 0.1
       extraId: 
   - choiceText: "\u8EBA\u5728\u9668\u77F3\u5751\u4E2D"
     requiresItem: 0
@@ -49,11 +49,11 @@ MonoBehaviour:
     useFireMode: 0
     successText: "\u83B7\u5F97\u661F\u4E4B\u795D\u798F\u3002"
     successEffects:
-    - effectType: 7
-      value: 1
+    - effectType: 11
+      value: 0.5
       extraId: 
     - effectType: 9
-      value: 5
+      value: 1
       extraId: 
     failText: "\u88AB\u82D4\u85D3\u540C\u5316\u3002"
     failEffects:

@@ -64,7 +64,7 @@ public class Health : MonoBehaviour
         if (IsDead) return;
 
         // 下次受伤免疫（道具、事件
-        if (isNextDamageImmune)
+        if (isNextDamageImmune && CompareTag("Player"))
         {
             isNextDamageImmune = false;
             return;
@@ -105,7 +105,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0f)
         {
             // 护身符：锁血到 5
-            if (PropManager.Instance != null && PropManager.Instance.TryUseHuShenFu())
+            if (PropManager.Instance != null && CompareTag("Player") && PropManager.Instance.TryUseHuShenFu())
             {
                 currentHealth = 5;
                 return;

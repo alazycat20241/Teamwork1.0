@@ -5,8 +5,6 @@ public class BaseBullet : MonoBehaviour
     [SerializeField] private float damage = 10f;             // 伤害
     [SerializeField] private LayerMask targetLayer;          // 目标层
 
-    private float extraDamage = 0f;
-
     private BulletBehav bulletBehav;
     private bool hasHit = false;
 
@@ -19,7 +17,6 @@ public class BaseBullet : MonoBehaviour
     void OnEnable()
     {
         hasHit = false;  // 每次激活重置
-        extraDamage = 0f;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -35,8 +32,15 @@ public class BaseBullet : MonoBehaviour
             {
                 hasHit = true;
 
+                // 计算伤害：基础伤害 * (1 + 百分比加成) + 固定加成
+                float finalDamage = damage;
+                if (PlayerStats.Instance != null)
+                {
+                    finalDamage = (damage + PlayerStats.Instance.attackBonus) * (1 + PlayerStats.Instance.attackPercentBonus) ;
+                }
+
                 // 造成伤害
-                health.TakeDamage(damage + extraDamage);
+                health.TakeDamage(finalDamage);
 
                 // 石化和恐慌判定：10%概率触发石化2秒(目前只加了基础子弹，其他子弹看看日后
                 if (other.CompareTag("Enemy") && PlayerStats.Instance != null && Random.value < PlayerStats.Instance.stoneChance)
@@ -61,11 +65,5 @@ public class BaseBullet : MonoBehaviour
                 bulletBehav.ReleaseToPool();
             }
         }
-    }
-
-    // 设置伤害（替换，不累加）
-    public void SetExtraDamage(float amount)
-    {
-        extraDamage = amount;
     }
 }

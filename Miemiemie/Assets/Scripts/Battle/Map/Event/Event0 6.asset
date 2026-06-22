@@ -28,24 +28,20 @@ MonoBehaviour:
     useFireMode: 0
     successText: 
     successEffects:
-    - effectType: 5
+    - effectType: 7
       value: 50
       extraId: 
-      durationRooms: 1
-    - effectType: 13
+    - effectType: 15
       value: 1
       extraId: 
-      durationRooms: 1
     failText: "\u88AB\u7535\u51FB\u3002"
     failEffects:
     - effectType: 2
       value: 10
       extraId: 
-      durationRooms: 0
-    - effectType: 6
+    - effectType: 8
       value: 50
       extraId: 
-      durationRooms: 1
   - choiceText: "\u79BB\u5F00"
     requiresItem: 0
     requiredSoulStones: 0
@@ -62,10 +58,8 @@ MonoBehaviour:
     - effectType: 2
       value: 5
       extraId: 
-      durationRooms: 0
     - effectType: 10
-      value: 5
+      value: 0.5
       extraId: 
-      durationRooms: 0
     failText: 
     failEffects: []

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,8 +57,10 @@ public enum EffectType
     Damage,             // 扣血
     MaxHPUp,            // 血量上限+value
     MaxHPDown,          // 血量上限-value
-    AttackUp,           // 攻击+value%
-    AttackDown,         // 攻击-value%
+    AttackUp,           // 攻击+value（固定值）
+    AttackDown,         // 攻击-value（固定值）
+    AttackPercentUp,    // 攻击+value%（百分比）
+    AttackPercentDown,  // 攻击-value%（百分比）
     RangeUp,            // 射程+value
     RangeDown,          // 射程-value
     SpeedUp,            // 射速+value

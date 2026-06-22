@@ -28,8 +28,8 @@ MonoBehaviour:
     useFireMode: 0
     successText: "\u635E\u51FA\u517D\u7259"
     successEffects:
-    - effectType: 5
-      value: 20
+    - effectType: 7
+      value: 0.2
       extraId: 
     failText: "\u83CC\u4E1D\u89E6\u624B\u7F20\u4F4F\u624B\u8155"
     failEffects:
@@ -38,7 +38,7 @@ MonoBehaviour:
       extraId: 
   - choiceText: "\u5411\u6CC9\u773C\u6295\u5165\u7075\u9B42\u77F3 "
     requiresItem: 0
-    requiredSoulStones: 1
+    requiredSoulStones: 5
     requiredGold: 0
     requiredBuff: 
     baseRate: 100
@@ -49,7 +49,7 @@ MonoBehaviour:
     useFireMode: 0
     successText: "\u6CC9\u773C\u6CB8\u817E\u540E\u5E73\u9759\uFF0C\u517D\u7259\u6D6E\u51FA"
     successEffects:
-    - effectType: 13
+    - effectType: 15
       value: 1
       extraId: 
     failText: 

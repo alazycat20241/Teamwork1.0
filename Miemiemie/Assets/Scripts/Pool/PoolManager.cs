@@ -25,7 +25,7 @@ public class PoolManager : Singleton<PoolManager>
     }
 
     /// <summary>
-    /// ★ 便捷方法：直接获取子弹实例
+    /// 便捷方法：直接获取子弹实例
     /// </summary>
     public BulletBehav GetBullet(BulletObject bulletObject)
     {
@@ -34,7 +34,7 @@ public class PoolManager : Singleton<PoolManager>
     }
 
     /// <summary>
-    /// ★ 便捷方法：回收子弹实例
+    /// 便捷方法：回收子弹实例
     /// </summary>
     public void ReleaseBullet(BulletObject bulletObject, BulletBehav bullet)
     {

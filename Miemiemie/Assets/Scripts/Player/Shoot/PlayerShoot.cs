@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -89,9 +89,6 @@ public class PlayerShoot : MonoBehaviour
         BulletBehav bullet = currentPool.GetItem();
         bullet.transform.position = transform.position;
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        BaseBullet bb = bullet.GetComponent<BaseBullet>();
-        if (bb != null) bb.SetExtraDamage(PlayerStats.Instance.attackBonus);
     }
 
     /// <summary>

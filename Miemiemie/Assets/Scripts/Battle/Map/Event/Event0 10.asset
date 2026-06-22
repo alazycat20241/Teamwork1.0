@@ -15,30 +15,7 @@ MonoBehaviour:
   eventName: "\u8150\u751F\u82B1\u4E1B "
   description: " \u4E00\u7C07\u5DE8\u5927\u7684\u8150\u751F\u82B1\u4ECE\u8150\u70C2\u7684\u6811\u5E72\u4E0A\u957F\u51FA\u3002\u5176\u4E2D\u4E00\u6735\u82B1\u7684\u4E2D\u5FC3\uFF0C\u6709\u4E00\u9897\u62F3\u5934\u5927\u7684[\u8150\u5375]\u3002"
   choices:
-  - choiceText: "\u6EF4\u8840\u732E\u796D"
-    requiresItem: 0
-    requiredSoulStones: 0
-    requiredGold: 0
-    requiredBuff: 
-    baseRate: 50
-    useHPPercent: 0
-    useMissingHPPercent: 0
-    useAttackPercent: 0
-    useSpeedPercent: 0
-    useFireMode: 0
-    successText: "\u82D4\u85D3\u6536\u7F29\uFF0C\u5410\u51FA\u4E00\u4E2A\u9053\u5177\u3002 "
-    successEffects:
-    - effectType: 3
-      value: 10
-      extraId: 
-      durationRooms: 1
-    failText: "\u82D4\u85D3\u75AF\u72C2\u8513\u5EF6\uFF0C\u7F20\u4F4F\u4F60\u7684\u624B\u81C2\u5438\u8840\u3002"
-    failEffects:
-    - effectType: 2
-      value: 10
-      extraId: 
-      durationRooms: 0
-  - choiceText: "\u7ED5\u5F00"
+  - choiceText: "\u5F92\u624B\u53D6\u5375"
     requiresItem: 0
     requiredSoulStones: 0
     requiredGold: 0
@@ -49,19 +26,37 @@ MonoBehaviour:
     useAttackPercent: 0
     useSpeedPercent: 0
     useFireMode: 0
-    successText: 
+    successText: "\u83B7\u5F97\u9053\u5177"
     successEffects:
-    - effectType: 13
+    - effectType: 15
       value: 1
       extraId: 
-      durationRooms: 0
     failText: "\u7532\u866B\u7FA4\u653B\u51FB"
     failEffects:
     - effectType: 2
       value: 10
       extraId: 
-      durationRooms: 0
-    - effectType: 10
-      value: 5
+    - effectType: 12
+      value: 0.5
       extraId: 
-      durationRooms: 0
+  - choiceText: "\u5C06\u8150\u5375\u8E29\u788E"
+    requiresItem: 0
+    requiredSoulStones: 0
+    requiredGold: 0
+    requiredBuff: 
+    baseRate: 100
+    useHPPercent: 0
+    useMissingHPPercent: 0
+    useAttackPercent: 0
+    useSpeedPercent: 0
+    useFireMode: 0
+    successText: 
+    successEffects:
+    - effectType: 7
+      value: 20
+      extraId: 
+    failText: 
+    failEffects:
+    - effectType: 0
+      value: 0
+      extraId: 
