@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Bag_01
   m_EditorClassIdentifier: 
   itemID: 1
-  itemName: Gold
+  itemName: "\u91D1\u5E01"
   icon: {fileID: 0}
   price: 0

@@ -1,23 +1,40 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIButtonGlow : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Graphic glowImage; // Õœ»Î GlowOutline(Image)
+    public Graphic glowImage;
+    private bool hasInit;
 
-    void Start()
+    void Update()
     {
-        if (glowImage) glowImage.canvasRenderer.SetAlpha(0);
+        if (!hasInit && glowImage != null)
+        {
+            Color c = glowImage.color;
+            c.a = 0f;
+            glowImage.color = c;
+            hasInit = true;
+        }
     }
 
     public void OnPointerEnter(PointerEventData d)
     {
-        if (glowImage) glowImage.CrossFadeAlpha(1f, 0.15f, true);
+        if (glowImage != null)
+        {
+            Color c = glowImage.color;
+            c.a = 1f;
+            glowImage.color = c;
+        }
     }
 
     public void OnPointerExit(PointerEventData d)
     {
-        if (glowImage) glowImage.CrossFadeAlpha(0f, 0.15f, true);
+        if (glowImage != null)
+        {
+            Color c = glowImage.color;
+            c.a = 0f;
+            glowImage.color = c;
+        }
     }
 }

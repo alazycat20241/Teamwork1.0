@@ -26,7 +26,7 @@ public class FarmShopController : MonoBehaviour
     {
         backButton.onClick.AddListener(closeMap);
 
-        // ★ 初始隐藏提示框
+        // 初始隐藏提示框
         if (tipPanel != null)
             tipPanel.SetActive(false);
     }
@@ -54,7 +54,7 @@ public class FarmShopController : MonoBehaviour
 
     void SetupItem(GameObject go, ItemData item)
     {
-        go.transform.Find("Image").GetComponent<Image>().sprite = item.icon;
+        go.transform.Find("Button").GetComponent<Image>().sprite = item.icon;
         go.transform.Find("Outline").GetComponent<Image>().sprite = item.icon;
         go.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
         go.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = item.price.ToString();
@@ -69,7 +69,7 @@ public class FarmShopController : MonoBehaviour
         var inv = PlayerInventory.Instance;
         if (inv.playerGold < item.price)
         {
-            // ★ 显示金币不够提示
+            // 显示金币不够提示
             ShowTip("金币不够");
             return;
         }
@@ -77,7 +77,7 @@ public class FarmShopController : MonoBehaviour
         {
             inv.SpendGold(item.price);
 
-            // ★ 显示购买成功提示
+            // 显示购买成功提示
             ShowTip("购买了：" + item.itemName);
 
             if (item.itemID == 1)

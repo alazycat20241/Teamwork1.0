@@ -5745,7 +5745,6 @@ MonoBehaviour:
   butt: {fileID: 1173122406}
   buttt: {fileID: 719706415}
   butttt: {fileID: 1940978688}
-  uniqueTechID: Button13
 --- !u!1 &482570818
 GameObject:
   m_ObjectHideFlags: 0
@@ -7879,7 +7878,6 @@ MonoBehaviour:
   butt: {fileID: 300152296}
   buttt: {fileID: 573451139}
   butttt: {fileID: 1232474834}
-  uniqueTechID: Button7
 --- !u!114 &762409100 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6012496009909360736, guid: e32d132bdb29b844ca497055099f3716,
@@ -9969,7 +9967,6 @@ MonoBehaviour:
   butt: {fileID: 871446579}
   buttt: {fileID: 859492307}
   butttt: {fileID: 1433058070}
-  uniqueTechID: Button23
 --- !u!4 &970405729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -13626,7 +13623,6 @@ MonoBehaviour:
   butt: {fileID: 1004864048}
   buttt: {fileID: 766816488}
   butttt: {fileID: 962100833}
-  uniqueTechID: Button19
 --- !u!114 &1226977803 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 187890608704016981, guid: 6fb3e68c12c268449881e959a7ea4de9,
@@ -13675,7 +13671,6 @@ MonoBehaviour:
   butt: {fileID: 1449909124}
   buttt: {fileID: 1454720420}
   butttt: {fileID: 478408757}
-  uniqueTechID: Button10
 --- !u!1 &1238334356
 GameObject:
   m_ObjectHideFlags: 0
@@ -18950,6 +18945,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b83c0a1f140d6314cb09adb07ce436b9, type: 3}
+--- !u!1 &1810189784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1810189785}
+  m_Layer: 3
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1810189785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810189784}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3516999562435017217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1838141463 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9076533028290269625, guid: 5e741ba78a77cac4e9502da6868262cd,
@@ -20045,7 +20071,6 @@ MonoBehaviour:
   butt: {fileID: 1628000408}
   buttt: {fileID: 203142875}
   butttt: {fileID: 1226325309}
-  uniqueTechID: Button16
 --- !u!1 &1945884601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
@@ -20082,7 +20107,6 @@ MonoBehaviour:
   butt: {fileID: 1847231411}
   buttt: {fileID: 1095612833}
   butttt: {fileID: 736720733}
-  uniqueTechID: Button4
 --- !u!4 &1948595206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -23462,6 +23486,7 @@ Transform:
   - {fileID: 6726527243951047686}
   - {fileID: 1251100182622275929}
   - {fileID: 289293650}
+  - {fileID: 1810189785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4062895277122725598
@@ -24624,7 +24649,6 @@ MonoBehaviour:
   butt: {fileID: 1309902420}
   buttt: {fileID: 71273699}
   butttt: {fileID: 1945884603}
-  uniqueTechID: Button1
 --- !u!224 &8387635594075139558 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8483243966756064542, guid: c29b8e862258d1f44a670b4a177983ae,
@@ -24917,6 +24941,7 @@ MonoBehaviour:
   moveSpeed: 5
   flipByScale: 1
   visualRoot: {fileID: 3516999562435017217}
+  StunObject: {fileID: 1810189784}
 --- !u!114 &8941606651267923555
 MonoBehaviour:
   m_ObjectHideFlags: 0

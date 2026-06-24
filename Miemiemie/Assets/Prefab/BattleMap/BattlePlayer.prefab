@@ -667,7 +667,7 @@ MonoBehaviour:
   windBulletConfig: {fileID: 11400000, guid: c0069d31e5bf2f64493ae7b5c51fe73f, type: 2}
   mudBulletConfig: {fileID: 11400000, guid: 54f5609e7b8cc994c9c6cf06aad6654b, type: 2}
   fireRate: 0.15
-  shootRange: 5
+  shootRange: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 2112

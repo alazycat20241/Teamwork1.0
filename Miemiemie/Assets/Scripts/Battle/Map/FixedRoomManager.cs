@@ -359,10 +359,6 @@ public class FixedRoomManager : MonoBehaviour
         {
             timeText.text = FormatTime(runElapsedTime);
         }
-
-        // 复制道具
-        if(CopyChildSprites.Instance!=null)
-        CopyChildSprites.Instance.CopySprites();
     }
 
     public float deletex;

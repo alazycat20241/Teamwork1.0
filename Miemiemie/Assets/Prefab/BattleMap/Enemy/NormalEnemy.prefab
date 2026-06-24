@@ -132,8 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 1
   moveSpeed: 2
-  chaseRange: 1.6
-  attackRange: 1.6
+  chaseRange: 2
+  attackRange: 2
   bulletObject: {fileID: 11400000, guid: e84bc87440f3fa74e9629b2140967bd9, type: 2}
   fireInterval: 0.33
   skeletonAnimation: {fileID: 7936998279348092499}

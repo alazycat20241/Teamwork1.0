@@ -8,19 +8,16 @@ using UnityEngine.UI;
 /// </summary>
 public class CopyChildSprites : MonoBehaviour
 {
-    public static CopyChildSprites Instance;
-
     [Header("源Image（读取它们的子物体Sprite）")]
     [SerializeField] private Image[] sourceImages = new Image[6];   // 道具栏的 6 个槽位
 
     [Header("目标Image（接收复制的Sprite）")]
     [SerializeField] private Image[] targetImages = new Image[6];   // 结算面板的 6 个图标位
 
-    void Awake()
+    private void Start()
     {
-        Instance = this;
+        CopySprites();
     }
-
     /// <summary>
     /// 从源Image的子物体读取Sprite，赋值给对应的目标Image
     /// 支持子物体是 SpriteRenderer 或 Image 两种情况

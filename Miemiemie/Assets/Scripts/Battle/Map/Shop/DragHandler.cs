@@ -42,6 +42,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public TextMeshProUGUI nameText;     // 拖入名称文本
     public TextMeshProUGUI descText;     // 拖入描述文本
 
+    private bool isDragged;
     // ==================== 初始化 ====================
     void Awake()
     {
@@ -62,6 +63,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         DisableOutline();
         tooltipPanel.SetActive(false);
+
+        isDragged=false;
     }
 
     // ==================== 鼠标悬浮 ====================
@@ -85,6 +88,13 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     // ==================== 拖拽 ====================
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 已经放入槽位 → 不允许再拖拽
+        if (isDragged)
+        {
+            eventData.pointerDrag = null;  // 取消本次拖拽事件
+            return;
+        }
+
         tooltipPanel.SetActive(false);
 
         originalParent = transform.parent;
@@ -125,17 +135,19 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
+        if(isDragged) {return; }
 
-        if (transform.parent != originalParent)
-        {
-            transform.localScale = originalScale * 0.7f;
-        }
+        canvasGroup.blocksRaycasts = true;
 
         if (transform.parent == originalParent)
         {
             transform.localScale = originalScale;
             rectTransform.localPosition = originalLocalPos;
+        }
+        else
+        {
+            isDragged = true;
+            transform.localScale = originalScale * 0.7f;
         }
     }
 
