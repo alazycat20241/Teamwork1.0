@@ -1,0 +1,48 @@
+
+skeleton.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boss上半身
+  rotate: true
+  xy: 218, 123
+  size: 892, 432
+  orig: 1007, 665
+  offset: 16, 223
+  index: -1
+boss花圈
+  rotate: true
+  xy: 834, 373
+  size: 642, 216
+  orig: 1007, 665
+  offset: 163, 121
+  index: -1
+右手
+  rotate: false
+  xy: 652, 2
+  size: 345, 253
+  orig: 1007, 665
+  offset: 610, 264
+  index: -1
+左手
+  rotate: true
+  xy: 999, 103
+  size: 268, 162
+  orig: 1007, 665
+  offset: 112, 271
+  index: -1
+细线
+  rotate: true
+  xy: 2, 92
+  size: 923, 214
+  orig: 1007, 665
+  offset: 73, 9
+  index: -1
+腿
+  rotate: true
+  xy: 652, 257
+  size: 758, 180
+  orig: 1007, 665
+  offset: 126, 108
+  index: -1

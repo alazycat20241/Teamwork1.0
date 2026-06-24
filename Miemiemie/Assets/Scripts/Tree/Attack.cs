@@ -99,8 +99,8 @@ public class Attack : MonoBehaviour
             IsPurchased = true;
             if (img != null && Select1Sprite != null)
                 img.sprite = Select1Sprite;
-            if (L != null)
-                L.interactable = false;
+            //if (L != null)
+            //    L.interactable = false;
         }
     }
 

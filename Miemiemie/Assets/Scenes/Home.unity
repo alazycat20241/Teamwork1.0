@@ -1480,6 +1480,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attackdistance24
+      objectReference: {fileID: 0}
+    - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 8480b8dbf7786b641b7620162659ce9c,
@@ -1656,6 +1661,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackdistance28
       objectReference: {fileID: 0}
     - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -2150,6 +2160,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
+      propertyPath: uniqueTechID
+      value: health17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 935b870073eb7bf48aaf858a93e49ea0,
@@ -2341,6 +2356,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attack5
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -2706,6 +2726,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: health16
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
@@ -3297,6 +3322,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: health8
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
@@ -4110,6 +4140,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
+      propertyPath: uniqueTechID
+      value: health26
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 935b870073eb7bf48aaf858a93e49ea0,
@@ -4349,6 +4384,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attack21
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -5705,6 +5745,7 @@ MonoBehaviour:
   butt: {fileID: 1173122406}
   buttt: {fileID: 719706415}
   butttt: {fileID: 1940978688}
+  uniqueTechID: Button13
 --- !u!1 &482570818
 GameObject:
   m_ObjectHideFlags: 0
@@ -6817,6 +6858,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -7833,6 +7879,7 @@ MonoBehaviour:
   butt: {fileID: 300152296}
   buttt: {fileID: 573451139}
   butttt: {fileID: 1232474834}
+  uniqueTechID: Button7
 --- !u!114 &762409100 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6012496009909360736, guid: e32d132bdb29b844ca497055099f3716,
@@ -9090,6 +9137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -9467,6 +9519,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -9629,6 +9686,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: "\u6D88\u8017\uFF1A\n   5\u91D1\u5E01\n   5\u7075\u9B42\u77F3\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attack1
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
@@ -9907,6 +9969,7 @@ MonoBehaviour:
   butt: {fileID: 871446579}
   buttt: {fileID: 859492307}
   butttt: {fileID: 1433058070}
+  uniqueTechID: Button23
 --- !u!4 &970405729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -11144,6 +11207,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attackspeed13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 8480b8dbf7786b641b7620162659ce9c,
@@ -12129,6 +12197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackspeed23
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
@@ -13553,6 +13626,7 @@ MonoBehaviour:
   butt: {fileID: 1004864048}
   buttt: {fileID: 766816488}
   butttt: {fileID: 962100833}
+  uniqueTechID: Button19
 --- !u!114 &1226977803 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 187890608704016981, guid: 6fb3e68c12c268449881e959a7ea4de9,
@@ -13601,6 +13675,7 @@ MonoBehaviour:
   butt: {fileID: 1449909124}
   buttt: {fileID: 1454720420}
   butttt: {fileID: 478408757}
+  uniqueTechID: Button10
 --- !u!1 &1238334356
 GameObject:
   m_ObjectHideFlags: 0
@@ -15409,6 +15484,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -15685,6 +15765,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackspeed18
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
@@ -16097,6 +16182,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -16316,6 +16406,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attack10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6993947210141960918, guid: 2d302cd634f17354fbc2f7d522af6847,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: bcadc73da38a61f45bd8c92fbbbbd0e8,
@@ -16421,6 +16516,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackdistance9
       objectReference: {fileID: 0}
     - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -19018,6 +19118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
+      propertyPath: uniqueTechID
+      value: attackspeed19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 8480b8dbf7786b641b7620162659ce9c,
@@ -19940,6 +20045,7 @@ MonoBehaviour:
   butt: {fileID: 1628000408}
   buttt: {fileID: 203142875}
   butttt: {fileID: 1226325309}
+  uniqueTechID: Button16
 --- !u!1 &1945884601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1689839560858240704, guid: 2d302cd634f17354fbc2f7d522af6847,
@@ -19976,6 +20082,7 @@ MonoBehaviour:
   butt: {fileID: 1847231411}
   buttt: {fileID: 1095612833}
   butttt: {fileID: 736720733}
+  uniqueTechID: Button4
 --- !u!4 &1948595206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4640960290806360697, guid: b83c0a1f140d6314cb09adb07ce436b9,
@@ -20016,6 +20123,11 @@ PrefabInstance:
         type: 3}
       propertyPath: addCount
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackdistance7
       objectReference: {fileID: 0}
     - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
@@ -21938,6 +22050,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
+      propertyPath: uniqueTechID
+      value: health12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 935b870073eb7bf48aaf858a93e49ea0,
@@ -22618,6 +22735,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
         type: 3}
+      propertyPath: uniqueTechID
+      value: health2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742684680003475411, guid: 6fb3e68c12c268449881e959a7ea4de9,
+        type: 3}
       propertyPath: defaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 935b870073eb7bf48aaf858a93e49ea0,
@@ -23064,6 +23186,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 626764644}
     m_Modifications:
+    - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackdistance3
+      objectReference: {fileID: 0}
     - target: {fileID: -3439750337722214847, guid: e32d132bdb29b844ca497055099f3716,
         type: 3}
       propertyPath: defaultSprite
@@ -23603,6 +23730,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Button11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
+        type: 3}
+      propertyPath: uniqueTechID
+      value: attackspeed11
       objectReference: {fileID: 0}
     - target: {fileID: 7825856256076330315, guid: 5e741ba78a77cac4e9502da6868262cd,
         type: 3}
@@ -24492,6 +24624,7 @@ MonoBehaviour:
   butt: {fileID: 1309902420}
   buttt: {fileID: 71273699}
   butttt: {fileID: 1945884603}
+  uniqueTechID: Button1
 --- !u!224 &8387635594075139558 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8483243966756064542, guid: c29b8e862258d1f44a670b4a177983ae,

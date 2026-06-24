@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Spine;
+using Spine.Unity;
 
 /// <summary>
 /// Boss 控制器
-/// 一阶段：圆形弹幕 + 追击玩家
-/// 二阶段（低于33%血量）：投掷炸弹 + 召唤小怪 + 加速追击
+/// 一阶段：圆形弹幕（每次发射播一次 attack_eightDirections）
+/// 二阶段（低于33%血量）：投掷炸弹 + 召唤小怪（每次攻击播一次 attack_summoning）
 /// 实现 IMovable 接口，支持石化/击退/暂停
 /// </summary>
 public class Boss : MonoBehaviour, IMovable
@@ -14,12 +16,12 @@ public class Boss : MonoBehaviour, IMovable
     [SerializeField] private float phase2HealthPercent = 0.33f; // 低于33%血进入二阶段
 
     [Header("一阶段：圆形弹幕")]
-    [SerializeField] private BulletObject circleBulletConfig;   // 圆形弹幕配置（ScriptableObject）
+    [SerializeField] private BulletObject circleBulletConfig;   // 弹幕配置
     [SerializeField] private float circleFireInterval = 1.5f;   // 发射间隔（秒）
 
     [Header("二阶段：投掷孢子云")]
-    [SerializeField] private GameObject sporeCloudPrefab;       // 爆炸预制体
-    [SerializeField] private float bombInterval = 2f;// 投弹间隔（秒）
+    [SerializeField] private GameObject sporeCloudPrefab;       // 炸弹预制体
+    [SerializeField] private float bombInterval = 2f;           // 投弹间隔（秒）
 
     [Header("二阶段：召唤小怪")]
     [SerializeField] private List<GameObject> minionPrefabs;    // 小怪预制体列表
@@ -29,34 +31,48 @@ public class Boss : MonoBehaviour, IMovable
     [SerializeField] private int summonCount = 1;               // 每次召唤数量
     [SerializeField] private float summonRadius = 3f;           // 召唤范围半径
 
-    [Header("移动")]
-    [SerializeField] private float moveSpeed = 0f;              // 移动速度（只是为了接口）
+    [Header("Spine 动画")]
+    [SerializeField] private SkeletonAnimation skeletonAnimation;
+    [SpineAnimation]
+    [SerializeField] private string phaseOneAnim = "attack_eightDirections";   // 一阶段攻击动画
+    [SpineAnimation]
+    [SerializeField] private string phaseTwoAnim = "attack_summoning";         // 二阶段攻击动画
 
     [Header("范围显示")]
-    [SerializeField] private Color summonRangeColor = new Color(0.5f, 0f, 1f, 0.2f);  // 召唤范围颜色
-    [SerializeField] private bool showRange = true;              // 是否显示范围
+    [SerializeField] private Color summonRangeColor = new Color(0.5f, 0f, 1f, 0.2f);
+    [SerializeField] private bool showRange = true;
+
+    [Header("移动")]
+    [SerializeField] private float moveSpeed = 0f;
 
     // ========== 状态机 ==========
     private enum Phase { One, Two }
     private Phase currentPhase = Phase.One;
 
     // ========== 组件引用 ==========
-    private Transform player;       // 玩家位置
-    private Health health;          // 血量组件
-    private Rigidbody2D rb;         // 刚体组件
+    private Transform player;
+    private Health health;
+    private Rigidbody2D rb;
 
     // ========== 对象池 ==========
-    private BulletPool circleBulletPool;    // 圆形弹幕对象池
+    private BulletPool circleBulletPool;
 
     // ========== 攻击计时器 ==========
-    private float circleFireTimer;  // 圆形弹幕计时器
-    private float bombTimer;        // 投弹计时器
-    private float summonTimer;      // 召唤计时器
+    private float circleFireTimer;  // 弹幕冷却
+    private float bombTimer;        // 投弹冷却
+    private float summonTimer;      // 召唤冷却
 
-    // ========== 状态标记（IMovable接口使用） ==========
-    private bool isKnockedBack = false;     // 是否被击退
-    private bool isPaused = false;          // 是否暂停（石化/腐烂号角）
+    // ========== 动画 ==========
+    private string currentAnim;     // 当前播放的动画名（去重用）
 
+    // ========== 状态标记（IMovable接口） ==========
+    private bool isKnockedBack = false;
+    private bool isPaused = false;
+
+    [Header("音效")]
+    [SerializeField] private AudioClip attackSound;    // 攻击音效（循环）
+
+    private AudioSource attackAudioSource;  // 攻击音效的循环播放器
     // ==================== 生命周期 ====================
 
     void Start()
@@ -70,11 +86,11 @@ public class Boss : MonoBehaviour, IMovable
         rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.gravityScale = 0;        // 无重力
-            rb.freezeRotation = true;   // 锁定旋转
+            rb.gravityScale = 0;
+            rb.freezeRotation = true;
         }
 
-        // 初始化对象池（从PoolManager获取）
+        // 初始化对象池
         if (circleBulletConfig != null)
             circleBulletPool = PoolManager.Instance.GetPool(circleBulletConfig);
 
@@ -82,43 +98,45 @@ public class Boss : MonoBehaviour, IMovable
         circleFireTimer = circleFireInterval;
         bombTimer = bombInterval;
         summonTimer = summonInterval;
+
+        attackAudioSource = gameObject.GetComponent<AudioSource>();
+        attackAudioSource.playOnAwake = false;
+        attackAudioSource.loop = false;
     }
 
     void Update()
     {
-        // 暂停/击退时跳过所有逻辑
+        // 暂停/击退时跳过
         if (isPaused || isKnockedBack) return;
-
-        // 安全检查
         if (player == null || health == null || health.IsDead) return;
 
         // 血量低于阈值 → 进入二阶段
         if (currentPhase == Phase.One && health.CurrentHealth <= health.MaxHealth * phase2HealthPercent)
-        {
             EnterPhaseTwo();
-        }
 
-        // 根据当前阶段执行不同行为
+        // 根据阶段执行攻击逻辑
         switch (currentPhase)
         {
             case Phase.One:
-                PhaseOneUpdate();   // 一阶段：弹幕 + 追击
+                PhaseOneUpdate();
                 break;
             case Phase.Two:
-                PhaseTwoUpdate();   // 二阶段：炸弹 + 召唤 + 加速追击
+                PhaseTwoUpdate();
                 break;
         }
     }
 
-    // ==================== 一阶段 ====================
+    // ==================== 一阶段：圆形弹幕 ====================
 
-    /// <summary>
-    /// 一阶段每帧更新：朝玩家移动 + 定时发射圆形弹幕
-    /// </summary>
     void PhaseOneUpdate()
     {
-        // 弹幕计时
         circleFireTimer -= Time.deltaTime;
+        // 提前 0.6 秒播放动画
+        if (circleFireTimer <= 1f && circleFireTimer > 0f)
+        {
+            PlayAttackAnim(phaseOneAnim);
+        }
+
         if (circleFireTimer <= 0f)
         {
             circleFireTimer = circleFireInterval;
@@ -127,11 +145,17 @@ public class Boss : MonoBehaviour, IMovable
     }
 
     /// <summary>
-    /// 发射一圈子弹（数量、角度由BulletObject配置决定）
+    /// 发射一圈圆形弹幕
     /// </summary>
     void FireCircleBullets()
     {
         if (circleBulletPool == null || circleBulletConfig == null) return;
+
+        // 播放音效
+        if (attackAudioSource != null && attackSound != null)
+        {
+            attackAudioSource.PlayOneShot(attackSound);
+        }
 
         // 按配置生成一圈子弹
         for (int i = 0; i < circleBulletConfig.LineCount; i++)
@@ -148,14 +172,11 @@ public class Boss : MonoBehaviour, IMovable
         }
     }
 
-    // ==================== 二阶段 ====================
+    // ==================== 二阶段：投弹 + 召唤 ====================
 
-    /// <summary>
-    /// 二阶段每帧更新：加速追击 + 投弹 + 召唤小怪
-    /// </summary>
     void PhaseTwoUpdate()
     {
-        // 投弹计时
+        // 投弹
         bombTimer -= Time.deltaTime;
         if (bombTimer <= 0f)
         {
@@ -163,7 +184,7 @@ public class Boss : MonoBehaviour, IMovable
             ThrowBomb();
         }
 
-        // 召唤计时
+        // 召唤小怪
         summonTimer -= Time.deltaTime;
         if (summonTimer <= 0f)
         {
@@ -173,33 +194,32 @@ public class Boss : MonoBehaviour, IMovable
     }
 
     /// <summary>
-    /// 朝玩家方向投掷一枚炸弹
+    /// 朝玩家位置投掷炸弹 + 播放二阶段攻击动画
     /// </summary>
     void ThrowBomb()
     {
         if (sporeCloudPrefab == null || player == null) return;
 
-        // 直接在玩家当前位置生成
+        // 播放攻击动画（每次投弹播一下）
+        PlayAttackAnim(phaseTwoAnim);
         Instantiate(sporeCloudPrefab, player.position, Quaternion.identity);
     }
 
     /// <summary>
-    /// 在周围随机位置召唤小怪
+    /// 在周围随机位置召唤小怪 + 播放二阶段攻击动画
     /// </summary>
-    /// <param name="count">召唤数量</param>
     void SummonMinions(int count)
     {
         if (minionPrefabs == null || minionPrefabs.Count == 0) return;
 
+        // 播放攻击动画（每次召唤播一下）
+        PlayAttackAnim(phaseTwoAnim);
+
         for (int i = 0; i < count; i++)
         {
-            // 随机选择小怪类型
             GameObject prefab = minionPrefabs[Random.Range(0, minionPrefabs.Count)];
-
-            // 在召唤半径内随机位置
             Vector2 offset = Random.insideUnitCircle.normalized * summonRadius;
             Vector3 spawnPos = transform.position + (Vector3)offset;
-
             Instantiate(prefab, spawnPos, Quaternion.identity);
         }
     }
@@ -213,51 +233,42 @@ public class Boss : MonoBehaviour, IMovable
     {
         currentPhase = Phase.Two;
 
-        // 立刻召唤2-3个小怪
         int count = Random.Range(initialMinionCount, maxInitialMinion + 1);
         SummonMinions(count);
 
-        // 重置计时器
         bombTimer = bombInterval;
         summonTimer = summonInterval;
     }
 
-    // ==================== IMovable 接口实现 ====================
+    // ==================== Spine 动画控制 ====================
 
     /// <summary>
-    /// 获取当前移动速度
+    /// 播放攻击动画（清缓存强制重播）
     /// </summary>
-    public float GetMoveSpeed() => moveSpeed;
-
-    /// <summary>
-    /// 设置移动速度
-    /// </summary>
-    public void SetMoveSpeed(float speed)
+    void PlayAttackAnim(string animName)
     {
-        moveSpeed = speed;
+        if (skeletonAnimation == null) return;
+        currentAnim = "";  // 清缓存，确保每次攻击都重播
+        skeletonAnimation.AnimationState.SetAnimation(0, animName, false);
     }
 
-    /// <summary>
-    /// 开始击退（停止移动）
-    /// </summary>
+    // ==================== IMovable 接口 ====================
+
+    public float GetMoveSpeed() => moveSpeed;
+    public void SetMoveSpeed(float speed) { moveSpeed = speed; }
+
     public void StartKnockback()
     {
         isKnockedBack = true;
         rb.velocity = Vector2.zero;
     }
 
-    /// <summary>
-    /// 结束击退（恢复移动）
-    /// </summary>
     public void EndKnockback()
     {
         isKnockedBack = false;
         rb.velocity = Vector2.zero;
     }
 
-    /// <summary>
-    /// 暂停移动（石化/腐烂号角等效果使用）
-    /// </summary>
     public void PauseMovement()
     {
         isPaused = true;
@@ -265,19 +276,10 @@ public class Boss : MonoBehaviour, IMovable
         if (rb != null) rb.velocity = Vector2.zero;
     }
 
-    /// <summary>
-    /// 恢复移动
-    /// </summary>
-    public void ResumeMovement()
-    {
-        isPaused = false;
-    }
+    public void ResumeMovement() { isPaused = false; }
 
-    // ==================== Gizmos 范围可视化 ====================
+    // ==================== Gizmos 可视化 ====================
 
-    /// <summary>
-    /// 选中时显示召唤范围线框
-    /// </summary>
     void OnDrawGizmosSelected()
     {
         if (!showRange) return;
@@ -285,9 +287,6 @@ public class Boss : MonoBehaviour, IMovable
         Gizmos.DrawWireSphere(transform.position, summonRadius);
     }
 
-    /// <summary>
-    /// 始终显示召唤范围半透明球
-    /// </summary>
     void OnDrawGizmos()
     {
         if (!showRange) return;

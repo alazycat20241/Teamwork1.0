@@ -46,8 +46,8 @@ public class EnemyTurret : MonoBehaviour
         if (playerObj != null)
             player = playerObj.transform;
 
-        // 初始化冷却（第一次攻击不用等）
-        attackTimer = 0;
+        // 初始化冷却（第一次攻击等）
+        attackTimer = attackCooldown;
 
         // 订阅死亡事件
         GetComponent<Health>().OnDeath += OnDeathExplosion;
@@ -101,7 +101,7 @@ public class EnemyTurret : MonoBehaviour
     // ============================================
     // 攻击逻辑
     // ============================================
-
+    private Vector3 recordedPlayerPos; // 记录准备爆炸时的玩家位置
     /// <summary>
     /// 开始攻击：生成孢子云 + 播放攻击动画
     /// </summary>
@@ -109,6 +109,10 @@ public class EnemyTurret : MonoBehaviour
     {
         isAttacking = true;
         attackAnimTimer = attackAnimDuration;
+
+        // 记录此刻的玩家位置
+        if (player != null)
+            recordedPlayerPos = player.position;
 
         // 播放音效
         if (audioSource != null && attackSound != null)
@@ -120,17 +124,17 @@ public class EnemyTurret : MonoBehaviour
         // 播放攻击动画（不循环）
         PlayAnimation(attackAnimation, false);
 
-        // ★ 延迟生成爆炸
-        StartCoroutine(SpawnAfterDelay(spawnDelay));
+        // 延迟生成爆炸
+        StartCoroutine(SpawnAfterDelay(spawnDelay, recordedPlayerPos));
     }
 
     /// <summary>
     /// 延迟生成孢子云
     /// </summary>
-    IEnumerator SpawnAfterDelay(float delay)
+    IEnumerator SpawnAfterDelay(float delay, Vector3 spawnPos)
     {
         yield return new WaitForSeconds(delay);
-        Instantiate(sporeCloudPrefab, player.position, Quaternion.identity);
+        Instantiate(sporeCloudPrefab, spawnPos, Quaternion.identity);
     }
 
     /// <summary>

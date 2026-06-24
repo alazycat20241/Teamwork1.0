@@ -126,10 +126,15 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
-        transform.localScale = originalScale*0.8f;
+
+        if (transform.parent != originalParent)
+        {
+            transform.localScale = originalScale * 0.7f;
+        }
 
         if (transform.parent == originalParent)
         {
+            transform.localScale = originalScale;
             rectTransform.localPosition = originalLocalPos;
         }
     }

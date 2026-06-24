@@ -22,7 +22,8 @@ public class PlayerMove : MonoBehaviour
     // 翻转状态
     private bool isFacingRight = false;  // 记录当前朝向
     private Transform flipTarget;       // 实际翻转的目标Transform
-    
+
+    public GameObject StunObject;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,6 +41,8 @@ public class PlayerMove : MonoBehaviour
         
         // 确定翻转目标：如果有指定视觉根节点则用它，否则用自身
         flipTarget = visualRoot != null ? visualRoot : transform;
+
+        StunObject?.SetActive(false);
     }
     
     void Update()
@@ -148,9 +151,11 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator StunCoroutine(float duration)
     {
+        StunObject?.SetActive(true);
         isStunned = true;
         yield return new WaitForSeconds(duration);
         isStunned = false;
+        StunObject?.SetActive(false);
         stunCoroutine = null;
     }
 
