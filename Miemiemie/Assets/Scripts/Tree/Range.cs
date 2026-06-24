@@ -24,6 +24,16 @@ public class Range : MonoBehaviour
         if (r != null) r.onClick.AddListener(Click);
     }
 
+    private void Update()
+    {
+        if (IsPurchased)
+        {
+            // 将按钮图片切换为已升级状态
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
+        }
+    }
+
     void Click()
     {
         if (IsPurchased) return;

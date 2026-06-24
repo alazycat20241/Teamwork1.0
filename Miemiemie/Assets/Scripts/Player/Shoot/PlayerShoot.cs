@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,23 +30,23 @@ public class PlayerShoot : MonoBehaviour
 
     void Update()
     {
-        // ========== 切换子弹（按2/3/4） ==========
-        if (Input.GetKeyDown(KeyCode.Alpha1))        // ★ 新增
-        {
-            SwitchBullet(normalBulletConfig);
-        } 
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchBullet(fireBallConfig);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SwitchBullet(windBulletConfig);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SwitchBullet(mudBulletConfig);
-        }
+        // ========== 切换子弹（按2/3/4） ==========现在先不给换
+        //if (Input.GetKeyDown(KeyCode.Alpha1))        
+        //{
+        //    SwitchBullet(normalBulletConfig);
+        //} 
+        //else if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    SwitchBullet(fireBallConfig);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    SwitchBullet(windBulletConfig);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    SwitchBullet(mudBulletConfig);
+        //}
 
         // ========== 发射子弹 ==========
         fireTimer += Time.deltaTime;

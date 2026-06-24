@@ -57,6 +57,15 @@ public class Attack : MonoBehaviour
             L.onClick.AddListener(click);
     }
 
+    private void Update()
+    {
+        if (IsPurchased)
+        {
+            // 将按钮图片切换为已升级状态
+            if (img != null && Select1Sprite != null)
+                img.sprite = Select1Sprite;
+        }
+    }
     /// <summary>
     /// 按钮点击处理逻辑
     /// 检查玩家资源是否足够，执行升级操作
