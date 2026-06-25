@@ -297,7 +297,11 @@ public class FixedRoomManager : MonoBehaviour
         if (!victory && ActionPointManager.Instance != null)
         {
             ActionPointManager.Instance.DefeatedInHunt();
+        }else if (victory && ActionPointManager.Instance != null)
+        {
+            ActionPointManager.Instance.WinInHunt();
         }
+
 
         // 在打开面板前更新统计文本
         UpdateCollectionStatsText();

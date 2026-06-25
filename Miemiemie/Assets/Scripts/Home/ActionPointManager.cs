@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,6 +93,24 @@ public class ActionPointManager : MonoBehaviour
         // 回复上限的一半，向下取整
         currentActionPoints = Mathf.FloorToInt(maxActionPoints / 2f);
         OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
+
+        // 自动存档到1号槽位
+        SaveManager.Instance.SaveToSlot(0);
+    }
+
+    /// 狩猎成功：回复上限
+    /// </summary>
+    public void WinInHunt()
+    {
+        currentDay++;
+        OnDayChanged?.Invoke(currentDay);
+
+        // 默认回满
+        currentActionPoints = maxActionPoints;
+        OnActionPointsChanged?.Invoke(currentActionPoints, maxActionPoints);
+
+        // 自动存档到1号槽位
+        SaveManager.Instance.SaveToSlot(0);
     }
 
     /// <summary>
